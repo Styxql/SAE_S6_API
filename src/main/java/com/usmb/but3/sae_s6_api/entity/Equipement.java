@@ -1,7 +1,6 @@
 package com.usmb.but3.sae_s6_api.entity;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
