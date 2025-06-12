@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -16,16 +14,17 @@ public class CapteurInstalle {
 
     @Id
     @Column(name = "cin_id")
-    private Integer capteurInstalleId;
+    private Integer id;
 
-    @Column(name = "cin_posx", precision = 100, scale = 2, nullable = false)
-    private BigDecimal positionX;
-
-    @Column(name = "cin_posy", precision = 100, scale = 2, nullable = false)
-    private BigDecimal positionY;
+    @Column(name = "cin_nombre")
+    private Integer nombre;
 
     @ManyToOne
     @JoinColumn(name = "cap_id", nullable = false)
     private Capteur capteur;
+
+    @ManyToOne
+    @JoinColumn(name = "sal_id", nullable = false)
+    private Salle salle;
 
 }

@@ -1,5 +1,7 @@
 package com.usmb.but3.sae_s6_api.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,13 +17,13 @@ public class Salle {
 
     @Id
     @Column(name = "sal_id")
-    private Integer salleId;
+    private Integer id;
 
     @Column(name = "sal_nom", length = 100, nullable = false)
     private String nom;
 
     @Column(name = "sal_urlimg", length = 1024, nullable = false)
-    private String salUrlimg;
+    private String urlImg;
 
     @Column(name = "sal_capacite")
     private Integer capacite;
@@ -33,4 +35,10 @@ public class Salle {
     @ManyToOne
     @JoinColumn(name = "typ_id", nullable = false)
     private TypeSalle typeSalle;
+
+    @OneToMany(mappedBy = "salle")
+    private List<CapteurInstalle> CapteurInstalles;
+
+    @OneToMany(mappedBy = "salle")
+    private List<EquipementInstalle> EquipementInstalles;
 }

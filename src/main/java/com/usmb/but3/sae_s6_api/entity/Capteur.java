@@ -17,7 +17,7 @@ public class Capteur {
 
     @Id
     @Column(name = "cap_id")
-    private Integer capteurId;
+    private Integer id;
 
     @Column(name = "cap_nom", length = 100, nullable = false)
     private String nom;
@@ -38,11 +38,11 @@ public class Capteur {
     private BigDecimal largeur;
 
     @Column(name = "cap_urlimg", length = 1024, nullable = false)
-    private String capUrlimg;
+    private String urlImg;
 
     @ManyToOne
     @JoinColumn(name = "mar_id", nullable = false)
-    private MarqueCapteur marque;
+    private Marque marque;
 
     @OneToMany(mappedBy = "capteur")
     private List<ParametreCapteur> parametreCapteur;

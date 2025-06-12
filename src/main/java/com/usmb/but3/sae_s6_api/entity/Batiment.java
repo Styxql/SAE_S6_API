@@ -16,13 +16,13 @@ public class Batiment {
 
     @Id
     @Column(name = "bat_id")
-    private Integer batimentId;
+    private Integer id;
 
     @Column(name = "bat_nom", length = 100, nullable = false)
     private String nom;
 
     @Column(name = "bat_urlimg", length = 1024, nullable = false)
-    private String batUrlImg;
+    private String urlImg;
 
     @OneToMany(mappedBy = "batiment")
     private List<Salle> salles;
