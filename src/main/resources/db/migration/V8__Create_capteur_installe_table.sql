@@ -1,8 +1,8 @@
 CREATE TABLE t_e_capteurinstalle_cin (
     cin_id SERIAL PRIMARY KEY,
     cin_numero INT NOT NULL,
-    cin_capteur_id INTEGER,
-    cin_salle_id INTEGER,
-    FOREIGN KEY (capteur_id) REFERENCES t_e_capteur_cap(id),
-    FOREIGN KEY (salle_id) REFERENCES t_e_salle_sal(id)
+    cap_id INTEGER,
+    sal_id INTEGER,
+    FOREIGN KEY (cap_id) REFERENCES t_e_capteur_cap(cap_id),
+    FOREIGN KEY (sal_id) REFERENCES t_e_salle_sal(sal_id)
 );

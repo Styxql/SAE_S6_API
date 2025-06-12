@@ -4,8 +4,8 @@ CREATE TABLE t_e_equipement_equ (
     equ_description TEXT,
     equ_dimensions VARCHAR(255),
     equ_image_url VARCHAR(255),
-    equ_marque_id INTEGER,
-    equ_type_equipement_id INTEGER,
-    FOREIGN KEY (marque_id) REFERENCES t_e_marque_maq(id),
-    FOREIGN KEY (type_equipement_id) REFERENCES t_e_typeequipement_tye(id)
+    mar_id INTEGER,
+    teq_id INTEGER,
+    FOREIGN KEY (mar_id) REFERENCES t_e_marque_mar(mar_id),
+    FOREIGN KEY (teq_id) REFERENCES t_e_typeequipement_teq(teq_id)
 );

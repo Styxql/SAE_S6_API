@@ -1,9 +1,10 @@
 CREATE TABLE t_a_capteur_unitemesurer_acu (
-    acu_id_unite_mesurer INTEGER,
-    acu_id_capteur INTEGER,
-    acu_plage_mesure VARCHAR(255),
-    acu_precision VARCHAR(255),
-    PRIMARY KEY (id_unite_mesurer, id_capteur),
-    FOREIGN KEY (id_unite_mesurer) REFERENCES t_e_unitemesurer_ume(id),
-    FOREIGN KEY (id_capteur) REFERENCES t_e_capteur_cap(id)
+    uni_id INTEGER,
+    cap_id INTEGER,
+    acu_plagemin INTEGER,
+    acu_plagemax INTEGER,
+    acu_precision INTEGER,
+    PRIMARY KEY (uni_id, cap_id),
+    FOREIGN KEY (uni_id) REFERENCES t_e_unitemesurer_uni(uni_id),
+    FOREIGN KEY (cap_id) REFERENCES t_e_capteur_cap(cap_id)
 );

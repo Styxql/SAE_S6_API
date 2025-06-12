@@ -3,8 +3,8 @@ CREATE TABLE t_e_salle_sal (
     sal_nom VARCHAR(255) NOT NULL,
     sal_image_url VARCHAR(255),
     sal_capacite INT,
-    sal_batiment_id INTEGER,
-    sal_type_salle_id INTEGER,
-    FOREIGN KEY (batiment_id) REFERENCES t_e_batiment_bat(id),
-    FOREIGN KEY (type_salle_id) REFERENCES t_e_typesalle_typ(id)
+    bat_id INTEGER,
+    typ_id INTEGER,
+    FOREIGN KEY (bat_id) REFERENCES t_e_batiment_bat(bat_id),
+    FOREIGN KEY (typ_id) REFERENCES t_e_typesalle_typ(typ_id)
 );
