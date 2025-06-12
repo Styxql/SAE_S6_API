@@ -1,6 +1,6 @@
 CREATE TABLE t_e_equipementinstalle_ein (
     ein_id SERIAL PRIMARY KEY,
-    ein_nombre INT NOT NULL,
+    ein_nombre INTEGER NOT NULL,
     equ_id INTEGER,
     sal_id INTEGER,
     FOREIGN KEY (equ_id) REFERENCES t_e_equipement_equ(equ_id),

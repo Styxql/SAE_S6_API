@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
+@Table(name = "t_e_equipement_equ")
 public class Equipement {
 
     @Id
@@ -24,13 +26,13 @@ public class Equipement {
     @Column(name = "equ_nom", length = 100, nullable = false)
     private String nom;
 
-    @Column(name = "equ_hauteur", precision = 100, scale = 2, nullable = false)
+    @Column(name = "equ_hauteur", precision = 6, scale = 2, nullable = false)
     private BigDecimal hauteur;
 
-    @Column(name = "equ_longueur", precision = 100, scale = 2, nullable = false)
+    @Column(name = "equ_longueur", precision = 6, scale = 2, nullable = false)
     private BigDecimal longueur;
 
-    @Column(name = "equ_largeur", precision = 100, scale = 2, nullable = false)
+    @Column(name = "equ_largeur", precision = 6, scale = 2, nullable = false)
     private BigDecimal largeur;
 
     @Column(name = "equ_urlimg", length = 1024, nullable = false)

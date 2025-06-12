@@ -28,13 +28,13 @@ public class Capteur {
     @Column(name = "cap_reference", length = 200)
     private String reference;
 
-    @Column(name = "cap_hauteur", precision = 100, scale = 2, nullable = false)
+    @Column(name = "cap_hauteur", precision = 6, scale = 2, nullable = false)
     private BigDecimal hauteur;
 
-    @Column(name = "cap_longueur", precision = 100, scale = 2, nullable = false)
+    @Column(name = "cap_longueur", precision = 6, scale = 2, nullable = false)
     private BigDecimal longueur;
 
-    @Column(name = "cap_largeur", precision = 100, scale = 2, nullable = false)
+    @Column(name = "cap_largeur", precision = 6, scale = 2, nullable = false)
     private BigDecimal largeur;
 
     @Column(name = "cap_urlimg", length = 1024, nullable = false)
