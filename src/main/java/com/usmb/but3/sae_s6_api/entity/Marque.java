@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "t_e_marquecapteur_mar")
+@Table(name = "t_e_marque_mar")
 public class Marque {
 
     @Id
