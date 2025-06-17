@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sae/v1/parametrecapteur")
+@RequestMapping("/sae/v1/parametreCapteur")
 @RequiredArgsConstructor
 @Validated
 public class ParametreCapteurController {
@@ -19,7 +19,7 @@ public class ParametreCapteurController {
 
     /**
      * GET : Récupère tous les paramètres capteurs
-     * URL : /sae/v1/parametre-capteur
+     * URL : /sae/v1/parametrecapteur
      */
     @GetMapping("")
     public ResponseEntity<List<ParametreCapteur>> getAllParametreCapteurs() {
@@ -28,7 +28,7 @@ public class ParametreCapteurController {
 
     /**
      * GET : Récupère un paramètre capteur par ses deux identifiants
-     * URL : /sae/v1/parametre-capteur/{capteurId}/{uniteMesurerId}
+     * URL : /sae/v1/parametrecapteur/{capteurId}/{uniteMesurerId}
      */
     @GetMapping("/{capteurId}/{uniteMesurerId}")
     public ResponseEntity<ParametreCapteur> getParametreCapteurById(
@@ -39,7 +39,7 @@ public class ParametreCapteurController {
 
     /**
      * POST : Enregistre un nouveau paramètre capteur
-     * URL : /sae/v1/parametre-capteur
+     * URL : /sae/v1/parametrecapteur
      */
     @PostMapping("")
     public ResponseEntity<ParametreCapteur> saveParametreCapteur(@RequestBody ParametreCapteur parametreCapteur) {
@@ -48,7 +48,7 @@ public class ParametreCapteurController {
 
     /**
      * PUT : Met à jour un paramètre capteur existant
-     * URL : /sae/v1/parametre-capteur
+     * URL : /sae/v1/parametrecapteur
      */
     @PutMapping("")
     public ResponseEntity<ParametreCapteur> updateParametreCapteur(@RequestBody ParametreCapteur parametreCapteur) {
@@ -57,7 +57,7 @@ public class ParametreCapteurController {
 
     /**
      * DELETE : Supprime un paramètre capteur avec ses deux identifiants
-     * URL : /sae/v1/parametre-capteur/{capteurId}/{uniteMesurerId}
+     * URL : /sae/v1/parametrecapteur/{capteurId}/{uniteMesurerId}
      */
     @DeleteMapping("/{capteurId}/{uniteMesurerId}")
     public ResponseEntity<String> deleteParametreCapteurById(
