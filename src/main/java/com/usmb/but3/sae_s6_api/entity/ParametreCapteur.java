@@ -1,5 +1,8 @@
 package com.usmb.but3.sae_s6_api.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,9 +35,11 @@ public class ParametreCapteur {
 
     @ManyToOne
     @JoinColumn(name = "cap_id", insertable = false, updatable = false)
+    @JsonBackReference
     private Capteur capteur;
 
     @ManyToOne
     @JoinColumn(name = "uni_id", insertable = false, updatable = false)
+    @JsonManagedReference
     private UniteMesurer uniteMesurer;
 }
