@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(ParametreCapteurId.class)
-@Table(name = "t_a_capteurunitemesurer_acu")
+@Table(name = "t_a_parametrecapteur_acu")
 public class ParametreCapteur {
 
     @Id

@@ -1,4 +1,4 @@
-CREATE TABLE t_a_capteurunitemesurer_acu (
+CREATE TABLE t_a_parametrecapteur_acu (
     uni_id INTEGER,
     cap_id INTEGER,
     acu_plagemin INTEGER,
