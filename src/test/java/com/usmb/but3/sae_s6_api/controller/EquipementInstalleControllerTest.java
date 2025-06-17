@@ -9,8 +9,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDate;
-
 import com.usmb.but3.sae_s6_api.entity.Equipement;
 import com.usmb.but3.sae_s6_api.entity.EquipementInstalle;
 import com.usmb.but3.sae_s6_api.entity.Salle;
