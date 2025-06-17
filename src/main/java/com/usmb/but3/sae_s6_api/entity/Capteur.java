@@ -37,7 +37,7 @@ public class Capteur {
     @Column(name = "cap_largeur", precision = 6, scale = 2, nullable = false)
     private BigDecimal largeur;
 
-    @Column(name = "cap_urlimg", length = 1024, nullable = false)
+    @Column(name = "cap_urlimg", length = 1024, nullable = true)
     private String urlImg;
 
     @ManyToOne

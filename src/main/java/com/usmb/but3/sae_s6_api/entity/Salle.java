@@ -22,7 +22,7 @@ public class Salle {
     @Column(name = "sal_nom", length = 100, nullable = false)
     private String nom;
 
-    @Column(name = "sal_urlimg", length = 1024, nullable = false)
+    @Column(name = "sal_urlimg", length = 1024, nullable = true)
     private String urlImg;
 
     @Column(name = "sal_capacite")
