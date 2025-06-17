@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Validated
 public class EquipementInstalleController {
 
-    private final EquipementInstalleService EquipementInstalleService;
+    private final EquipementInstalleService equipementInstalleService;
 
     /**
      * Cette methode est appelle lors d'une requete GET
@@ -35,7 +35,7 @@ public class EquipementInstalleController {
      */
     @GetMapping("")
     public ResponseEntity<List<EquipementInstalle>> getallEquipementInstalle() {
-        return ResponseEntity.ok().body(EquipementInstalleService.getAllEquipementInstalles());
+        return ResponseEntity.ok().body(equipementInstalleService.getAllEquipementInstalles());
     }
     
     /**
@@ -47,7 +47,7 @@ public class EquipementInstalleController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<EquipementInstalle> getEquipementInstalleById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok().body(EquipementInstalleService.getEquipementInstalleById(id));
+        return ResponseEntity.ok().body(equipementInstalleService.getEquipementInstalleById(id));
     }
     
     /**
@@ -59,7 +59,7 @@ public class EquipementInstalleController {
      */
     @PostMapping("")
     public ResponseEntity<EquipementInstalle> saveEquipementInstalle(@RequestBody EquipementInstalle EquipementInstalle) {
-        return ResponseEntity.ok().body(EquipementInstalleService.saveEquipementInstalle(EquipementInstalle));
+        return ResponseEntity.ok().body(equipementInstalleService.saveEquipementInstalle(EquipementInstalle));
     }
     
     /**
@@ -71,7 +71,7 @@ public class EquipementInstalleController {
      */
     @PutMapping("")
     public ResponseEntity<EquipementInstalle> updateEquipementInstalle(@RequestBody EquipementInstalle EquipementInstalle) {
-        return ResponseEntity.ok().body(EquipementInstalleService.updateEquipementInstalle(EquipementInstalle));
+        return ResponseEntity.ok().body(equipementInstalleService.updateEquipementInstalle(EquipementInstalle));
     }
 
     /**
@@ -84,7 +84,7 @@ public class EquipementInstalleController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEquipementInstalleById(@PathVariable("id") Integer id)
     {
-       EquipementInstalleService.deleteEquipementInstalleById(id);
+       equipementInstalleService.deleteEquipementInstalleById(id);
        return ResponseEntity.ok().body("EquipementInstalle supprimé avec succès");
     }
 }

@@ -13,32 +13,36 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class SalleService {
-    private final SalleRepo SalleRepo;
+    private final SalleRepo salleRepo;
 
     public List<Salle> getAllSalles(){
-        return SalleRepo.findAll();
+        return salleRepo.findAll();
     }
 
     public Salle getSalleById(Integer id){
-        return SalleRepo.findById(id)
+        return salleRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found"));
     }
 
     public Salle saveSalle(Salle Salle){
-        return SalleRepo.save(Salle);
+        return salleRepo.save(Salle);
     }
 
     public Salle updateSalle(Salle Salle){
-        if (!SalleRepo.existsById(Salle.getId())) {
+        if (!salleRepo.existsById(Salle.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"404 : Id Not Found");
         }
-        return SalleRepo.save(Salle);
+        return salleRepo.save(Salle);
     }
 
     public void deleteSalleById(Integer id){
-        if (!SalleRepo.existsById(id)) {
+        if (!salleRepo.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found");
         }
-        SalleRepo.deleteById(id);
+        salleRepo.deleteById(id);
     }
+
+    public List<Salle> getByBatimentId(Integer batimentId) {
+        return salleRepo.findByBatimentId(batimentId);
+    }  
 }

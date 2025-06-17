@@ -14,32 +14,32 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EquipementService {
-    private final EquipementRepo capteurRepo;
+    private final EquipementRepo equipementRepo;
 
     public List<Equipement> getAllEquipements(){
-        return capteurRepo.findAll();
+        return equipementRepo.findAll();
     }
 
     public Equipement getEquipementById(Integer id){
-        return capteurRepo.findById(id)
+        return equipementRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found"));
     }
 
     public Equipement saveEquipement(Equipement capteur){
-        return capteurRepo.save(capteur);
+        return equipementRepo.save(capteur);
     }
 
     public Equipement updateEquipement(Equipement capteur){
-        if (!capteurRepo.existsById(capteur.getId())) {
+        if (!equipementRepo.existsById(capteur.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"404 : Id Not Found");
         }
-        return capteurRepo.save(capteur);
+        return equipementRepo.save(capteur);
     }
 
     public void deleteEquipementById(Integer id){
-        if (!capteurRepo.existsById(id)) {
+        if (!equipementRepo.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found");
         }
-        capteurRepo.deleteById(id);
+        equipementRepo.deleteById(id);
     }
 }
