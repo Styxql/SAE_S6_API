@@ -35,7 +35,7 @@ public class Equipement {
     @Column(name = "equ_largeur", precision = 6, scale = 2, nullable = false)
     private BigDecimal largeur;
 
-    @Column(name = "equ_urlimg", length = 1024, nullable = false)
+    @Column(name = "equ_urlimg", length = 1024, nullable = true)
     private String urlImg;
 
     @ManyToOne

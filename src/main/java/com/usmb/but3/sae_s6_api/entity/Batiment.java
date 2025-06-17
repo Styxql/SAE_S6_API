@@ -19,6 +19,6 @@ public class Batiment {
     @Column(name = "bat_nom", length = 100, nullable = false)
     private String nom;
 
-    @Column(name = "bat_urlimg", length = 1024, nullable = false)
+    @Column(name = "bat_urlimg", length = 1024, nullable = true)
     private String urlImg;
 }
