@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,10 +19,4 @@ public class Marque {
 
     @Column(name = "mar_nom", length = 100, nullable = false)
     private String nom;
-
-    @OneToMany(mappedBy = "marque")
-    private List<Capteur> capteurs;
-
-    @OneToMany(mappedBy = "marque")
-    private List<Equipement> equipements;
 }

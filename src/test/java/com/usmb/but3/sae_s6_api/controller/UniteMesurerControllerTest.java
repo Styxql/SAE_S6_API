@@ -39,10 +39,11 @@ public class UniteMesurerControllerTest {
     @Test
     void testSaveUniteMesurer() {
         UniteMesurer unite = new UniteMesurer();
-        unite.setId(40);
+        unite.setId(4);
         unite.setNom("TestUnite");
+        unite.setSymbole("testsymbole");
 
-        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/uniteMesurer", unite, UniteMesurer.class);
+        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/uniteMesurer", unite, String.class);
 
         assertThat(this.restTemplate.getForObject("http://localhost:"+port+ "/sae/v1/uniteMesurer", String.class)).contains("TestUnite");
 

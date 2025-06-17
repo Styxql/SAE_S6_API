@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -19,7 +17,4 @@ public class TypeSalle {
 
     @Column(name = "typ_nom", length = 100, nullable = false)
     private String nom;
-
-    @OneToMany(mappedBy = "typeSalle")
-    private List<Salle> salles;
 }

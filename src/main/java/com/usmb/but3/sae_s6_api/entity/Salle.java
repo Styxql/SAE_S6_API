@@ -1,6 +1,5 @@
 package com.usmb.but3.sae_s6_api.entity;
 
-import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,9 +35,4 @@ public class Salle {
     @JoinColumn(name = "typ_id", nullable = false)
     private TypeSalle typeSalle;
 
-    @OneToMany(mappedBy = "salle")
-    private List<CapteurInstalle> CapteurInstalles;
-
-    @OneToMany(mappedBy = "salle")
-    private List<EquipementInstalle> EquipementInstalles;
 }

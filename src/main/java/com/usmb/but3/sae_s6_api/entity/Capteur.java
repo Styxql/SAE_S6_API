@@ -47,6 +47,4 @@ public class Capteur {
     @OneToMany(mappedBy = "capteur")
     private List<ParametreCapteur> parametreCapteur;
 
-    @OneToMany(mappedBy = "capteur")
-    private List<CapteurInstalle> capteurInstalles;
 }

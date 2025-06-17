@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +22,4 @@ public class UniteMesurer {
 
     @Column(name = "uni_symbole", length = 10, nullable = false)
     private String symbole;
-
-    @OneToMany(mappedBy = "uniteMesurer")
-    private List<ParametreCapteur> parametreCapteur;
 }

@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -23,7 +21,4 @@ public class Batiment {
 
     @Column(name = "bat_urlimg", length = 1024, nullable = false)
     private String urlImg;
-
-    @OneToMany(mappedBy = "batiment")
-    private List<Salle> salles;
 }
