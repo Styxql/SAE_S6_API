@@ -2,10 +2,16 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.0'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id("com.vaadin") version "24.7.6" // vérifie s’il existe une version plus récente
+
 }
+
+apply plugin: 'io.spring.dependency-management' //MS added
+
 
 group = 'com.usmb.but3'
 version = '0.0.1-SNAPSHOT'
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 java {
 	toolchain {
@@ -17,11 +23,18 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	// MS added for Mockito agent
+    mockitoAgent
 }
 
 repositories {
 	mavenCentral()
 }
+
+ext {
+	vaadinVersion = '24.7.6' // MS added
+}
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -29,13 +42,34 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-database-postgresql'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
+
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// MS added for Mockito agent
+    testImplementation 'org.mockito:mockito-core:5.2.0' 
+    mockitoAgent 'org.mockito:mockito-core:5.2.0' 
+	// MS added for Hibernate schema generation
+	implementation 'org.hibernate:hibernate-core:6.3.0.Final'
+	// MS added for Vaadin
+	implementation 'com.vaadin:vaadin-spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+}
+
+dependencyManagement {  // MS added for Vaadin BOM
+	imports {
+		mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+	}
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+	// MS added for Mockito agent
+    doFirst {
+        jvmArgs += "-javaagent:${configurations.mockitoAgent.asPath}"
+    }
 }

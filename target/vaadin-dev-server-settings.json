@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "C:/Users/ruaultm/Downloads/SAE/SAE_S6_API/./src/main/frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "C:/Users/ruaultm/Downloads/SAE/SAE_S6_API/./src/main/frontend/generated/jar-resources",
+  "staticOutput": "C:/Users/ruaultm/Downloads/SAE/SAE_S6_API/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "C:\\Users\\ruaultm\\Downloads\\SAE\\SAE_S6_API\\target\\classes\\META-INF\\VAADIN\\config",
+  "frontendBundleOutput": "C:\\Users\\ruaultm\\Downloads\\SAE\\SAE_S6_API\\target\\classes\\META-INF\\VAADIN\\webapp",
+  "devBundleOutput": "C:/Users/ruaultm/Downloads/SAE/SAE_S6_API/target/dev-bundle/webapp",
+  "devBundleStatsOutput": "C:/Users/ruaultm/Downloads/SAE/SAE_S6_API/target/dev-bundle/config",
+  "jarResourcesFolder": "C:/Users/ruaultm/Downloads/SAE/SAE_S6_API/./src/main/frontend/generated/jar-resources",
+  "themeName": "",
+  "clientServiceWorkerSource": "C:\\Users\\ruaultm\\Downloads\\SAE\\SAE_S6_API\\target\\sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}
