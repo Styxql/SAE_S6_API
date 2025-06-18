@@ -2,7 +2,6 @@ package com.usmb.but3.sae_s6_api.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
