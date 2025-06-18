@@ -14,32 +14,32 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UniteMesurerService {
-  private final UniteMesurerRepo UniteMesurerRepo;
+  private final UniteMesurerRepo uniteMesurerRepo;
 
     public List<UniteMesurer> getAllUniteMesurers(){
-        return UniteMesurerRepo.findAll();
+        return uniteMesurerRepo.findAll();
     }
 
     public UniteMesurer getUniteMesurerById(Integer id){
-        return UniteMesurerRepo.findById(id)
+        return uniteMesurerRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found"));
     }
 
     public UniteMesurer saveUniteMesurer(UniteMesurer uniteMesurer){
-        return UniteMesurerRepo.save(uniteMesurer);
+        return uniteMesurerRepo.save(uniteMesurer);
     }
 
     public UniteMesurer updateUniteMesurer(UniteMesurer uniteMesurer){
-        if (!UniteMesurerRepo.existsById(uniteMesurer.getId())) {
+        if (!uniteMesurerRepo.existsById(uniteMesurer.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"404 : Id Not Found");
         }
-        return UniteMesurerRepo.save(uniteMesurer);
+        return uniteMesurerRepo.save(uniteMesurer);
     }
 
     public void deleteUniteMesurerById(Integer id){
-        if (!UniteMesurerRepo.existsById(id)) {
+        if (!uniteMesurerRepo.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found");
         }
-        UniteMesurerRepo.deleteById(id);
+        uniteMesurerRepo.deleteById(id);
     }
 }

@@ -42,4 +42,5 @@ public class BatimentService {
         }
         batimentRepo.deleteById(id);
     }
+
 }

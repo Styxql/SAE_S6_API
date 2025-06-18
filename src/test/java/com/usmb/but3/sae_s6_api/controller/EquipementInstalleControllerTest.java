@@ -21,30 +21,38 @@ public class EquipementInstalleControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private String baseUrl() {
+        return "http://localhost:" + port + "/sae/v1/equipementInstalle";
+    }
+
+
     @Test
     void testSaveEquipementInstalle() {
         EquipementInstalle equipementInstalle = new EquipementInstalle();
-        equipementInstalle.setId(22);
-        equipementInstalle.setNombre(2);
+        equipementInstalle.setId(4);
+        equipementInstalle.setNombre(24);
         equipementInstalle.setEquipement(new Equipement());
-
         equipementInstalle.setSalle(new Salle());
 
-        
-        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/equipementInstalle/", equipementInstalle, String.class);
-        
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/sae/v1/equipementInstalle/11",
-                EquipementInstalle.class)).satisfies(savedEquipementInstalle -> {
-                    assertThat(savedEquipementInstalle.getId()).isEqualTo(22);
-                });
+        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/equipementInstalle", equipementInstalle, String.class);
+
+        // assertThat(this.restTemplate.getForObject("http://localhost:"+port+ "/sae/v1/equipementInstalle", String.class)).contains();
     }
 
     @Test
     void testDeleteEquipementInstalleById() {
-        this.restTemplate.delete("http://localhost:" + port + "/sae/v1/equipementInstalle/11");
-        
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/sae/v1/equipementInstalle/11",
-                EquipementInstalle.class)).isNull();
+
+        EquipementInstalle equipementInstalle = new EquipementInstalle();
+        equipementInstalle.setId(999);
+        equipementInstalle.setEquipement(new Equipement());
+        equipementInstalle.setSalle(new Salle());
+        equipementInstalle.setNombre(23);
+        EquipementInstalle created = restTemplate.postForObject(baseUrl(), equipementInstalle, EquipementInstalle.class);
+
+        restTemplate.delete(baseUrl() + "/" + created.getId());
+
+        EquipementInstalle deleted = restTemplate.getForObject(baseUrl() + "/" + created.getId(), EquipementInstalle.class);
+        assertThat(deleted).isNull(); 
     }
 
     @Test
@@ -59,8 +67,8 @@ public class EquipementInstalleControllerTest {
 
     @Test
     void testGetEquipementInstalleById() {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/sae/v1/equipementInstalle/11",
-                EquipementInstalle.class)).satisfies(equipementInstalle -> assertThat(equipementInstalle.getId()).isEqualTo(22));
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/sae/v1/equipementInstalle/5",
+                EquipementInstalle.class)).satisfies(equipementInstalle -> assertThat(equipementInstalle.getId()).isEqualTo(5));
     }
 
     

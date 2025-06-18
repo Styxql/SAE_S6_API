@@ -24,7 +24,7 @@ import java.util.List;
 @Validated
 public class MarqueController {
 
-    private final MarqueService MarqueService;
+    private final MarqueService marqueService;
 
     /**
      * Cette methode est appelle lors d'une requete GET
@@ -34,7 +34,7 @@ public class MarqueController {
      */
     @GetMapping("")
     public ResponseEntity<List<Marque>> getallMarque() {
-        return ResponseEntity.ok().body(MarqueService.getAllMarques());
+        return ResponseEntity.ok().body(marqueService.getAllMarques());
     }
     
     /**
@@ -46,7 +46,7 @@ public class MarqueController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Marque> getMarqueById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok().body(MarqueService.getMarqueById(id));
+        return ResponseEntity.ok().body(marqueService.getMarqueById(id));
     }
     
     /**
@@ -58,7 +58,7 @@ public class MarqueController {
      */
     @PostMapping("")
     public ResponseEntity<Marque> saveMarque(@RequestBody Marque Marque) {
-        return ResponseEntity.ok().body(MarqueService.saveMarque(Marque));
+        return ResponseEntity.ok().body(marqueService.saveMarque(Marque));
     }
     
     /**
@@ -70,7 +70,7 @@ public class MarqueController {
      */
     @PutMapping("")
     public ResponseEntity<Marque> updateMarque(@RequestBody Marque Marque) {
-        return ResponseEntity.ok().body(MarqueService.updateMarque(Marque));
+        return ResponseEntity.ok().body(marqueService.updateMarque(Marque));
     }
 
     /**
@@ -83,7 +83,7 @@ public class MarqueController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteMarqueById(@PathVariable("id") Integer id)
     {
-       MarqueService.deleteMarqueById(id);
+       marqueService.deleteMarqueById(id);
        return ResponseEntity.ok().body("Marque supprimée avec succès");
     }
 

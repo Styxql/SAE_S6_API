@@ -14,33 +14,37 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EquipementInstalleService {
-    private final EquipementInstalleRepo EquipementInstalleRepo;
+    private final EquipementInstalleRepo equipementInstalleRepo;
 
     public List<EquipementInstalle> getAllEquipementInstalles(){
-        return EquipementInstalleRepo.findAll();
+        return equipementInstalleRepo.findAll();
     }
 
     public EquipementInstalle getEquipementInstalleById(Integer id){
-        return EquipementInstalleRepo.findById(id)
+        return equipementInstalleRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found"));
     }
 
     public EquipementInstalle saveEquipementInstalle(EquipementInstalle EquipementInstalle){
-        return EquipementInstalleRepo.save(EquipementInstalle);
+        return equipementInstalleRepo.save(EquipementInstalle);
     }
 
     public EquipementInstalle updateEquipementInstalle(EquipementInstalle EquipementInstalle){
-        if (!EquipementInstalleRepo.existsById(EquipementInstalle.getId())) {
+        if (!equipementInstalleRepo.existsById(EquipementInstalle.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"404 : Id Not Found");
         }
-        return EquipementInstalleRepo.save(EquipementInstalle);
+        return equipementInstalleRepo.save(EquipementInstalle);
     }
 
     public void deleteEquipementInstalleById(Integer id){
-        if (!EquipementInstalleRepo.existsById(id)) {
+        if (!equipementInstalleRepo.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found");
         }
-        EquipementInstalleRepo.deleteById(id);
+        equipementInstalleRepo.deleteById(id);
     }
+
+    public List<EquipementInstalle> getBySalleId(Integer salleId) {
+        return equipementInstalleRepo.findBySalleId(salleId);
+    }  
 }
 

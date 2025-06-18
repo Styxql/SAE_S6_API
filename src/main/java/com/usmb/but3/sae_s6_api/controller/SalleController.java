@@ -24,7 +24,7 @@ import java.util.List;
 @Validated
 public class SalleController {
 
-    private final SalleService SalleService;
+    private final SalleService salleService;
 
     /**
      * Cette methode est appelle lors d'une requete GET
@@ -34,7 +34,7 @@ public class SalleController {
      */
     @GetMapping("")
     public ResponseEntity<List<Salle>> getallSalle() {
-        return ResponseEntity.ok().body(SalleService.getAllSalles());
+        return ResponseEntity.ok().body(salleService.getAllSalles());
     }
     
     /**
@@ -46,7 +46,7 @@ public class SalleController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Salle> getSalleById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok().body(SalleService.getSalleById(id));
+        return ResponseEntity.ok().body(salleService.getSalleById(id));
     }
     
     /**
@@ -58,7 +58,7 @@ public class SalleController {
      */
     @PostMapping("")
     public ResponseEntity<Salle> saveSalle(@RequestBody Salle Salle) {
-        return ResponseEntity.ok().body(SalleService.saveSalle(Salle));
+        return ResponseEntity.ok().body(salleService.saveSalle(Salle));
     }
     
     /**
@@ -70,7 +70,7 @@ public class SalleController {
      */
     @PutMapping("")
     public ResponseEntity<Salle> updateSalle(@RequestBody Salle Salle) {
-        return ResponseEntity.ok().body(SalleService.updateSalle(Salle));
+        return ResponseEntity.ok().body(salleService.updateSalle(Salle));
     }
 
     /**
@@ -83,7 +83,19 @@ public class SalleController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSalleById(@PathVariable("id") Integer id)
     {
-       SalleService.deleteSalleById(id);
+       salleService.deleteSalleById(id);
        return ResponseEntity.ok().body("Salle supprimée avec succès");
+    }
+
+    /**
+     * Cette méthode est appelée lors d'une requête GET.
+     * URL : localhost:8080/sae/v1/getByBatimentId/{batimentId}
+     * But : Recupere toutes les salles dans le batiment avec l'id 
+     * @param id L'identifiant de batiment
+     * @return Message de confirmation
+     */
+    @GetMapping("/getByBatimentId/{batimentId}")
+    public ResponseEntity<List<Salle>> getSalleByBatimentId(@PathVariable("batimentId") Integer batimentId) {
+        return ResponseEntity.ok().body(salleService.getByBatimentId(batimentId));
     }
 }

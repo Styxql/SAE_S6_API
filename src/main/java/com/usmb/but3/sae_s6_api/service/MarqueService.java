@@ -14,32 +14,32 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MarqueService {
-    private final MarqueRepo MarqueRepo;
+    private final MarqueRepo marqueRepo;
 
     public List<Marque> getAllMarques(){
-        return MarqueRepo.findAll();
+        return marqueRepo.findAll();
     }
 
     public Marque getMarqueById(Integer id){
-        return MarqueRepo.findById(id)
+        return marqueRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found"));
     }
 
     public Marque saveMarque(Marque Marque){
-        return MarqueRepo.save(Marque);
+        return marqueRepo.save(Marque);
     }
 
     public Marque updateMarque(Marque Marque){
-        if (!MarqueRepo.existsById(Marque.getId())) {
+        if (!marqueRepo.existsById(Marque.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"404 : Id Not Found");
         }
-        return MarqueRepo.save(Marque);
+        return marqueRepo.save(Marque);
     }
 
     public void deleteMarqueById(Integer id){
-        if (!MarqueRepo.existsById(id)) {
+        if (!marqueRepo.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found");
         }
-        MarqueRepo.deleteById(id);
+        marqueRepo.deleteById(id);
     }
 }
