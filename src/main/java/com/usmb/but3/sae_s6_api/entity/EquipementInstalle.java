@@ -24,7 +24,7 @@ public class EquipementInstalle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "ein_nombre")
+    @Column(name = "ein_nombre", nullable = false)
     private Integer nombre;
 
     @ManyToOne
