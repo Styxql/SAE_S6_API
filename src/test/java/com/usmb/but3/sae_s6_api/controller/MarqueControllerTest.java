@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.usmb.but3.sae_s6_api.entity.Marque;
 
@@ -38,7 +40,6 @@ public class MarqueControllerTest {
     @Test
     void testUpdateMarque() {
         Marque marque = new Marque();
-        marque.setId(998);
         marque.setNom("Marque Before update");
         Marque created = restTemplate.postForObject(baseUrl(), marque, Marque.class);
 
@@ -52,27 +53,32 @@ public class MarqueControllerTest {
     @Test
     void testSaveMarque() {
         Marque marque = new Marque();
-        marque.setId(4);
         marque.setNom("New Marque");
 
-        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/marque", marque, Marque.class);
+        this.restTemplate.postForObject(baseUrl(), marque, Marque.class);
 
-        assertThat(this.restTemplate.getForObject("http://localhost:"+port+ "/sae/v1/marque", String.class)).contains("New Marque");
+        assertThat(this.restTemplate.getForObject(baseUrl(), String.class)).contains("New Marque");
 
     }
 
     @Test
     void testDeleteMarqueById() {
         Marque marque = new Marque();
-        marque.setId(101);
         marque.setNom("ToBeDeleted");
-        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/marque", marque, Marque.class);
+        this.restTemplate.postForObject(baseUrl(), marque, Marque.class);
 
-        this.restTemplate.delete("http://localhost:" + port + "/sae/v1/marque/101");
 
-        Marque[] all = this.restTemplate.getForObject("http://localhost:" + port + "/sae/v1/marque",
-        Marque[].class);
-        assertThat(all).noneMatch(u -> "ToBeDeleted".equals(u.getNom()));
+        Marque saved = this.restTemplate.postForObject(baseUrl(), marque, Marque.class);
+        Integer id = saved.getId();
+
+        assertThat(saved).isNotNull();
+        assertThat(id).isNotNull();
+
+        this.restTemplate.delete(baseUrl() + "/" + id);
+
+        ResponseEntity<Marque> response = this.restTemplate.getForEntity(baseUrl() + "/" + id, Marque.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
     }
 
 }

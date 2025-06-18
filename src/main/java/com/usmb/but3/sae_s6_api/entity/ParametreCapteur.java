@@ -17,7 +17,6 @@ public class ParametreCapteur {
 
     @Id
     @Column(name = "uni_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer uniteMesurerId;
 
     @Id
