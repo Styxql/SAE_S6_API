@@ -8,10 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import com.usmb.but3.sae_s6_api.entity.Equipement;
 import com.usmb.but3.sae_s6_api.entity.Marque;
-import com.usmb.but3.sae_s6_api.entity.Marque;
-import com.usmb.but3.sae_s6_api.entity.Salle;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class MarqueControllerTest {

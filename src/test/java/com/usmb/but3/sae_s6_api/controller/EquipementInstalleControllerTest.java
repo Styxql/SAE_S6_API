@@ -10,15 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
-
-import com.usmb.but3.sae_s6_api.entity.Batiment;
 import com.usmb.but3.sae_s6_api.entity.Equipement;
 import com.usmb.but3.sae_s6_api.entity.EquipementInstalle;
-import com.usmb.but3.sae_s6_api.entity.Marque;
 import com.usmb.but3.sae_s6_api.entity.Salle;
-import com.usmb.but3.sae_s6_api.entity.TypeEquipement;
-import com.usmb.but3.sae_s6_api.entity.TypeSalle;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class EquipementInstalleControllerTest {
