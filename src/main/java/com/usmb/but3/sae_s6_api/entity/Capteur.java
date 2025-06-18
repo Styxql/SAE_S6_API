@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -17,6 +19,7 @@ public class Capteur {
 
     @Id
     @Column(name = "cap_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "cap_nom", length = 100, nullable = false)
@@ -45,6 +48,7 @@ public class Capteur {
     private Marque marque;
 
     @OneToMany(mappedBy = "capteur")
+    @JsonManagedReference
     private List<ParametreCapteur> parametreCapteur;
 
 }

@@ -14,6 +14,7 @@ public class Batiment {
 
     @Id
     @Column(name = "bat_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "bat_nom", length = 100, nullable = false)

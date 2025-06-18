@@ -14,6 +14,7 @@ public class CapteurInstalle {
 
     @Id
     @Column(name = "cin_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "cin_nombre")
