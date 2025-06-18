@@ -25,13 +25,13 @@ public class ParametreCapteur {
     private Integer capteurId;
 
     @Column(name = "acu_plagemin")
-    private Integer acuPlagemin;
+    private Integer plageMin;
 
     @Column(name = "acu_plagemax")
-    private Integer acuPlagemax;
+    private Integer plageMax;
 
     @Column(name = "acu_precision")
-    private Integer acuPrecision;
+    private Integer precision;
 
     @ManyToOne
     @JoinColumn(name = "cap_id", insertable = false, updatable = false)
