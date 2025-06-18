@@ -87,8 +87,15 @@ public class SalleController {
        return ResponseEntity.ok().body("Salle supprimée avec succès");
     }
 
+    /**
+     * Cette méthode est appelée lors d'une requête GET.
+     * URL : localhost:8080/sae/v1/getByBatimentId/{batimentId}
+     * But : Recupere toutes les salles dans le batiment avec l'id 
+     * @param id L'identifiant de batiment
+     * @return Message de confirmation
+     */
     @GetMapping("/getByBatimentId/{batimentId}")
-    public ResponseEntity<List<Salle>> getLivresByAuteurId(@PathVariable("batimentId") Integer batimentId) {
+    public ResponseEntity<List<Salle>> getSalleByBatimentId(@PathVariable("batimentId") Integer batimentId) {
         return ResponseEntity.ok().body(salleService.getByBatimentId(batimentId));
     }
 }

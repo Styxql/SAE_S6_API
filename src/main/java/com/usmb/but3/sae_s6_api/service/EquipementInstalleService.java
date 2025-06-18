@@ -42,5 +42,9 @@ public class EquipementInstalleService {
         }
         equipementInstalleRepo.deleteById(id);
     }
+
+    public List<EquipementInstalle> getBySalleId(Integer salleId) {
+        return equipementInstalleRepo.findBySalleId(salleId);
+    }  
 }
 

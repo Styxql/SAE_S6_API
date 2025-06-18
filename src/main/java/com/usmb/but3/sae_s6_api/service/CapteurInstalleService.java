@@ -42,4 +42,8 @@ public class CapteurInstalleService {
         }
         capteurInstalleRepo.deleteById(id);
     }
+
+    public List<CapteurInstalle> getBySalleId(Integer salleId) {
+        return capteurInstalleRepo.findBySalleId(salleId);
+    }  
 }
