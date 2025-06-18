@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class TypeEquipementService {
     private final TypeEquipementRepo typeEquipementRepo;
 
-    public List<TypeEquipement> getAllTypeEquipement(){
+    public List<TypeEquipement> getAllTypeEquipements(){
         return typeEquipementRepo.findAll();
     }
 
@@ -36,7 +36,7 @@ public class TypeEquipementService {
         return typeEquipementRepo.save(typeEquipement);
     }
 
-    public void deleteTypeEquipementtById(Integer id){
+    public void deleteTypeEquipementById(Integer id){
         if (!typeEquipementRepo.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found");
         }
