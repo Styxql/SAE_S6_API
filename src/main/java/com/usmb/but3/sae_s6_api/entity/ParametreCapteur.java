@@ -1,7 +1,6 @@
 package com.usmb.but3.sae_s6_api.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,6 +17,7 @@ public class ParametreCapteur {
 
     @Id
     @Column(name = "uni_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer uniteMesurerId;
 
     @Id
@@ -40,6 +40,5 @@ public class ParametreCapteur {
 
     @ManyToOne
     @JoinColumn(name = "uni_id", insertable = false, updatable = false)
-    @JsonManagedReference
     private UniteMesurer uniteMesurer;
 }

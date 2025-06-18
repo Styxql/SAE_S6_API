@@ -13,9 +13,6 @@ import com.usmb.but3.sae_s6_api.entity.Equipement;
 import com.usmb.but3.sae_s6_api.entity.EquipementInstalle;
 import com.usmb.but3.sae_s6_api.entity.Marque;
 import com.usmb.but3.sae_s6_api.entity.Salle;
-import com.usmb.but3.sae_s6_api.entity.TypeEquipement;
-import com.usmb.but3.sae_s6_api.entity.EquipementInstalle;
-import com.usmb.but3.sae_s6_api.entity.UniteMesurer;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class EquipementInstalleControllerTest {

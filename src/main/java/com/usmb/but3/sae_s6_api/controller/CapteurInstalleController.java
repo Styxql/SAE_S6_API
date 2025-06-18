@@ -87,4 +87,15 @@ public class CapteurInstalleController {
        return ResponseEntity.ok().body("CapteurInstalle supprimé avec succès");
     }
 
+    /**
+     * Cette méthode est appelée lors d'une requête GET.
+     * URL : localhost:8080/sae/v1/capteurInstalle/getByBatimentId/{batimentId}
+     * But : Recupere toutes les salles dans le batiment avec l'id 
+     * @param id L'identifiant de batiment
+     * @return Message de confirmation
+     */
+    @GetMapping("/getBySalleId/{salleId}")
+    public ResponseEntity<List<CapteurInstalle>> getCapteurInstalleBySalleId(@PathVariable("salleId") Integer salleId) {
+        return ResponseEntity.ok().body(capteurInstalleService.getBySalleId(salleId));
+    }
 }

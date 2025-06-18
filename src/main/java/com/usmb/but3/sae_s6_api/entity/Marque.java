@@ -15,6 +15,7 @@ public class Marque {
 
     @Id
     @Column(name = "mar_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "mar_nom", length = 100, nullable = false)

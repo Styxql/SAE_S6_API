@@ -16,6 +16,7 @@ public class Salle {
 
     @Id
     @Column(name = "sal_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "sal_nom", length = 100, nullable = false)

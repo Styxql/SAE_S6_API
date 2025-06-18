@@ -15,6 +15,7 @@ public class UniteMesurer {
 
     @Id
     @Column(name = "uni_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "uni_nom", length = 100, nullable = false)
