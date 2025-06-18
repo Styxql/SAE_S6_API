@@ -11,7 +11,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.usmb.but3.sae_s6_api.entity.Equipement;
 import com.usmb.but3.sae_s6_api.entity.EquipementInstalle;
+import com.usmb.but3.sae_s6_api.entity.Marque;
 import com.usmb.but3.sae_s6_api.entity.Salle;
+import com.usmb.but3.sae_s6_api.entity.TypeEquipement;
+import com.usmb.but3.sae_s6_api.entity.EquipementInstalle;
 import com.usmb.but3.sae_s6_api.entity.UniteMesurer;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -35,9 +38,9 @@ public class EquipementInstalleControllerTest {
         equipementInstalle.setEquipement(new Equipement());
         equipementInstalle.setSalle(new Salle());
 
-        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/equipementInstalle", equipementInstalle, String.class);
+        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/equipementInstalle", equipementInstalle, EquipementInstalle.class);
 
-        // assertThat(this.restTemplate.getForObject("http://localhost:"+port+ "/sae/v1/equipementInstalle", String.class)).contains();
+        // assertThat(this.restTemplate.getForObject("http://localhost:"+port+ "/sae/v1/equipementInstalle", EquipementInstalle.class)).contains();
     }
 
     @Test
@@ -76,6 +79,18 @@ public class EquipementInstalleControllerTest {
 
     @Test
     void testUpdateEquipementInstalle() {
+        EquipementInstalle equipementInstalle = new EquipementInstalle();
+        equipementInstalle.setId(998);
+        equipementInstalle.setEquipement(new Equipement());
+        equipementInstalle.setSalle(new Salle());
+        equipementInstalle.setNombre(23);
+        EquipementInstalle created = restTemplate.postForObject(baseUrl(), equipementInstalle, EquipementInstalle.class);
+
+        equipementInstalle.setId(999);
+        restTemplate.put(baseUrl(), created);
+
+        EquipementInstalle updated = restTemplate.getForObject(baseUrl() + "/" + created.getId(), EquipementInstalle.class);
+        assertThat(updated.getId()).isEqualTo(999);
 
     }
 }
