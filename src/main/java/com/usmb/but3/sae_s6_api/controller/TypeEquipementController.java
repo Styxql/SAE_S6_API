@@ -34,7 +34,7 @@ public class TypeEquipementController {
      */
     @GetMapping("")
     public ResponseEntity<List<TypeEquipement>> getAllTypeEquipement() {
-        return ResponseEntity.ok().body(typeEquipementService.getAllTypeEquipement());
+        return ResponseEntity.ok().body(typeEquipementService.getAllTypeEquipements());
     }
     
     /**
@@ -83,7 +83,7 @@ public class TypeEquipementController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTypeEquipementtById(@PathVariable("id") Integer id)
     {
-        typeEquipementService.deleteTypeEquipementtById(id);
+        typeEquipementService.deleteTypeEquipementById(id);
        return ResponseEntity.ok().body("TypeEquipement supprimé avec succès");
     }
 
