@@ -17,7 +17,7 @@ public class CapteurInstalle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "cin_nombre")
+    @Column(name = "cin_nombre", nullable = false)
     private Integer nombre;
 
     @ManyToOne
