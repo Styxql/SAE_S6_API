@@ -4,13 +4,14 @@ import com.usmb.but3.sae_s6_api.entity.UniteMesurer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UniteMesurerControllerTest {
 
     @LocalServerPort
@@ -19,65 +20,65 @@ public class UniteMesurerControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Test
-    void testGetAllUniteMesurer() {
-        assertThat(
-            this.restTemplate.getForObject("http://localhost:" + port + "/sae/v1/uniteMesurer", UniteMesurer[].class)
-        ).satisfies(unites -> {
-            assertThat(unites).isNotEmpty();
-            assertThat(unites[0].getNom()).isNotBlank();
-        });
-    }
-
-    @Test
-    void testGetUniteMesurerById() {
-        UniteMesurer unite = this.restTemplate.getForObject("http://localhost:" + port + "/sae/v1/uniteMesurer/1", UniteMesurer.class);
-        assertThat(unite).isNotNull();
-        assertThat(unite.getNom()).isEqualTo("Luminosité"); 
+    private String getURL() {
+        return "http://localhost:" + port + "/sae/v1/uniteMesurer";
     }
 
     @Test
     void testSaveUniteMesurer() {
         UniteMesurer unite = new UniteMesurer();
-        unite.setId(4);
-        unite.setNom("TestUnite");
-        unite.setSymbole("testsymbole");
+        unite.setNom("UniteMesurer Post");
+        unite.setSymbole("m");
 
-        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/uniteMesurer", unite, String.class);
+        UniteMesurer saved = this.restTemplate.postForObject(getURL(), unite, UniteMesurer.class);
 
-        assertThat(this.restTemplate.getForObject("http://localhost:"+port+ "/sae/v1/uniteMesurer", String.class)).contains("TestUnite");
+        assertThat(saved.getNom()).isEqualTo("UniteMesurer Post");
+        assertThat(saved.getSymbole()).isEqualTo("m");
+    }
 
+    @Test
+    void testGetAllUniteMesurer() {
+        UniteMesurer[] unites = this.restTemplate.getForObject(getURL(), UniteMesurer[].class);
+        assertThat(unites).isNotEmpty();
+    }
+
+    @Test
+    void testGetUniteMesurerById() {
+    assertThat(
+            this.restTemplate.getForObject(getURL() + "/1", UniteMesurer.class)
+            ).satisfies(
+                uniteMesurer -> assertThat(uniteMesurer.getId()).isEqualTo(1)
+                );
     }
 
     @Test
     void testUpdateUniteMesurer() {
-        // Créer l'entité initiale
         UniteMesurer unite = new UniteMesurer();
-        unite.setId(100);
-        unite.setNom("AvantUpdate");
-        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/uniteMesurer", unite, UniteMesurer.class);
+        unite.setNom("UniteMesurer Put");
+        unite.setSymbole("m");
 
-        // Modifier et faire PUT
-        unite.setNom("ApresUpdate");
-        this.restTemplate.put("http://localhost:" + port + "/sae/v1/uniteMesurer", unite);
+        UniteMesurer saved = this.restTemplate.postForObject(getURL(), unite, UniteMesurer.class);
+        saved.setNom("UniteMesurer Put update");
 
-        UniteMesurer updated = this.restTemplate.getForObject("http://localhost:" + port + "/sae/v1/uniteMesurer/100", UniteMesurer.class);
-        assertThat(updated.getNom()).isEqualTo("ApresUpdate");
+        this.restTemplate.put(getURL(), saved);
+
+        UniteMesurer updated = this.restTemplate.getForObject(getURL() + "/" + saved.getId(), UniteMesurer.class);
+        assertThat(updated.getNom()).isEqualTo("UniteMesurer Put update");
+        assertThat(updated.getSymbole()).isEqualTo("m");
     }
 
     @Test
     void testDeleteUniteMesurerById() {
-        // Créer une unité à supprimer
         UniteMesurer unite = new UniteMesurer();
-        unite.setId(101);
-        unite.setNom("ToBeDeleted");
-        this.restTemplate.postForObject("http://localhost:" + port + "/sae/v1/uniteMesurer", unite, UniteMesurer.class);
+        unite.setNom("UniteMesurer delete");
+        unite.setSymbole("tmp");
 
-        // Supprimer
-        this.restTemplate.delete("http://localhost:" + port + "/sae/v1/uniteMesurer/101");
+        UniteMesurer saved = this.restTemplate.postForObject(getURL(), unite, UniteMesurer.class);
+        Integer id = saved.getId();
 
-        // Vérifier que l'entité est absente
-        UniteMesurer[] all = this.restTemplate.getForObject("http://localhost:" + port + "/sae/v1/uniteMesurer", UniteMesurer[].class);
-        assertThat(all).noneMatch(u -> "ToBeDeleted".equals(u.getNom()));
+        this.restTemplate.delete(getURL() + "/" + id);
+
+        ResponseEntity<UniteMesurer> response = this.restTemplate.getForEntity(getURL() + "/" + id, UniteMesurer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

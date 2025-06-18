@@ -6,6 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.usmb.but3.sae_s6_api.entity.Batiment;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,8 +28,22 @@ public class BatimentControllerTest {
 
     @Test
     void testDeleteBatimentById() {
+        Batiment batiment = new Batiment();
+        batiment.setNom("ToDelete");
+        batiment.setUrlImg("https://img.todelete.fr");
 
+        Batiment savedBatiment = this.restTemplate.postForObject(getURL(), batiment, Batiment.class);
+        Integer id = savedBatiment.getId();
+
+        assertThat(savedBatiment).isNotNull();
+        assertThat(id).isNotNull();
+
+        this.restTemplate.delete(getURL() + "/" + id);
+
+        ResponseEntity<Batiment> response = this.restTemplate.getForEntity(getURL() + "/" + id, Batiment.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+    
 
     @Test
     void testGetBatimentById() {
