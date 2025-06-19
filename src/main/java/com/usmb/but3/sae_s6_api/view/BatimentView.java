@@ -13,6 +13,8 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.router.Menu;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.card.Card;
@@ -21,11 +23,13 @@ import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
-
+import com.vaadin.flow.component.notification.NotificationVariant;
 
 import java.util.List;
 
 @Route("batiment")
+@PageTitle("Batiment")
+@Menu(title = "Batiment", icon = "vaadin:building") 
 public class BatimentView extends VerticalLayout {
     private final BatimentService batimentService;
     private final SalleService salleService;
@@ -34,42 +38,23 @@ public BatimentView(BatimentService batimentService, SalleService salleService) 
     this.batimentService = batimentService;
     this.salleService = salleService;
 
-    setPadding(false);
-    setSpacing(true);
-    setSizeFull();
-
-    getStyle()
-        .set("padding", "50px");
-
     HorizontalLayout header = new HorizontalLayout();
-    header.setWidthFull();
+    header.setWidthFull(); // N'a pas par défault 100% width
     header.setJustifyContentMode(JustifyContentMode.BETWEEN);
     header.setAlignItems(Alignment.CENTER);
 
     H3 title = new H3("Liste des bâtiments");
 
     Button addButton = new Button("Ajouter un bâtiment", VaadinIcon.PLUS.create());
-    addButton.getStyle()
-        .set("background-color", "rgba(89, 147, 255, 0.15)")
-        .set("border-radius", "8px")
-        .set("padding", "8px 16px")
-        .set("font-weight", "500")
-        .set("color", "#2c3e50")
-        .set("border", "none");
 
     header.add(title, addButton);
-    add(header);
+   
     Div cardLayout = new Div();
     cardLayout.getStyle()
         .set("display", "grid")
         .set("grid-template-columns", "repeat(3, 1fr)")
         .set("gap", "20px")
         .set("padding", "10px");
-
-    add(cardLayout);
-
-    refreshBatimentCards(cardLayout);
-
 
     Dialog dialog = new Dialog();
     dialog.setHeaderTitle("Nouveau bâtiment");
@@ -86,7 +71,19 @@ public BatimentView(BatimentService batimentService, SalleService salleService) 
         String url = imageField.getValue().trim();
 
         if (nom.isEmpty()) {
-            Notification.show("Le nom est obligatoire", 3000, Notification.Position.MIDDLE);
+            Notification notification = new Notification();
+            notification.setDuration(3000);
+            notification.setPosition(Notification.Position.BOTTOM_END);
+
+            notification.addThemeVariants(NotificationVariant.LUMO_WARNING);
+            Span text = new Span("Le nom est obligatoire");
+            Icon icon = VaadinIcon.WARNING.create();
+            
+            HorizontalLayout notificationLayout = new HorizontalLayout(icon, text);
+            notificationLayout.setAlignItems(Alignment.CENTER);
+
+            notification.add(notificationLayout);
+            notification.open();
             return;
         }
 
@@ -110,7 +107,9 @@ public BatimentView(BatimentService batimentService, SalleService salleService) 
         dialog.open();
     });
 
-    add(dialog);
+    add(dialog, header, cardLayout);
+
+    refreshBatimentCards(cardLayout);
 }
 
 private Card createBatimentCard(Batiment bat) {
@@ -184,7 +183,7 @@ private Card createBatimentCard(Batiment bat) {
         TextField nomField = new TextField("Nom");
         nomField.setValue(bat.getNom());
 
-        TextField imageField = new TextField("URL de l’image");
+        TextField imageField = new TextField("URL de l'image");
         imageField.setValue(bat.getUrlImg() != null ? bat.getUrlImg() : "");
 
         FormLayout formLayout = new FormLayout();
