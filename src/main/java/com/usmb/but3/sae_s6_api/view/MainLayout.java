@@ -1,7 +1,5 @@
 package com.usmb.but3.sae_s6_api.view;
 
-import org.intellij.lang.annotations.JdkConstants.CursorType;
-
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.html.Div;
@@ -23,10 +21,6 @@ import com.vaadin.flow.theme.lumo.LumoUtility.IconSize;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import com.vaadin.flow.theme.lumo.LumoUtility.Padding;
 import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
-import static com.vaadin.flow.theme.lumo.LumoUtility.*;
-
-import java.awt.Cursor;
-
 
 
 @Layout

@@ -13,6 +13,8 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.router.Menu;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.card.Card;
@@ -26,6 +28,8 @@ import com.vaadin.flow.component.notification.Notification;
 import java.util.List;
 
 @Route("batiment")
+@PageTitle("Batiment")
+@Menu(title = "Batiment", icon = "vaadin:grid-big-o") 
 public class BatimentView extends VerticalLayout {
     private final BatimentService batimentService;
     private final SalleService salleService;

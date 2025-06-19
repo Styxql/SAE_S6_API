@@ -1,7 +1,5 @@
 package com.usmb.but3.sae_s6_api.view;
 
-import java.util.List;
-
 import com.usmb.but3.sae_s6_api.entity.TypeSalle;
 import com.usmb.but3.sae_s6_api.service.TypeSalleService;
 import com.vaadin.flow.component.grid.Grid;
