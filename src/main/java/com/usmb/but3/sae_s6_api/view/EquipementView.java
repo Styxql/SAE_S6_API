@@ -2,78 +2,99 @@ package com.usmb.but3.sae_s6_api.view;
 
 import com.usmb.but3.sae_s6_api.entity.Equipement;
 import com.usmb.but3.sae_s6_api.service.EquipementService;
+import com.usmb.but3.sae_s6_api.service.EquipementInstalleService;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import org.springframework.util.StringUtils;
-
-@Route(value = "equipement")
+@Route("equipement")
 @PageTitle("Equipements")
-@Menu(title = "Equipements", order = 0, icon = "vaadin:clipboard-check")
 public class EquipementView extends VerticalLayout {
-	private final EquipementService equipementService;
 
-	final Grid<Equipement> grid;
+    private final EquipementService equipementService;
+    private final EquipementInstalleService equipementInstalleService;
 
-	final TextField filter;
+    private final Grid<Equipement> grid = new Grid<>(Equipement.class);
+    private final TextField filter = new TextField();
+    private final Button addNewBtn = new Button("Ajouter un équipement", VaadinIcon.PLUS.create());
 
-	private final Button addNewBtn;
+    public EquipementView(EquipementService equipementService, EquipementInstalleService equipementInstalleService) {
+        this.equipementService = equipementService;
+        this.equipementInstalleService = equipementInstalleService;
 
-	public EquipementView(EquipementService equipementService, EquipementEditor editor) {
-		this.equipementService = equipementService;
+        HorizontalLayout actions = new HorizontalLayout(filter, addNewBtn);
+        add(actions, grid);
 
-		this.grid = new Grid<>(Equipement.class);
-		this.filter = new TextField();
-		this.addNewBtn = new Button("Ajouter un équipement", VaadinIcon.PLUS.create());
+        grid.setHeight("400px");
+        grid.setColumns("id", "nom", "hauteur", "longueur", "largeur");
+        grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
 
-		HorizontalLayout actions = new HorizontalLayout(filter, addNewBtn);
-		add(actions, grid,editor);
+        grid.addComponentColumn(equipement -> {
+            Button editButton = new Button(new Icon(VaadinIcon.EDIT));
+            editButton.getElement().setProperty("title", "Modifier");
 
-		grid.setHeight("300px");
-		grid.setColumns("id", "nom", "hauteur", "longueur", "largeur", "urlImg");
-		grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
-		filter.setPlaceholder("Filtrer par type");
+            Button deleteButton = new Button(new Icon(VaadinIcon.TRASH));
+            deleteButton.addThemeName("error");
+            deleteButton.getElement().setProperty("title", "Supprimer");
 
-		filter.setValueChangeMode(ValueChangeMode.LAZY);
-		filter.addValueChangeListener(e -> listEquipement(e.getValue()));
+            editButton.addClickListener(e -> openEditDialog(new EquipementEditor(equipementService, equipementInstalleService), equipement));
 
-		grid.asSingleSelect().addValueChangeListener(e -> {
-			editor.edit(e.getValue());
-		});
-			// Instantiate and edit new Customer the new button is clicked
-			addNewBtn.addClickListener(e -> editor.edit(new Equipement(null,"",null,null,null,null,null,null)));
-	
-			// Listen changes made by the editor, refresh data from backend
-			editor.setChangeHandler(() -> {
-				editor.setVisible(false);
-				listEquipement(filter.getValue());
-			});
-	
-			// Initialize listing
-			listEquipement(null);
+            deleteButton.addClickListener(click -> {
+                Dialog confirmDialog = new Dialog();
+                confirmDialog.add(new Span("Confirmer la suppression de l’équipement \"" + equipement.getNom() + "\" ?"));
+                Button confirmBtn = new Button("Confirmer", ev -> {
+                    equipementService.deleteEquipementById(equipement.getId());
+                    confirmDialog.close();
+                    listEquipement(filter.getValue());
+                    Notification.show("Équipement supprimé", 3000, Notification.Position.MIDDLE);
+                });
+                Button cancelBtn = new Button("Annuler", ev -> confirmDialog.close());
+                confirmDialog.add(new HorizontalLayout(confirmBtn, cancelBtn));
+                confirmDialog.open();
+            });
 
-		addNewBtn.addClickListener(e -> editor.edit(new Equipement(null,"",null,null,null,null,null,null)));
-		editor.setChangeHandler(() -> {
-		editor.setVisible(false);
-		listEquipement(filter.getValue());
-		});
+            return new HorizontalLayout(editButton, deleteButton);
+        }).setHeader("Actions").setFlexGrow(0).setWidth("150px");
 
-		// Initialize listing
-		listEquipement(null);
-	}
+        filter.setPlaceholder("Filtrer par nom");
+        filter.setValueChangeMode(ValueChangeMode.LAZY);
+        filter.addValueChangeListener(e -> listEquipement(e.getValue()));
 
-	void listEquipement(String filterText) {
-		
-		grid.setItems(equipementService.getAllEquipements());
-		
-	}
+        addNewBtn.addClickListener(e ->
+                openEditDialog(new EquipementEditor(equipementService, equipementInstalleService), new Equipement())
+        );
 
+        listEquipement(null);
+    }
+
+    private void openEditDialog(EquipementEditor editor, Equipement equipement) {
+        Dialog dialog = new Dialog(editor);
+        editor.edit(equipement);
+        editor.setChangeHandler(() -> {
+            dialog.close();
+            listEquipement(filter.getValue());
+            Notification.show("Équipement enregistré", 3000, Notification.Position.BOTTOM_END);
+        });
+        dialog.open();
+    }
+
+    void listEquipement(String filterText) {
+        if (filterText == null || filterText.isEmpty()) {
+            grid.setItems(equipementService.getAllEquipements());
+        } else {
+            grid.setItems(equipementService.getAllEquipements().stream()
+                    .filter(e -> e.getNom() != null && e.getNom().toLowerCase().contains(filterText.toLowerCase()))
+                    .toList());
+        }
+    }
 }
