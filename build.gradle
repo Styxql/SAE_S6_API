@@ -32,7 +32,7 @@ repositories {
 }
 
 ext {
-	vaadinVersion = '24.7.6' // MS added
+	vaadinVersion = '24.8.0' // MS added
 }
 
 
