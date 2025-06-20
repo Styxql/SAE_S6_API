@@ -33,6 +33,13 @@ public class SalleView extends VerticalLayout implements BeforeEnterObserver {
     private final BatimentService batimentService;
     private final SalleService salleService;
 
+    private Dialog dialogAjoutSalle;
+    private TextField nomField;
+    private TextField imageField;
+    private TextField capaciteField;
+    private Integer batimentIdCourant;
+    private Div grid;
+
     public SalleView(BatimentService batimentService, SalleService salleService) {
         this.batimentService = batimentService;
         this.salleService = salleService;
@@ -40,51 +47,115 @@ public class SalleView extends VerticalLayout implements BeforeEnterObserver {
         setPadding(true);
         setSpacing(true);
         setSizeFull();
+
+        getStyle().set("padding", "50px");
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         String idParam = event.getRouteParameters().get("id").orElse(null);
-        if (idParam == null) {
-            Notification.show("Aucun ID de bâtiment fourni");
-            return;
-        }
+        Integer id = Integer.parseInt(idParam);
+        batimentIdCourant = id;
 
-        try {
-            Integer id = Integer.parseInt(idParam);
-            Batiment bat = batimentService.getBatimentById(id);
-            if (bat == null) {
-                Notification.show("Bâtiment introuvable");
+        Batiment bat = batimentService.getBatimentById(id);
+
+        HorizontalLayout header = new HorizontalLayout();
+        header.setWidthFull();
+        header.setJustifyContentMode(JustifyContentMode.BETWEEN);
+        header.setAlignItems(Alignment.CENTER);
+
+        H3 title = new H3("Salles du bâtiment : " + bat.getNom());
+        Button addButton = new Button("Ajouter une salle", VaadinIcon.PLUS.create());
+        addButton.getStyle()
+            .set("background-color", "rgba(89, 147, 255, 0.15)")
+            .set("border-radius", "8px")
+            .set("padding", "8px 16px")
+            .set("font-weight", "500")
+            .set("color", "#2c3e50")
+            .set("border", "none");
+
+        addButton.addClickListener(e -> {
+            nomField.clear();
+            imageField.clear();
+            capaciteField.clear();
+            dialogAjoutSalle.open();
+        });
+
+        header.add(title, addButton);
+        add(header);
+
+        setupAjoutSalleDialog();
+        afficherSalles(batimentIdCourant);
+    }
+
+    private void setupAjoutSalleDialog() {
+        dialogAjoutSalle = new Dialog();
+        dialogAjoutSalle.setHeaderTitle("Ajouter une nouvelle salle");
+
+        nomField = new TextField("Nom");
+        imageField = new TextField("URL de l’image");
+        capaciteField = new TextField("Capacité");
+
+        FormLayout formLayout = new FormLayout(nomField, imageField, capaciteField);
+        dialogAjoutSalle.add(formLayout);
+
+        Button saveButton = new Button("Enregistrer", event -> {
+            String nom = nomField.getValue().trim();
+            String url = imageField.getValue().trim();
+            String capaciteStr = capaciteField.getValue().trim();
+
+            if (nom.isEmpty()) {
+                Notification.show("Le nom est obligatoire", 3000, Notification.Position.MIDDLE);
                 return;
             }
 
-            add(new H3("Salles du bâtiment : " + bat.getNom()));
-            afficherSalles(id);
+            Salle newSalle = new Salle();
+            newSalle.setNom(nom);
+            newSalle.setUrlImg(url.isEmpty() ? null : url);
+            newSalle.setId(batimentIdCourant);
+            try {  
+                newSalle.setCapacite(Integer.parseInt(capaciteStr));
+            } catch (NumberFormatException ex) {
+                newSalle.setCapacite(null);
+            }
 
-        } catch (NumberFormatException e) {
-            Notification.show("ID invalide : " + idParam);
-        }
+            salleService.saveSalle(newSalle);
+            Notification.show("Salle ajoutée avec succès");
+            dialogAjoutSalle.close();
+            refreshSalles();
+        });
+
+        Button cancelButton = new Button("Annuler", e -> dialogAjoutSalle.close());
+        dialogAjoutSalle.getFooter().add(cancelButton, saveButton);
+        add(dialogAjoutSalle);
     }
 
     private void afficherSalles(Integer batimentId) {
-        List<Salle> salles = salleService.getByBatimentId(batimentId);
-        if (salles.isEmpty()) {
-            add(new Span("Aucune salle dans ce bâtiment."));
-            return;
+        if (grid != null) {
+            remove(grid);
         }
 
-        Div grid = new Div();
+        grid = new Div();
         grid.getStyle()
             .set("display", "grid")
             .set("grid-template-columns", "repeat(3, 1fr)")
             .set("gap", "20px")
             .set("padding", "10px");
 
-        for (Salle salle : salles) {
-            grid.add(createSalleCard(salle));
+        List<Salle> salles = salleService.getByBatimentId(batimentId);
+        if (salles.isEmpty()) {
+            grid.add(new Span("Aucune salle dans ce bâtiment."));
+        } else {
+            for (Salle salle : salles) {
+                grid.add(createSalleCard(salle));
+            }
         }
 
         add(grid);
+    }
+
+    private void refreshSalles() {
+        afficherSalles(batimentIdCourant);
     }
 
     private Card createSalleCard(Salle salle) {
@@ -120,7 +191,7 @@ public class SalleView extends VerticalLayout implements BeforeEnterObserver {
         headerLayout.setAlignItems(Alignment.CENTER);
         headerLayout.getStyle().set("padding", "8px 12px");
 
-        Icon roomIcon = VaadinIcon.ARCHIVES.create(); // Icone de salle
+        Icon roomIcon = VaadinIcon.ARCHIVES.create();
         roomIcon.setSize("20px");
 
         Span nom = new Span(salle.getNom());
