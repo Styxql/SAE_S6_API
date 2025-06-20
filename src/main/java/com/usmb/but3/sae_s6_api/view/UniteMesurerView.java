@@ -1,8 +1,6 @@
 package com.usmb.but3.sae_s6_api.view;
 
-import com.usmb.but3.sae_s6_api.entity.TypeSalle;
 import com.usmb.but3.sae_s6_api.entity.UniteMesurer;
-import com.usmb.but3.sae_s6_api.service.TypeSalleService;
 import com.usmb.but3.sae_s6_api.service.UniteMesurerService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
