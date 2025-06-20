@@ -8,4 +8,6 @@ import com.usmb.but3.sae_s6_api.entity.CapteurInstalle;
 
 public interface CapteurInstalleRepo extends JpaRepository<CapteurInstalle, Integer> {
     List<CapteurInstalle> findBySalleId(Integer salleId);
+    List<CapteurInstalle> findByCapteurInstalles(Integer equipementId);
+
 }

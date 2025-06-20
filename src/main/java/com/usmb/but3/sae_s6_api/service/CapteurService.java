@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.usmb.but3.sae_s6_api.entity.Capteur;
+import com.usmb.but3.sae_s6_api.entity.CapteurInstalle;
+import com.usmb.but3.sae_s6_api.repository.CapteurInstalleRepo;
 import com.usmb.but3.sae_s6_api.repository.CapteurRepo;
 
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CapteurService {
     private final CapteurRepo capteurRepo;
+    private final CapteurInstalleRepo capteurInstalleRepo;
 
     public List<Capteur> getAllCapteurs(){
         return capteurRepo.findAll();
@@ -37,8 +40,11 @@ public class CapteurService {
     }
 
     public void deleteCapteurById(Integer id){
+    List<CapteurInstalle> installs = capteurInstalleRepo.findByCapteurInstalles(id);
+        capteurInstalleRepo.deleteAll(installs);
+
         if (!capteurRepo.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Id Not Found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Equipement non trouvé");
         }
         capteurRepo.deleteById(id);
     }
