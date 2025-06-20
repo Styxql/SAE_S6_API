@@ -31,6 +31,9 @@ public class TypeSalleView extends VerticalLayout {
     final Grid<TypeSalle> grid;
 
     public TypeSalleView(TypeSalleService typeSalleService) {
+
+        this.typeSalleService = typeSalleService;
+
         HorizontalLayout header = new HorizontalLayout();
         header.setWidthFull(); // N'a pas par défault 100% width
         header.setJustifyContentMode(JustifyContentMode.BETWEEN);
@@ -41,8 +44,6 @@ public class TypeSalleView extends VerticalLayout {
         Button addButton = new Button("Ajouter un Type Salle", VaadinIcon.PLUS.create());
 
         header.add(title, addButton);
-
-        this.typeSalleService = typeSalleService;
 
         this.grid = new Grid<>(TypeSalle.class);
 
