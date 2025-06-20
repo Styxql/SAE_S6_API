@@ -29,7 +29,7 @@ import java.util.List;
 
 @Route("batiment")
 @PageTitle("Batiment")
-@Menu(title = "Batiment", icon = "vaadin:building") 
+@Menu(title = "Batiment", order = 0, icon = "vaadin:building") 
 public class BatimentView extends VerticalLayout {
     private final BatimentService batimentService;
     private final SalleService salleService;

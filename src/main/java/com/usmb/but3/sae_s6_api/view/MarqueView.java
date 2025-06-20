@@ -1,7 +1,7 @@
 package com.usmb.but3.sae_s6_api.view;
 
-import com.usmb.but3.sae_s6_api.entity.TypeSalle;
-import com.usmb.but3.sae_s6_api.service.TypeSalleService;
+import com.usmb.but3.sae_s6_api.entity.Marque;
+import com.usmb.but3.sae_s6_api.service.MarqueService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -21,16 +21,16 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@Route("typesalle")
-@PageTitle("Type Salle")
-@Menu(title = "TypeSalle", order = 0, icon = "vaadin:grid-big-o")
-public class TypeSalleView extends VerticalLayout {
+@Route("marque")
+@PageTitle("Marque")
+@Menu(title = "Marque", order = 0, icon = "vaadin:archive")
+public class MarqueView extends VerticalLayout {
 
-    private final TypeSalleService typeSalleService;
+    private final MarqueService marqueService;
 
-    final Grid<TypeSalle> grid;
+    final Grid<Marque> grid;
 
-    public TypeSalleView(TypeSalleService typeSalleService) {
+    public MarqueView(MarqueService marqueService) {
         HorizontalLayout header = new HorizontalLayout();
         header.setWidthFull(); // N'a pas par défault 100% width
         header.setJustifyContentMode(JustifyContentMode.BETWEEN);
@@ -42,34 +42,34 @@ public class TypeSalleView extends VerticalLayout {
 
         header.add(title, addButton);
 
-        this.typeSalleService = typeSalleService;
+        this.marqueService = marqueService;
 
-        this.grid = new Grid<>(TypeSalle.class);
+        this.grid = new Grid<>(Marque.class);
 
         grid.setColumns("id", "nom");
 
         
-        grid.addColumn(new ComponentRenderer<>(typesalle -> {
+        grid.addColumn(new ComponentRenderer<>(marque -> {
             Icon editIcon = VaadinIcon.EDIT.create();
             Icon deleteIcon = VaadinIcon.TRASH.create();
             
             /*
              * Dialog + Form d'édition
              */
-            Dialog dialogEditTypeSalle = new Dialog();
-            dialogEditTypeSalle.setHeaderTitle("Modifier le Type Salle");
+            Dialog dialogEditMarque = new Dialog();
+            dialogEditMarque.setHeaderTitle("Modifier le Type Salle");
 
             // Fields
-            TextField nomFieldEditTypeSalle = new TextField("Nom");
-            nomFieldEditTypeSalle.setValue(typesalle.getNom());
+            TextField nomFieldEditMarque = new TextField("Nom");
+            nomFieldEditMarque.setValue(marque.getNom());
 
-            FormLayout formLayoutEditTypeSalle = new FormLayout();
-            formLayoutEditTypeSalle.add(nomFieldEditTypeSalle);
-            dialogEditTypeSalle.add(formLayoutEditTypeSalle);
+            FormLayout formLayoutEditMarque = new FormLayout();
+            formLayoutEditMarque.add(nomFieldEditMarque);
+            dialogEditMarque.add(formLayoutEditMarque);
 
             // Bouton Save + Action de Sauvegarde
             Button saveButton = new Button("Enregistrer", event -> {
-                String nomModif = nomFieldEditTypeSalle.getValue().trim();
+                String nomModif = nomFieldEditMarque.getValue().trim();
 
                 // Erreur si champs vide
                 if (nomModif.isEmpty()) {
@@ -90,58 +90,58 @@ public class TypeSalleView extends VerticalLayout {
                 }
 
                 // Modifie la valeur
-                typesalle.setNom(nomModif);
+                marque.setNom(nomModif);
 
                 // Sauvegardé Type Salle
-                typeSalleService.saveTypeSalle(typesalle);
+                marqueService.saveMarque(marque);
                 Notification.show("Type Salle modifié avec succès");
-                dialogEditTypeSalle.close();
-                refreshTypeSalleList();
+                dialogEditMarque.close();
+                refreshMarqueList();
             });
 
-            Button cancelButtonEdit = new Button("Annuler", e -> dialogEditTypeSalle.close());
-            dialogEditTypeSalle.getFooter().add(cancelButtonEdit, saveButton);
+            Button cancelButtonEdit = new Button("Annuler", e -> dialogEditMarque.close());
+            dialogEditMarque.getFooter().add(cancelButtonEdit, saveButton);
 
             /*
              * Dialog Suppression
              */
-            Dialog confirmDialogDelTypeSalle = new Dialog();
-            confirmDialogDelTypeSalle.setHeaderTitle("Confirmer la suppression");
+            Dialog confirmDialogDelMarque = new Dialog();
+            confirmDialogDelMarque.setHeaderTitle("Confirmer la suppression");
 
-            confirmDialogDelTypeSalle.add("Voulez-vous vraiment supprimer le type salle \"" + typesalle.getNom() + "\" ?");
+            confirmDialogDelMarque.add("Voulez-vous vraiment supprimer le bâtiment \"" + marque.getNom() + "\" ?");
 
-            Button confirmButtonDelTypeSalle = new Button("Supprimer", event -> {
-                typeSalleService.deleteTypeSalleById(typesalle.getId());
-                Notification.show("Type Salle supprimé");
-                confirmDialogDelTypeSalle.close();
-                refreshTypeSalleList();
+            Button confirmButtonDelMarque = new Button("Supprimer", event -> {
+                marqueService.deleteMarqueById(marque.getId());
+                Notification.show("Bâtiment supprimé");
+                confirmDialogDelMarque.close();
+                refreshMarqueList();
             });
-            confirmButtonDelTypeSalle.addThemeVariants(ButtonVariant.LUMO_ERROR);
+            confirmButtonDelMarque.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
-            Button cancelButton = new Button("Annuler", e -> confirmDialogDelTypeSalle.close());
+            Button cancelButton = new Button("Annuler", e -> confirmDialogDelMarque.close());
 
-            confirmDialogDelTypeSalle.getFooter().add(cancelButton, confirmButtonDelTypeSalle);
+            confirmDialogDelMarque.getFooter().add(cancelButton, confirmButtonDelMarque);
 
-            add(confirmDialogDelTypeSalle, confirmDialogDelTypeSalle);
+            add(confirmDialogDelMarque, confirmDialogDelMarque);
 
 
             /*
              * Action -> event
              */
             Button editButton = new Button(editIcon, e -> {
-                dialogEditTypeSalle.open();
+                dialogEditMarque.open();
             });
             editButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
             Button deleteButton = new Button(deleteIcon, e -> {
-                confirmDialogDelTypeSalle.open();
+                confirmDialogDelMarque.open();
             });
             deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
             return new HorizontalLayout(editButton, deleteButton);
         })).setHeader("Actions");
 
-        grid.setItems(this.typeSalleService.getAllTypeSalles());
+        grid.setItems(this.marqueService.getAllMarques());
 
         add(header, grid);
 
@@ -149,23 +149,23 @@ public class TypeSalleView extends VerticalLayout {
          * Dialog + Form de creation
          */
         // Add new
-        Dialog dialogNewTypeSalle = new Dialog();
-        dialogNewTypeSalle.setHeaderTitle("Nouveau Type Salle");
+        Dialog dialogNewMarque = new Dialog();
+        dialogNewMarque.setHeaderTitle("Nouveau Type Salle");
 
         // Fields
-        TextField nomFieldNewTypeSalle = new TextField("Nom");
+        TextField nomFieldNewMarque = new TextField("Nom");
 
-        FormLayout formLayoutNewTypeSalle = new FormLayout();
-        formLayoutNewTypeSalle.add(nomFieldNewTypeSalle); // Les fields
+        FormLayout formLayoutNewMarque = new FormLayout();
+        formLayoutNewMarque.add(nomFieldNewMarque); // Les fields
 
-        dialogNewTypeSalle.add(formLayoutNewTypeSalle);
+        dialogNewMarque.add(formLayoutNewMarque);
 
         // Bouton Save + Action de Sauvegarde
-        Button saveButtonTypeSalle = new Button("Enregistrer", event -> {
-            String nomTypeSalle = nomFieldNewTypeSalle.getValue().trim();
+        Button saveButtonMarque = new Button("Enregistrer", event -> {
+            String nomMarque = nomFieldNewMarque.getValue().trim();
 
             // Erreur si champs vide
-            if (nomTypeSalle.isEmpty()) {
+            if (nomMarque.isEmpty()) {
                 Notification notification = new Notification();
                 notification.setDuration(3000);
                 notification.setPosition(Notification.Position.BOTTOM_END);
@@ -183,30 +183,30 @@ public class TypeSalleView extends VerticalLayout {
             }
 
             // Créer Type Salle
-            TypeSalle newTypeSalle = new TypeSalle();
-            newTypeSalle.setNom(nomTypeSalle);
+            Marque newMarque = new Marque();
+            newMarque.setNom(nomMarque);
 
             // Sauvegardé Type Salle
-            typeSalleService.saveTypeSalle(newTypeSalle);
+            marqueService.saveMarque(newMarque);
             Notification.show("Type Salle ajouté avec succès");
-            dialogNewTypeSalle.close();
+            dialogNewMarque.close();
 
-            refreshTypeSalleList();
+            refreshMarqueList();
         });
 
         // Bouton Cancel
-        Button cancelButtonNew = new Button("Annuler", e -> dialogNewTypeSalle.close());
-        dialogNewTypeSalle.getFooter().add(cancelButtonNew, saveButtonTypeSalle);
+        Button cancelButtonNew = new Button("Annuler", e -> dialogNewMarque.close());
+        dialogNewMarque.getFooter().add(cancelButtonNew, saveButtonMarque);
 
         // Ajout de l'event sur le bouton
         addButton.addClickListener(e -> {
-            nomFieldNewTypeSalle.clear();
-            dialogNewTypeSalle.open();
+            nomFieldNewMarque.clear();
+            dialogNewMarque.open();
         });
     }
 
-    private void refreshTypeSalleList() {
-        grid.setItems(typeSalleService.getAllTypeSalles());
+    private void refreshMarqueList() {
+        grid.setItems(marqueService.getAllMarques());
     }
 
 }
