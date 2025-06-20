@@ -48,7 +48,6 @@ public class SalleView extends VerticalLayout implements BeforeEnterObserver {
         setSpacing(true);
         setSizeFull();
 
-        getStyle().set("padding", "50px");
     }
 
     @Override
