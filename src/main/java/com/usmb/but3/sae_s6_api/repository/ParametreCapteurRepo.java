@@ -1,9 +1,14 @@
 package com.usmb.but3.sae_s6_api.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository; 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.usmb.but3.sae_s6_api.entity.ParametreCapteur;
 import com.usmb.but3.sae_s6_api.entity.ParametreCapteurId;
 
 public interface ParametreCapteurRepo extends JpaRepository<ParametreCapteur, ParametreCapteurId> {
+    List<ParametreCapteur> findByCapteurId(Integer capteurId);
+
 }

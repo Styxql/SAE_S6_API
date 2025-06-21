@@ -1,0 +1,132 @@
+package com.usmb.but3.sae_s6_api.view;
+
+import com.usmb.but3.sae_s6_api.entity.Capteur;
+import com.usmb.but3.sae_s6_api.entity.Marque;
+import com.usmb.but3.sae_s6_api.service.CapteurService;
+import com.usmb.but3.sae_s6_api.service.MarqueService;
+import com.usmb.but3.sae_s6_api.service.UniteMesurerService;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.MultiSelectComboBox;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.Menu;
+import com.vaadin.flow.router.PageTitle;
+
+import java.util.List;
+
+@Route("capteur")
+@PageTitle("Capteurs")
+@Menu(title = "Capteurs", order = 0, icon = "vaadin:clipboard-check")
+public class CapteurView extends VerticalLayout {
+
+    private final CapteurService capteurService;
+    private final MarqueService marqueService;
+    
+    private final UniteMesurerService uniteMesurerService;
+
+
+    private final Grid<Capteur> grid = new Grid<>(Capteur.class);
+    private final TextField filter = new TextField("Filtrer par nom");
+    private final MultiSelectComboBox<Marque> marqueFilter = new MultiSelectComboBox<>("Marque");
+    private final Button addNewBtn = new Button("Ajouter un capteur", VaadinIcon.PLUS.create());
+
+    public CapteurView(CapteurService capteurService, MarqueService marqueService,UniteMesurerService uniteMesurerService) {
+        this.capteurService = capteurService;
+        this.marqueService = marqueService;
+        this.uniteMesurerService=uniteMesurerService;
+
+        // Filtres
+        filter.setValueChangeMode(ValueChangeMode.LAZY);
+        filter.addValueChangeListener(e -> listCapteur(filter.getValue()));
+        marqueFilter.setItems(marqueService.getAllMarques());
+        marqueFilter.setItemLabelGenerator(Marque::getNom);
+        marqueFilter.addValueChangeListener(e -> listCapteur(filter.getValue()));
+
+        HorizontalLayout actions = new HorizontalLayout(filter, marqueFilter, addNewBtn);
+        actions.setAlignItems(Alignment.END);
+        add(actions, grid);
+
+        // Grille
+        grid.setHeight("500px");
+        grid.setColumns("id", "nom", "reference", "hauteur", "longueur", "largeur");
+        grid.addColumn(cap -> cap.getMarque() != null ? cap.getMarque().getNom() : "").setHeader("Marque");
+        grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
+        grid.addComponentColumn(this::createActionButtons)
+                .setHeader("Actions").setFlexGrow(0).setWidth("150px");
+
+        // Ajout
+        addNewBtn.addClickListener(e -> openEditDialog(new Capteur()));
+
+        listCapteur(null);
+    }
+
+    private HorizontalLayout createActionButtons(Capteur capteur) {
+        Button editButton = new Button(new Icon(VaadinIcon.EDIT));
+        editButton.getElement().setProperty("title", "Modifier");
+        editButton.addClickListener(e -> openEditDialog(capteur));
+
+        Button deleteButton = new Button(new Icon(VaadinIcon.TRASH));
+        deleteButton.addThemeName("error");
+        deleteButton.getElement().setProperty("title", "Supprimer");
+        deleteButton.addClickListener(e -> openDeleteDialog(capteur));
+
+        return new HorizontalLayout(editButton, deleteButton);
+    }
+
+    private void openEditDialog(Capteur capteur) {
+        CapteurEditor editor = new CapteurEditor(capteurService, marqueService,uniteMesurerService);
+        Dialog dialog = new Dialog(editor);
+        dialog.setWidth("50%");
+
+        editor.edit(capteur);
+        editor.setChangeHandler(() -> {
+            dialog.close();
+            listCapteur(filter.getValue());
+            Notification.show("Capteur enregistré", 3000, Notification.Position.BOTTOM_END);
+        });
+
+        Button cancelBtn = new Button("Annuler", e -> dialog.close());
+        editor.add(new HorizontalLayout(cancelBtn));
+        dialog.open();
+    }
+
+    private void openDeleteDialog(Capteur capteur) {
+        Dialog confirmDialog = new Dialog(new Span("Confirmer la suppression du capteur \"" + capteur.getNom() + "\" ?"));
+
+        Button confirmBtn = new Button("Confirmer", e -> {
+            capteurService.deleteCapteurById(capteur.getId());
+            confirmDialog.close();
+            listCapteur(filter.getValue());
+            Notification.show("Capteur supprimé", 3000, Notification.Position.TOP_END);
+        });
+
+        Button cancelBtn = new Button("Annuler", e -> confirmDialog.close());
+        confirmDialog.add(new HorizontalLayout(confirmBtn, cancelBtn));
+        confirmDialog.open();
+    }
+
+    private void listCapteur(String filterText) {
+        List<Capteur> all = capteurService.getAllCapteurs();
+
+        List<Capteur> filtered = all.stream().filter(c -> {
+            boolean matchNom = (filterText == null || filterText.isEmpty())
+                    || (c.getNom() != null && c.getNom().toLowerCase().contains(filterText.toLowerCase()));
+
+            boolean matchMarque = marqueFilter.isEmpty()
+                    || (c.getMarque() != null && marqueFilter.getValue().contains(c.getMarque()));
+
+            return matchNom && matchMarque;
+        }).toList();
+
+        grid.setItems(filtered);
+    }
+}
