@@ -25,7 +25,7 @@ import java.util.List;
 
 @Route("capteur")
 @PageTitle("Capteurs")
-@Menu(title = "Capteurs", order = 0, icon = "vaadin:clipboard-check")
+@Menu(title = "Capteurs", order = 0, icon = "vaadin:line-bar-chart")
 public class CapteurView extends VerticalLayout {
 
     private final CapteurService capteurService;

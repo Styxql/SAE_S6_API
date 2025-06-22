@@ -23,7 +23,7 @@ import com.vaadin.flow.router.Route;
 
 @Route("equipement")
 @PageTitle("Equipements")
-@Menu(title = "Equipements", order = 0, icon = "vaadin:clipboard-check")
+@Menu(title = "Equipements", order = 0, icon = "vaadin:tools")
 public class EquipementView extends VerticalLayout {
 
     private final EquipementService equipementService;
