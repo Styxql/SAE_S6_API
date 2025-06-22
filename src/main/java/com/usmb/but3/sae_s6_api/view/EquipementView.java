@@ -21,6 +21,9 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+/**
+ * Vue principale pour la gestion des équipements.
+ */
 @Route("equipement")
 @PageTitle("Equipements")
 @Menu(title = "Equipements", order = 0, icon = "vaadin:tools")
@@ -35,7 +38,6 @@ public class EquipementView extends VerticalLayout {
     private final TextField filter = new TextField("Filtrer par nom");
     private final MultiSelectComboBox<Marque> marqueFilter = new MultiSelectComboBox<>("Marque");
     private final MultiSelectComboBox<TypeEquipement> typeFilter = new MultiSelectComboBox<>("Type");
-
     private final Button addNewBtn = new Button("Ajouter un équipement", VaadinIcon.PLUS.create());
 
     public EquipementView(
@@ -49,6 +51,21 @@ public class EquipementView extends VerticalLayout {
         this.marqueService = marqueService;
         this.typeEquipementService = typeEquipementService;
 
+        configureFilters();
+        configureGrid();
+
+        HorizontalLayout actions = new HorizontalLayout(filter, marqueFilter, typeFilter, addNewBtn);
+        actions.setAlignItems(Alignment.END);
+        add(actions, grid);
+
+        addNewBtn.addClickListener(e -> openEditDialog(new Equipement()));
+        listEquipement(null);
+    }
+
+    /**
+     * Configure les filtres de recherche par nom, marque et type.
+     */
+    private void configureFilters() {
         filter.setValueChangeMode(ValueChangeMode.LAZY);
         filter.addValueChangeListener(e -> listEquipement(filter.getValue()));
 
@@ -59,26 +76,25 @@ public class EquipementView extends VerticalLayout {
         typeFilter.setItems(typeEquipementService.getAllTypeEquipements());
         typeFilter.setItemLabelGenerator(TypeEquipement::getNom);
         typeFilter.addValueChangeListener(e -> listEquipement(filter.getValue()));
+    }
 
-        HorizontalLayout actions = new HorizontalLayout(filter, marqueFilter, typeFilter, addNewBtn);
-        actions.setAlignItems(Alignment.END);
-        add(actions, grid);
-
+    /**
+     * Configure l'affichage du tableau (grid).
+     */
+    private void configureGrid() {
         grid.setHeight("600px");
         grid.setColumns("id", "nom", "hauteur", "longueur", "largeur");
         grid.addColumn(e -> e.getMarque().getNom()).setHeader("Marque");
         grid.addColumn(e -> e.getTypeEquipement().getNom()).setHeader("Type");
         grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
         grid.addComponentColumn(this::createActionButtons)
-                .setHeader("Actions").setFlexGrow(0).setWidth("150px");
-
+            .setHeader("Actions").setFlexGrow(0).setWidth("150px");
         grid.sort(GridSortOrder.<Equipement>asc(grid.getColumnByKey("id")).build());
-
-        addNewBtn.addClickListener(e -> openEditDialog(new Equipement()));
-
-        listEquipement(null);
     }
 
+    /**
+     * Crée les boutons d'action pour chaque ligne du tableau (modifier / supprimer).
+     */
     private HorizontalLayout createActionButtons(Equipement equipement) {
         Button editButton = new Button(new Icon(VaadinIcon.EDIT));
         editButton.getElement().setProperty("title", "Modifier");
@@ -92,6 +108,9 @@ public class EquipementView extends VerticalLayout {
         return new HorizontalLayout(editButton, deleteButton);
     }
 
+    /**
+     * Ouvre une boîte de dialogue d'édition pour l'équipement.
+     */
     private void openEditDialog(Equipement equipement) {
         EquipementEditor editor = new EquipementEditor(
                 equipementService, equipementInstalleService, marqueService, typeEquipementService);
@@ -110,6 +129,9 @@ public class EquipementView extends VerticalLayout {
         dialog.open();
     }
 
+    /**
+     * Ouvre une boîte de dialogue de confirmation avant suppression.
+     */
     private void openDeleteDialog(Equipement equipement) {
         Dialog confirmDialog = new Dialog(new Span(
                 "Confirmer la suppression de l'équipement \"" + equipement.getNom() + "\" ?"));
@@ -127,6 +149,9 @@ public class EquipementView extends VerticalLayout {
         confirmDialog.open();
     }
 
+    /**
+     * Rafraîchit l'affichage du tableau avec les filtres appliqués.
+     */
     private void listEquipement(String filterText) {
         var all = equipementService.getAllEquipements();
 

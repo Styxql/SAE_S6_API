@@ -17,12 +17,15 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 
 import java.util.List;
 
+/**
+ * Vue principale affichant les capteurs existants dans un tableau avec filtres et actions.
+ */
 @Route("capteur")
 @PageTitle("Capteurs")
 @Menu(title = "Capteurs", order = 0, icon = "vaadin:line-bar-chart")
@@ -30,45 +33,61 @@ public class CapteurView extends VerticalLayout {
 
     private final CapteurService capteurService;
     private final MarqueService marqueService;
-    
     private final UniteMesurerService uniteMesurerService;
-
 
     private final Grid<Capteur> grid = new Grid<>(Capteur.class);
     private final TextField filter = new TextField("Filtrer par nom");
     private final MultiSelectComboBox<Marque> marqueFilter = new MultiSelectComboBox<>("Marque");
     private final Button addNewBtn = new Button("Ajouter un capteur", VaadinIcon.PLUS.create());
 
-    public CapteurView(CapteurService capteurService, MarqueService marqueService,UniteMesurerService uniteMesurerService) {
+    public CapteurView(CapteurService capteurService, MarqueService marqueService, UniteMesurerService uniteMesurerService) {
         this.capteurService = capteurService;
         this.marqueService = marqueService;
-        this.uniteMesurerService=uniteMesurerService;
+        this.uniteMesurerService = uniteMesurerService;
 
-        // Filtres
-        filter.setValueChangeMode(ValueChangeMode.LAZY);
-        filter.addValueChangeListener(e -> listCapteur(filter.getValue()));
-        marqueFilter.setItems(marqueService.getAllMarques());
-        marqueFilter.setItemLabelGenerator(Marque::getNom);
-        marqueFilter.addValueChangeListener(e -> listCapteur(filter.getValue()));
+        configureFilters();
+        configureGrid();
 
         HorizontalLayout actions = new HorizontalLayout(filter, marqueFilter, addNewBtn);
         actions.setAlignItems(Alignment.END);
+
         add(actions, grid);
 
-        // Grille
-        grid.setHeight("500px");
-        grid.setColumns("id", "nom", "reference", "hauteur", "longueur", "largeur");
-        grid.addColumn(cap -> cap.getMarque() != null ? cap.getMarque().getNom() : "").setHeader("Marque");
-        grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
-        grid.addComponentColumn(this::createActionButtons)
-                .setHeader("Actions").setFlexGrow(0).setWidth("150px");
-
-        // Ajout
         addNewBtn.addClickListener(e -> openEditDialog(new Capteur()));
-
         listCapteur(null);
     }
 
+    /**
+     * Configure les champs de filtre de la vue (nom + marques).
+     */
+    private void configureFilters() {
+        filter.setValueChangeMode(ValueChangeMode.LAZY);
+        filter.addValueChangeListener(e -> listCapteur(filter.getValue()));
+
+        marqueFilter.setItems(marqueService.getAllMarques());
+        marqueFilter.setItemLabelGenerator(Marque::getNom);
+        marqueFilter.addValueChangeListener(e -> listCapteur(filter.getValue()));
+    }
+
+    /**
+     * Configure l'affichage de la grille de capteurs.
+     */
+    private void configureGrid() {
+        grid.setHeight("500px");
+        grid.setColumns("id", "nom", "reference", "hauteur", "longueur", "largeur");
+        grid.addColumn(cap -> cap.getMarque() != null ? cap.getMarque().getNom() : "")
+            .setHeader("Marque");
+        grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
+
+        grid.addComponentColumn(this::createActionButtons)
+            .setHeader("Actions")
+            .setFlexGrow(0)
+            .setWidth("150px");
+    }
+
+    /**
+     * Crée les boutons d'action (éditer/supprimer) pour chaque ligne de capteur.
+     */
     private HorizontalLayout createActionButtons(Capteur capteur) {
         Button editButton = new Button(new Icon(VaadinIcon.EDIT));
         editButton.getElement().setProperty("title", "Modifier");
@@ -82,8 +101,11 @@ public class CapteurView extends VerticalLayout {
         return new HorizontalLayout(editButton, deleteButton);
     }
 
+    /**
+     * Ouvre une boîte de dialogue pour créer ou modifier un capteur.
+     */
     private void openEditDialog(Capteur capteur) {
-        CapteurEditor editor = new CapteurEditor(capteurService, marqueService,uniteMesurerService);
+        CapteurEditor editor = new CapteurEditor(capteurService, marqueService, uniteMesurerService);
         Dialog dialog = new Dialog(editor);
         dialog.setWidth("50%");
 
@@ -96,9 +118,13 @@ public class CapteurView extends VerticalLayout {
 
         Button cancelBtn = new Button("Annuler", e -> dialog.close());
         editor.add(new HorizontalLayout(cancelBtn));
+
         dialog.open();
     }
 
+    /**
+     * Ouvre une boîte de dialogue de confirmation de suppression d'un capteur.
+     */
     private void openDeleteDialog(Capteur capteur) {
         Dialog confirmDialog = new Dialog(new Span("Confirmer la suppression du capteur \"" + capteur.getNom() + "\" ?"));
 
@@ -111,9 +137,13 @@ public class CapteurView extends VerticalLayout {
 
         Button cancelBtn = new Button("Annuler", e -> confirmDialog.close());
         confirmDialog.add(new HorizontalLayout(confirmBtn, cancelBtn));
+
         confirmDialog.open();
     }
 
+    /**
+     * Affiche la liste des capteurs filtrée selon les champs nom et marque.
+     */
     private void listCapteur(String filterText) {
         List<Capteur> all = capteurService.getAllCapteurs();
 
