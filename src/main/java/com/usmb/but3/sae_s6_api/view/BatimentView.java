@@ -132,7 +132,7 @@ private Card createBatimentCard(Batiment bat) {
 
     String imageUrl = (bat.getUrlImg() != null && !bat.getUrlImg().isEmpty())
         ? bat.getUrlImg()
-        : "images/image.jpg";
+        : "images/imagesalle.jpg";
 
     Image image = new Image(imageUrl, "Image de " + bat.getNom());
     image.setWidthFull();
