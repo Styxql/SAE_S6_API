@@ -10,6 +10,7 @@ import com.usmb.but3.sae_s6_api.entity.ParametreCapteur;
 import com.usmb.but3.sae_s6_api.entity.UniteMesurer;
 import com.usmb.but3.sae_s6_api.service.CapteurService;
 import com.usmb.but3.sae_s6_api.service.MarqueService;
+import com.usmb.but3.sae_s6_api.service.ParametreCapteurService;
 import com.usmb.but3.sae_s6_api.service.UniteMesurerService;
 
 import com.vaadin.flow.component.Key;
@@ -22,12 +23,10 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.BigDecimalField;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
@@ -44,6 +43,7 @@ public class CapteurEditor extends VerticalLayout implements KeyNotifier {
     private final CapteurService capteurService;
     private final MarqueService marqueService;
     private final UniteMesurerService uniteMesurerService;
+    private final ParametreCapteurService parametreCapteurService;
 
     // Instance du capteur actuellement édité
     private Capteur capteur;
@@ -70,13 +70,17 @@ public class CapteurEditor extends VerticalLayout implements KeyNotifier {
     // Liste des binders pour chaque paramètre de capteur
     private final List<Binder<ParametreCapteur>> parametreBinders = new ArrayList<>();
 
+    private final List<ParametreCapteur> deletedParametres = new ArrayList<>();
+
+
     // Callback pour signaler un changement (ex : mise à jour de la liste)
     private ChangeHandler changeHandler;
 
-    public CapteurEditor(CapteurService capteurService, MarqueService marqueService, UniteMesurerService uniteMesurerService) {
+    public CapteurEditor(CapteurService capteurService, MarqueService marqueService, UniteMesurerService uniteMesurerService,ParametreCapteurService parametreCapteurService) {
         this.capteurService = capteurService;
         this.marqueService = marqueService;
         this.uniteMesurerService = uniteMesurerService;
+        this.parametreCapteurService=parametreCapteurService;
 
         configureLayout();
         configureBindings();
@@ -184,6 +188,10 @@ public class CapteurEditor extends VerticalLayout implements KeyNotifier {
         deleteButton.addClickListener(e -> {
             parametreListLayout.remove(row);
             parametreBinders.remove(parametreBinder);
+        
+            if (parametre != null && parametre.getCapteurId() != null && parametre.getUniteMesurerId() != null) {
+                deletedParametres.add(parametre); // On ne supprime pas tout de suite
+            }
         });
 
         if (parametre != null) parametreBinder.readBean(parametre);
@@ -195,30 +203,47 @@ public class CapteurEditor extends VerticalLayout implements KeyNotifier {
     private void save() {
         try {
             binder.writeBean(capteur);
+            capteur = capteurService.saveCapteur(capteur);
             List<ParametreCapteur> list = new ArrayList<>();
-
+    
             for (Binder<ParametreCapteur> b : parametreBinders) {
                 ParametreCapteur p = new ParametreCapteur();
                 b.writeBean(p);
                 p.setCapteurId(capteur.getId());
+    
                 if (p.getUniteMesurer() != null) {
                     p.setUniteMesurerId(p.getUniteMesurer().getId());
                 } else {
                     Notification.show("Une unité de mesure est manquante dans un paramètre", 3000, Notification.Position.TOP_END);
                     return;
                 }
+    
                 list.add(p);
             }
+    
             capteur.setParametreCapteur(list);
-            capteurService.saveCapteur(capteur);
+    
+            // Supprime d’abord les paramètres supprimés
+            for (ParametreCapteur deleted : deletedParametres) {
+                parametreCapteurService.deleteParametreCapteurById(
+                    deleted.getCapteurId(),
+                    deleted.getUniteMesurerId()
+                );
+            }
+            deletedParametres.clear(); // reset
+    
+            // Puis enregistre les paramètres valides
+            for (ParametreCapteur parametre : list) {
+                parametreCapteurService.saveParametreCapteur(parametre);
+            }
+    
             if (changeHandler != null) changeHandler.onChange();
             setVisible(false);
-
+    
         } catch (ValidationException e) {
             Notification.show("Erreur de validation", 3000, Notification.Position.TOP_END);
         }
     }
-
     /**
      * Active l'édition d'un capteur.
      */
