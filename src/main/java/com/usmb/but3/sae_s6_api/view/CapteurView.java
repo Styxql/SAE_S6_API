@@ -4,6 +4,7 @@ import com.usmb.but3.sae_s6_api.entity.Capteur;
 import com.usmb.but3.sae_s6_api.entity.Marque;
 import com.usmb.but3.sae_s6_api.service.CapteurService;
 import com.usmb.but3.sae_s6_api.service.MarqueService;
+import com.usmb.but3.sae_s6_api.service.ParametreCapteurService;
 import com.usmb.but3.sae_s6_api.service.UniteMesurerService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
@@ -34,16 +35,19 @@ public class CapteurView extends VerticalLayout {
     private final CapteurService capteurService;
     private final MarqueService marqueService;
     private final UniteMesurerService uniteMesurerService;
+    private final ParametreCapteurService parametreCapteurService;
+
 
     private final Grid<Capteur> grid = new Grid<>(Capteur.class);
     private final TextField filter = new TextField("Filtrer par nom");
     private final MultiSelectComboBox<Marque> marqueFilter = new MultiSelectComboBox<>("Marque");
     private final Button addNewBtn = new Button("Ajouter un capteur", VaadinIcon.PLUS.create());
 
-    public CapteurView(CapteurService capteurService, MarqueService marqueService, UniteMesurerService uniteMesurerService) {
+    public CapteurView(CapteurService capteurService, MarqueService marqueService, UniteMesurerService uniteMesurerService,ParametreCapteurService parametreCapteurService) {
         this.capteurService = capteurService;
         this.marqueService = marqueService;
         this.uniteMesurerService = uniteMesurerService;
+        this.parametreCapteurService=parametreCapteurService;
 
         configureFilters();
         configureGrid();
@@ -73,7 +77,6 @@ public class CapteurView extends VerticalLayout {
      * Configure l'affichage de la grille de capteurs.
      */
     private void configureGrid() {
-        // grid.setHeight("500px");
         grid.setColumns("id", "nom", "reference", "hauteur", "longueur", "largeur");
         grid.addColumn(cap -> cap.getMarque() != null ? cap.getMarque().getNom() : "")
             .setHeader("Marque");
@@ -105,9 +108,8 @@ public class CapteurView extends VerticalLayout {
      * Ouvre une boîte de dialogue pour créer ou modifier un capteur.
      */
     private void openEditDialog(Capteur capteur) {
-        CapteurEditor editor = new CapteurEditor(capteurService, marqueService, uniteMesurerService);
+        CapteurEditor editor = new CapteurEditor(capteurService, marqueService, uniteMesurerService,parametreCapteurService);
         Dialog dialog = new Dialog(editor);
-        dialog.setWidth("50%");
 
         editor.edit(capteur);
         editor.setChangeHandler(() -> {

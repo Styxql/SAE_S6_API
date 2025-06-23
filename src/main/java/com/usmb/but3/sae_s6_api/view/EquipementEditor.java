@@ -20,6 +20,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.BigDecimalField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
@@ -43,9 +44,9 @@ public class EquipementEditor extends VerticalLayout implements KeyNotifier {
 
     // Champs du formulaire
     private final TextField nom = new TextField("Nom");
-    private final TextField hauteur = new TextField("Hauteur (cm)");
-    private final TextField longueur = new TextField("Longueur (cm)");
-    private final TextField largeur = new TextField("Largeur (cm)");
+    private final BigDecimalField hauteur = new BigDecimalField("Hauteur (cm)");
+    private final BigDecimalField longueur = new BigDecimalField("Longueur (cm)");
+    private final BigDecimalField largeur = new BigDecimalField("Largeur (cm)");
     private final ComboBox<Marque> marque = new ComboBox<>("Marque");
     private final ComboBox<TypeEquipement> typeEquipement = new ComboBox<>("Type d'équipement");
 
@@ -96,20 +97,14 @@ public class EquipementEditor extends VerticalLayout implements KeyNotifier {
                 .bind(Equipement::getNom, Equipement::setNom);
 
         binder.forField(hauteur)
-                .withNullRepresentation("")
-                .withConverter(new StringToBigDecimalConverter("Doit être un nombre décimal"))
                 .withValidator(d -> d != null && d.compareTo(BigDecimal.ZERO) > 0, "Hauteur invalide")
                 .bind(Equipement::getHauteur, Equipement::setHauteur);
 
         binder.forField(longueur)
-                .withNullRepresentation("")
-                .withConverter(new StringToBigDecimalConverter("Doit être un nombre décimal"))
                 .withValidator(d -> d != null && d.compareTo(BigDecimal.ZERO) > 0, "Longueur invalide")
                 .bind(Equipement::getLongueur, Equipement::setLongueur);
 
         binder.forField(largeur)
-                .withNullRepresentation("")
-                .withConverter(new StringToBigDecimalConverter("Doit être un nombre décimal"))
                 .withValidator(d -> d != null && d.compareTo(BigDecimal.ZERO) > 0, "Largeur invalide")
                 .bind(Equipement::getLargeur, Equipement::setLargeur);
 
