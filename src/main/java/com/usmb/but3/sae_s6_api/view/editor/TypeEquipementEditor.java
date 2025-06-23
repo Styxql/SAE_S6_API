@@ -46,9 +46,9 @@ public class TypeEquipementEditor extends Dialog {
         getFooter().add(footer);
     }
 
-    public void editTypeEquipement(TypeEquipement t) {
-        this.typeEquipement = t;
-        binder.readBean(t);
-        setHeaderTitle(t.getId() == null ? "Nouveau Type Equipement" : "Modifier Type Equipement");
+    public void editTypeEquipement(TypeEquipement typeEquipement) {
+        this.typeEquipement = typeEquipement;
+        binder.readBean(typeEquipement);
+        setHeaderTitle(typeEquipement.getId() == null ? "Nouveau Type Equipement" : "Modifier Type Equipement");
     }
 }
