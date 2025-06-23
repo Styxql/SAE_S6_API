@@ -52,14 +52,14 @@ public SalleDetailsView(
 
     // GRID ÉQUIPEMENTS
     equipementGrid.addColumn(e -> e.getEquipement().getNom()).setHeader("Équipement");
-equipementGrid.addColumn(EquipementInstalle::getNombre).setHeader("Quantité");
+    equipementGrid.addColumn(EquipementInstalle::getNombre).setHeader("Quantité");
 
-equipementGrid.addColumn(new ComponentRenderer<>(ei -> {
+    equipementGrid.addColumn(new ComponentRenderer<>(ei -> {
     Icon editIcon = VaadinIcon.EDIT.create();
     Icon deleteIcon = VaadinIcon.TRASH.create();
 
-    // ----- DIALOG MODIFICATION -----
-    Dialog editDialog = new Dialog();
+        // dialog edit
+        Dialog editDialog = new Dialog();
     editDialog.setHeaderTitle("Modifier l'équipement");
 
     ComboBox<Equipement> combo = new ComboBox<>("Équipement");
@@ -88,7 +88,7 @@ equipementGrid.addColumn(new ComponentRenderer<>(ei -> {
     Button cancel = new Button("Annuler", e -> editDialog.close());
     editDialog.getFooter().add(cancel, save);
 
-    // ----- DIALOG SUPPRESSION -----
+    // dialog delete
     Dialog deleteDialog = new Dialog();
     deleteDialog.setHeaderTitle("Supprimer l'équipement");
     deleteDialog.add("Voulez-vous vraiment supprimer " + ei.getEquipement().getNom() + " ?");
@@ -110,7 +110,7 @@ equipementGrid.addColumn(new ComponentRenderer<>(ei -> {
     deleteBtn.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
     return new HorizontalLayout(editBtn, deleteBtn);
-})).setHeader("Actions");
+    })).setHeader("Actions");
 
 
     equipementGrid.setWidthFull();
@@ -124,7 +124,7 @@ equipementGrid.addColumn(new ComponentRenderer<>(ei -> {
         Icon editIcon = VaadinIcon.EDIT.create();
         Icon deleteIcon = VaadinIcon.TRASH.create();
     
-        // ----- DIALOG MODIFICATION -----
+        // dialog edit
         Dialog editDialog = new Dialog();
         editDialog.setHeaderTitle("Modifier le capteur");
     
@@ -154,7 +154,7 @@ equipementGrid.addColumn(new ComponentRenderer<>(ei -> {
         Button cancel = new Button("Annuler", e -> editDialog.close());
         editDialog.getFooter().add(cancel, save);
     
-        // ----- DIALOG SUPPRESSION -----
+        // dialog delete
         Dialog deleteDialog = new Dialog();
         deleteDialog.setHeaderTitle("Supprimer le capteur");
         deleteDialog.add("Voulez-vous vraiment supprimer " + ci.getCapteur().getNom() + " ?");
@@ -241,7 +241,7 @@ equipementGrid.addColumn(new ComponentRenderer<>(ei -> {
             Dialog equipementDialog = createEquipementDialog();
             Dialog capteurDialog = createCapteurDialog();
 
-            // Boutons modernes
+            // Boutons
             Button addEquipementButton = new Button("Ajouter un équipement", new Icon(VaadinIcon.PLUS));
             addEquipementButton.getStyle()
                     .set("background-color", "#2563eb")
