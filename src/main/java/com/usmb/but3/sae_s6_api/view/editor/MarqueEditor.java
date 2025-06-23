@@ -27,8 +27,8 @@ public class MarqueEditor extends Dialog {
 
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        FormLayout form = new FormLayout(nomField);
-        add(form);
+        FormLayout formLayout = new FormLayout(nomField);
+        add(formLayout);
 
         binder.forField(nomField)
                 .asRequired("Le nom est obligatoire")
