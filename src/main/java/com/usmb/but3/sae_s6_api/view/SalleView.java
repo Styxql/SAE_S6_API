@@ -183,15 +183,19 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
             confirmDialog.open();
         });
 
+
+
+
+
         headerLayout.add(nameWithIcon, capacitehorizontalLayout, menuBar);
         content.add(image, headerLayout);
         card.add(content);
-
         // Navigation
         card.getElement().addEventListener("click", e -> {
             getUI().ifPresent(ui -> ui.navigate("salle/" + salle.getId()));
-        });
+        });      
         card.getStyle().set("cursor", "pointer");
+          
 
         return card;
     }
