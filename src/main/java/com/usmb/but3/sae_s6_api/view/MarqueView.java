@@ -2,20 +2,19 @@ package com.usmb.but3.sae_s6_api.view;
 
 import com.usmb.but3.sae_s6_api.entity.Marque;
 import com.usmb.but3.sae_s6_api.service.MarqueService;
+import com.usmb.but3.sae_s6_api.view.editor.MarqueEditor;
+import com.usmb.but3.sae_s6_api.view.notification.NotificationType;
+import com.usmb.but3.sae_s6_api.view.notification.Notifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
@@ -36,11 +35,23 @@ public class MarqueView extends VerticalLayout {
         header.setJustifyContentMode(JustifyContentMode.BETWEEN);
         header.setAlignItems(Alignment.CENTER);
 
-        H3 title = new H3("Liste de Type Salle");
+        H3 title = new H3("Liste de Marque");
 
-        Button addButton = new Button("Ajouter un Type Salle", VaadinIcon.PLUS.create());
+        Button addButton = new Button("Ajouter une Marque", VaadinIcon.PLUS.create());
 
         header.add(title, addButton);
+
+        MarqueEditor editor = new MarqueEditor(marque -> {
+            marqueService.saveMarque(marque);
+            Notifier.show(marque.getNom(), NotificationType.SUCCES_NEW);
+            refreshMarqueList();
+        });
+
+        addButton.addClickListener(e -> {
+            editor.editMarque(new Marque());
+            add(editor);
+            editor.open();
+        });
 
         this.marqueService = marqueService;
 
@@ -53,55 +64,6 @@ public class MarqueView extends VerticalLayout {
             Icon editIcon = VaadinIcon.EDIT.create();
             Icon deleteIcon = VaadinIcon.TRASH.create();
             
-            /*
-             * Dialog + Form d'édition
-             */
-            Dialog dialogEditMarque = new Dialog();
-            dialogEditMarque.setHeaderTitle("Modifier le Type Salle");
-
-            // Fields
-            TextField nomFieldEditMarque = new TextField("Nom");
-            nomFieldEditMarque.setValue(marque.getNom());
-
-            FormLayout formLayoutEditMarque = new FormLayout();
-            formLayoutEditMarque.add(nomFieldEditMarque);
-            dialogEditMarque.add(formLayoutEditMarque);
-
-            // Bouton Save + Action de Sauvegarde
-            Button saveButton = new Button("Enregistrer", event -> {
-                String nomModif = nomFieldEditMarque.getValue().trim();
-
-                // Erreur si champs vide
-                if (nomModif.isEmpty()) {
-                    Notification notification = new Notification();
-                    notification.setDuration(3000);
-                    notification.setPosition(Notification.Position.BOTTOM_END);
-
-                    notification.addThemeVariants(NotificationVariant.LUMO_WARNING);
-                    Span text = new Span("Le nom est obligatoire");
-                    Icon icon = VaadinIcon.WARNING.create();
-
-                    HorizontalLayout notificationLayout = new HorizontalLayout(icon, text);
-                    notificationLayout.setAlignItems(Alignment.CENTER);
-
-                    notification.add(notificationLayout);
-                    notification.open();
-                    return;
-                }
-
-                // Modifie la valeur
-                marque.setNom(nomModif);
-
-                // Sauvegardé Type Salle
-                marqueService.saveMarque(marque);
-                Notification.show("Type Salle modifié avec succès");
-                dialogEditMarque.close();
-                refreshMarqueList();
-            });
-
-            Button cancelButtonEdit = new Button("Annuler", e -> dialogEditMarque.close());
-            dialogEditMarque.getFooter().add(cancelButtonEdit, saveButton);
-
             /*
              * Dialog Suppression
              */
@@ -129,7 +91,14 @@ public class MarqueView extends VerticalLayout {
              * Action -> event
              */
             Button editButton = new Button(editIcon, e -> {
-                dialogEditMarque.open();
+                MarqueEditor editForm = new MarqueEditor(marqueModif -> {
+                    marqueService.saveMarque(marqueModif);
+                    Notifier.show(marqueModif.getNom(), NotificationType.SUCCES_EDIT);
+                    refreshMarqueList();
+                });
+                editForm.editMarque(marque);
+                add(editForm);
+                editForm.open();
             });
             editButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
@@ -144,65 +113,6 @@ public class MarqueView extends VerticalLayout {
         grid.setItems(this.marqueService.getAllMarques());
 
         add(header, grid);
-
-        /*
-         * Dialog + Form de creation
-         */
-        // Add new
-        Dialog dialogNewMarque = new Dialog();
-        dialogNewMarque.setHeaderTitle("Nouveau Type Salle");
-
-        // Fields
-        TextField nomFieldNewMarque = new TextField("Nom");
-
-        FormLayout formLayoutNewMarque = new FormLayout();
-        formLayoutNewMarque.add(nomFieldNewMarque); // Les fields
-
-        dialogNewMarque.add(formLayoutNewMarque);
-
-        // Bouton Save + Action de Sauvegarde
-        Button saveButtonMarque = new Button("Enregistrer", event -> {
-            String nomMarque = nomFieldNewMarque.getValue().trim();
-
-            // Erreur si champs vide
-            if (nomMarque.isEmpty()) {
-                Notification notification = new Notification();
-                notification.setDuration(3000);
-                notification.setPosition(Notification.Position.BOTTOM_END);
-
-                notification.addThemeVariants(NotificationVariant.LUMO_WARNING);
-                Span text = new Span("Le nom est obligatoire");
-                Icon icon = VaadinIcon.WARNING.create();
-
-                HorizontalLayout notificationLayout = new HorizontalLayout(icon, text);
-                notificationLayout.setAlignItems(Alignment.CENTER);
-
-                notification.add(notificationLayout);
-                notification.open();
-                return;
-            }
-
-            // Créer Type Salle
-            Marque newMarque = new Marque();
-            newMarque.setNom(nomMarque);
-
-            // Sauvegardé Type Salle
-            marqueService.saveMarque(newMarque);
-            Notification.show("Type Salle ajouté avec succès");
-            dialogNewMarque.close();
-
-            refreshMarqueList();
-        });
-
-        // Bouton Cancel
-        Button cancelButtonNew = new Button("Annuler", e -> dialogNewMarque.close());
-        dialogNewMarque.getFooter().add(cancelButtonNew, saveButtonMarque);
-
-        // Ajout de l'event sur le bouton
-        addButton.addClickListener(e -> {
-            nomFieldNewMarque.clear();
-            dialogNewMarque.open();
-        });
     }
 
     private void refreshMarqueList() {
