@@ -52,20 +52,20 @@ public class CapteurEditor extends VerticalLayout implements KeyNotifier {
     private Capteur capteur;
 
     // Champs du formulaire principal
-    private final TextField nom = new TextField("Nom");
-    private final TextArea description = new TextArea("Description");
-    private final TextField reference = new TextField("Référence");
-    private final BigDecimalField hauteur = new BigDecimalField("Hauteur (cm)");
-    private final BigDecimalField longueur = new BigDecimalField("Longueur (cm)");
-    private final BigDecimalField largeur = new BigDecimalField("Largeur (cm)");
-    private final ComboBox<Marque> marque = new ComboBox<>("Marque");
+    final TextField nom = new TextField("Nom");
+    final TextArea description = new TextArea("Description");
+    final TextField reference = new TextField("Référence");
+    final BigDecimalField hauteur = new BigDecimalField("Hauteur (cm)");
+    final BigDecimalField longueur = new BigDecimalField("Longueur (cm)");
+    final BigDecimalField largeur = new BigDecimalField("Largeur (cm)");
+    final ComboBox<Marque> marque = new ComboBox<>("Marque");
 
     // Zone dynamique pour les paramètres de mesure
     private final VerticalLayout parametreListLayout = new VerticalLayout();
-    private final Button addParametreButton = new Button("Ajouter un paramètre");
+    final Button addParametreButton = new Button("Ajouter un paramètre");
 
     // Bouton de sauvegarde
-    private final Button save = new Button("Sauvegarder");
+    final Button save = new Button("Sauvegarder");
 
     // Binder principal pour le capteur
     private final Binder<Capteur> binder = new Binder<>(Capteur.class);
@@ -203,7 +203,7 @@ public class CapteurEditor extends VerticalLayout implements KeyNotifier {
     /**
      * Sauvegarde le capteur avec ses paramètres après validation.
      */
-    private void save() {
+    void save() {
         try {
             binder.writeBean(capteur);
             capteur = capteurService.saveCapteur(capteur);
@@ -250,7 +250,7 @@ public class CapteurEditor extends VerticalLayout implements KeyNotifier {
     /**
      * Active l'édition d'un capteur.
      */
-    public void edit(Capteur c) {
+    void edit(Capteur c) {
         if (c == null) {
             setVisible(false);
             return;
