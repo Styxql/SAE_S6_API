@@ -92,14 +92,13 @@ private Card createBatimentCard(Batiment bat) {
 
     String imageUrl = (bat.getUrlImg() != null && !bat.getUrlImg().isEmpty())
         ? bat.getUrlImg()
-        : "images/imagesalle.jpg";
+        : "images/image.jpg";
 
     Image image = new Image(imageUrl, "Image de " + bat.getNom());
     image.setWidthFull();
     image.setHeight("200px");
     image.getStyle().set("object-fit", "cover");
 
-    // --- Header avec nom, salle count et menu
     HorizontalLayout headerLayout = new HorizontalLayout();
     headerLayout.setWidthFull();
     headerLayout.setJustifyContentMode(HorizontalLayout.JustifyContentMode.BETWEEN);

@@ -15,13 +15,11 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @Route("typesalle")
 @PageTitle("Type Salle")
-@Menu(title = "TypeSalle", order = 0, icon = "vaadin:grid-big-o")
 public class TypeSalleView extends VerticalLayout {
 
     private final TypeSalleService typeSalleService;

@@ -16,13 +16,11 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @Route("unitemesurer")
 @PageTitle("Unite Mesurer")
-@Menu(title = "Unité Mesuré", icon = "vaadin:sun-o")
 public class UniteMesurerView extends VerticalLayout {
 
     private final UniteMesurerService uniteMesurerService;
