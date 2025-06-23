@@ -22,7 +22,7 @@ import com.vaadin.flow.router.Route;
 
 @Route("unitemesurer")
 @PageTitle("Unite Mesurer")
-@Menu(title = "Unité Mesuré", icon = "vaadin:grid-big-o")
+@Menu(title = "Unité Mesuré", icon = "vaadin:sun-o")
 public class UniteMesurerView extends VerticalLayout {
 
     private final UniteMesurerService uniteMesurerService;

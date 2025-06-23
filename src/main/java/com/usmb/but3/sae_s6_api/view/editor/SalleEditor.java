@@ -3,9 +3,11 @@ package com.usmb.but3.sae_s6_api.view.editor;
 import com.usmb.but3.sae_s6_api.entity.Salle;
 import com.usmb.but3.sae_s6_api.entity.TypeSalle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -23,7 +25,7 @@ public class SalleEditor extends Dialog {
     private final IntegerField capaciteField = new IntegerField("Capacité");
     private final ComboBox<TypeSalle> typeSalleField = new ComboBox<>("Type de salle");
 
-    private final Button saveButton = new Button("Enregistrer");
+    private final Button saveButton = new Button("Enregistrer", VaadinIcon.CHECK.create());
     private final Button cancelButton = new Button("Annuler");
 
     private final Binder<Salle> binder = new Binder<>(Salle.class);
@@ -34,6 +36,8 @@ public class SalleEditor extends Dialog {
         typeSalleField.setItemLabelGenerator(TypeSalle::getNom);
 
         setHeaderTitle("Salle");
+
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         FormLayout formLayout = new FormLayout();
         formLayout.add(nomField, urlImgField, capaciteField, typeSalleField);

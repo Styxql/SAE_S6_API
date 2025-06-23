@@ -2,8 +2,10 @@ package com.usmb.but3.sae_s6_api.view.editor;
 
 import com.usmb.but3.sae_s6_api.entity.UniteMesurer;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -16,7 +18,7 @@ public class UniteMesurerEditor extends Dialog {
     TextField nomField = new TextField("Nom");
     TextField symboleField = new TextField("Symbole");
 
-    private final Button saveButton = new Button("Enregistrer");
+    private final Button saveButton = new Button("Enregistrer", VaadinIcon.CHECK.create());
     private final Button cancelButton = new Button("Annuler");
 
     private final Binder<UniteMesurer> binder = new Binder<>(UniteMesurer.class);
@@ -24,6 +26,8 @@ public class UniteMesurerEditor extends Dialog {
 
     public UniteMesurerEditor(Consumer<UniteMesurer> onSave) {
         setHeaderTitle("Unite Mesurer");
+
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         FormLayout formLayout = new FormLayout();
         formLayout.add(nomField, symboleField);
