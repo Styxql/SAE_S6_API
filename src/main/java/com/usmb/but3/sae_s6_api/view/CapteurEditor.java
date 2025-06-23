@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+
 import com.usmb.but3.sae_s6_api.entity.Capteur;
 import com.usmb.but3.sae_s6_api.entity.Marque;
 import com.usmb.but3.sae_s6_api.entity.ParametreCapteur;
@@ -35,6 +37,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
  * Composant Vaadin pour l'édition de capteurs.
  * Permet de créer/modifier un capteur ainsi que ses paramètres de mesure.
  */
+@Scope("prototype")
 @SpringComponent
 @UIScope
 public class CapteurEditor extends VerticalLayout implements KeyNotifier {
