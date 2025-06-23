@@ -2,10 +2,12 @@ package com.usmb.but3.sae_s6_api.view;
 
 import com.usmb.but3.sae_s6_api.entity.Batiment;
 import com.usmb.but3.sae_s6_api.entity.Salle;
-import com.usmb.but3.sae_s6_api.entity.TypeSalle;
 import com.usmb.but3.sae_s6_api.service.BatimentService;
 import com.usmb.but3.sae_s6_api.service.SalleService;
 import com.usmb.but3.sae_s6_api.service.TypeSalleService;
+import com.usmb.but3.sae_s6_api.view.editor.SalleEditor;
+import com.usmb.but3.sae_s6_api.view.notification.NotificationType;
+import com.usmb.but3.sae_s6_api.view.notification.Notifier;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -14,9 +16,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.component.card.Card;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
@@ -25,11 +25,9 @@ import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.formlayout.FormLayout;
+
 
 import java.util.List;
 
@@ -73,82 +71,19 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
                 .set("gap", "20px")
                 .set("padding", "10px");
 
-        /*
-         * Dialog + Form de creation
-         */
-        // Add new
-        Dialog dialogNewSalle = new Dialog();
-        dialogNewSalle.setHeaderTitle("Nouvelle Salle");
-
-        // Fields
-        TextField nomFieldNewSalle = new TextField("Nom");
-        TextField imageFieldNewSalle = new TextField("URL de l'image");
-        IntegerField capaciteFieldNewSalle = new IntegerField("Capacite");
-
-        ComboBox<TypeSalle> typeSalleComboBox = new ComboBox<TypeSalle>("Type Salle");
-        typeSalleComboBox.setItems(typeSalleService.getAllTypeSalles());
-        typeSalleComboBox.setItemLabelGenerator(TypeSalle::getNom);
-
-        FormLayout formLayoutNewSalle = new FormLayout();
-        formLayoutNewSalle.add(nomFieldNewSalle);
-        formLayoutNewSalle.add(imageFieldNewSalle);
-        formLayoutNewSalle.add(capaciteFieldNewSalle);
-        formLayoutNewSalle.add(typeSalleComboBox);
-        dialogNewSalle.add(formLayoutNewSalle);
-
-        Button saveButtonNewSalle = new Button("Enregistrer", e -> {
-            String nomNewSalle = nomFieldNewSalle.getValue().trim();
-            String imageNewSalle = imageFieldNewSalle.getValue().trim();
-            Integer capaciteNewSalle = capaciteFieldNewSalle.getValue();
-            TypeSalle typeSalleNewSalle = typeSalleComboBox.getValue();
-
-            // Erreur si champs vide
-            if (nomNewSalle.isEmpty() || capaciteNewSalle == null || typeSalleNewSalle == null) {
-                Notification notification = new Notification();
-                notification.setDuration(3000);
-                notification.setPosition(Notification.Position.BOTTOM_END);
-
-                notification.addThemeVariants(NotificationVariant.LUMO_WARNING);
-                Span text = new Span("Le nom, la capacite et le type salle sont obligatoire");
-                Icon icon = VaadinIcon.WARNING.create();
-
-                HorizontalLayout notificationLayout = new HorizontalLayout(icon, text);
-                notificationLayout.setAlignItems(Alignment.CENTER);
-
-                notification.add(notificationLayout);
-                notification.open();
-                return;
-            }
-
-            // Modifie la valeur
-            Salle newSalle = new Salle();
-            newSalle.setNom(nomNewSalle);
-            newSalle.setUrlImg(imageNewSalle);
-            newSalle.setCapacite(capaciteNewSalle);
-            newSalle.setTypeSalle(typeSalleNewSalle);
-            newSalle.setBatiment(batiment);
-
-            // Sauvegardé Type Salle
-            salleService.saveSalle(newSalle);
-            Notification.show("Salle ajouté avec succès");
-            dialogNewSalle.close();
+        SalleEditor editor = new SalleEditor(salle -> {
+            salleService.saveSalle(salle);
+            Notifier.show(salle.getNom(), NotificationType.SUCCES_NEW);
             refreshSalleCards();
-        });
+        }, typeSalleService.getAllTypeSalles());
 
-        // Bouton Cancel
-        Button cancelButtonNew = new Button("Annuler", e -> dialogNewSalle.close());
-        dialogNewSalle.getFooter().add(cancelButtonNew, saveButtonNewSalle);
-
-        // Ajout de l'event sur le bouton
         addButton.addClickListener(e -> {
-            nomFieldNewSalle.clear();
-            imageFieldNewSalle.clear();
-            capaciteFieldNewSalle.clear();
-            typeSalleComboBox.clear();
-            dialogNewSalle.open();
+            editor.editSalle(new Salle());
+            add(editor);
+            editor.open();
         });
 
-        add(header, cardLayout, dialogNewSalle);
+        add(header, cardLayout);
         refreshSalleCards();
     }
 
@@ -172,7 +107,7 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
 
         String imageUrl = (salle.getUrlImg() != null && !salle.getUrlImg().isEmpty())
                 ? salle.getUrlImg()
-                : "images/image.jpg";
+                : "images/imagesalle.jpg";
 
         Image image = new Image(imageUrl, "Image de " + salle.getNom());
         image.setWidthFull();
@@ -196,6 +131,14 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
         nameWithIcon.setSpacing(true);
         nameWithIcon.setAlignItems(Alignment.CENTER);
 
+        Span capacite = new Span(salle.getCapacite().toString());
+        HorizontalLayout capacitehorizontalLayout = new HorizontalLayout(capacite, VaadinIcon.CHILD.create());
+        capacitehorizontalLayout.getStyle()
+                .set("background-color", "rgba(89, 147, 255, 0.15)")
+                .set("border-radius", "12px")
+                .set("padding", "4px 10px")
+                .set("font-size", "0.85em");
+
         // Menu 3 points
         MenuBar menuBar = new MenuBar();
         menuBar.getElement()
@@ -208,70 +151,14 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
 
         // --- Modifier
         subMenu.addItem("Modifier", e -> {
-            Dialog dialogEditSalle = new Dialog();
-            dialogEditSalle.setHeaderTitle("Modifier la salle");
-
-            TextField nomFieldEditSalle = new TextField("Nom");
-            nomFieldEditSalle.setValue(salle.getNom());
-
-            TextField imageFieldEditSalle = new TextField("URL de l'image");
-            imageFieldEditSalle.setValue(salle.getUrlImg() != null ? salle.getUrlImg() : "");
-
-            IntegerField capaciteFieldEditSalle = new IntegerField("Capacité");
-            capaciteFieldEditSalle.setValue(salle.getCapacite());
-
-            ComboBox<TypeSalle> typeSalleComboBox = new ComboBox<TypeSalle>("Type Salle");
-            typeSalleComboBox.setItems(typeSalleService.getAllTypeSalles());
-            typeSalleComboBox.setItemLabelGenerator(TypeSalle::getNom);
-
-            typeSalleComboBox.setValue(salle.getTypeSalle());
-
-            FormLayout formLayout = new FormLayout(nomFieldEditSalle, imageFieldEditSalle, capaciteFieldEditSalle,
-                    typeSalleComboBox);
-            dialogEditSalle.add(formLayout);
-
-            Button saveButtonEditSalle = new Button("Enregistrer", e2 -> {
-                String nomEditSalle = nomFieldEditSalle.getValue().trim();
-                String imageEditSalle = imageFieldEditSalle.getValue().trim();
-                Integer capaciteEditSalle = capaciteFieldEditSalle.getValue();
-                TypeSalle typeSalleEditSalle = typeSalleComboBox.getValue();
-
-                // Erreur si champs vide
-                if (nomEditSalle.isEmpty() || imageEditSalle == null || typeSalleEditSalle == null) {
-                    Notification notification = new Notification();
-                    notification.setDuration(3000);
-                    notification.setPosition(Notification.Position.BOTTOM_END);
-
-                    notification.addThemeVariants(NotificationVariant.LUMO_WARNING);
-                    Span text = new Span("Le nom, la capacite et le type salle sont obligatoire");
-                    Icon icon = VaadinIcon.WARNING.create();
-
-                    HorizontalLayout notificationLayout = new HorizontalLayout(icon, text);
-                    notificationLayout.setAlignItems(Alignment.CENTER);
-
-                    notification.add(notificationLayout);
-                    notification.open();
-                    return;
-                }
-
-                // Modifie la valeur
-                salle.setNom(nomEditSalle);
-                salle.setUrlImg(imageEditSalle);
-                salle.setCapacite(capaciteEditSalle);
-                salle.setTypeSalle(typeSalleEditSalle);
-
-                // Sauvegardé Type Salle
-                salleService.saveSalle(salle);
-                Notification.show("Salle ajouté avec succès");
-                dialogEditSalle.close();
+            SalleEditor editForm = new SalleEditor(salleModif -> {
+                salleService.saveSalle(salleModif);
+                Notifier.show(salleModif.getNom(), NotificationType.SUCCES_EDIT);
                 refreshSalleCards();
-            });
-
-            Button cancelButton = new Button("Annuler", e2 -> dialogEditSalle.close());
-            dialogEditSalle.getFooter().add(cancelButton, saveButtonEditSalle);
-
-            add(dialogEditSalle);
-            dialogEditSalle.open();
+            }, typeSalleService.getAllTypeSalles());
+            editForm.editSalle(salle);
+            add(editForm);
+            editForm.open();
         });
 
         subMenu.addItem("Supprimer", e -> {
@@ -298,7 +185,9 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
 
 
 
-        headerLayout.add(nameWithIcon, menuBar);
+
+
+        headerLayout.add(nameWithIcon, capacitehorizontalLayout, menuBar);
         content.add(image, headerLayout);
         card.add(content);
         // Navigation
