@@ -73,7 +73,6 @@ public class CapteurView extends VerticalLayout {
      * Configure l'affichage de la grille de capteurs.
      */
     private void configureGrid() {
-        grid.setHeight("500px");
         grid.setColumns("id", "nom", "reference", "hauteur", "longueur", "largeur");
         grid.addColumn(cap -> cap.getMarque() != null ? cap.getMarque().getNom() : "")
             .setHeader("Marque");
@@ -107,7 +106,6 @@ public class CapteurView extends VerticalLayout {
     private void openEditDialog(Capteur capteur) {
         CapteurEditor editor = new CapteurEditor(capteurService, marqueService, uniteMesurerService);
         Dialog dialog = new Dialog(editor);
-        dialog.setWidth("50%");
 
         editor.edit(capteur);
         editor.setChangeHandler(() -> {

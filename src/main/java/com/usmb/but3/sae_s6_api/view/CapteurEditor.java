@@ -21,6 +21,8 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.BigDecimalField;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -50,9 +52,9 @@ public class CapteurEditor extends VerticalLayout implements KeyNotifier {
     private final TextField nom = new TextField("Nom");
     private final TextArea description = new TextArea("Description");
     private final TextField reference = new TextField("Référence");
-    private final TextField hauteur = new TextField("Hauteur (cm)");
-    private final TextField longueur = new TextField("Longueur (cm)");
-    private final TextField largeur = new TextField("Largeur (cm)");
+    private final BigDecimalField hauteur = new BigDecimalField("Hauteur (cm)");
+    private final BigDecimalField longueur = new BigDecimalField("Longueur (cm)");
+    private final BigDecimalField largeur = new BigDecimalField("Largeur (cm)");
     private final ComboBox<Marque> marque = new ComboBox<>("Marque");
 
     // Zone dynamique pour les paramètres de mesure
@@ -107,20 +109,14 @@ public class CapteurEditor extends VerticalLayout implements KeyNotifier {
         binder.forField(reference).bind(Capteur::getReference, Capteur::setReference);
 
         binder.forField(hauteur)
-              .withNullRepresentation("")
-              .withConverter(new StringToBigDecimalConverter("Doit être un nombre décimal"))
               .withValidator(d -> d != null && d.compareTo(BigDecimal.ZERO) > 0, "Hauteur invalide")
               .bind(Capteur::getHauteur, Capteur::setHauteur);
 
         binder.forField(longueur)
-              .withNullRepresentation("")
-              .withConverter(new StringToBigDecimalConverter("Doit être un nombre décimal"))
               .withValidator(d -> d != null && d.compareTo(BigDecimal.ZERO) > 0, "Longueur invalide")
               .bind(Capteur::getLongueur, Capteur::setLongueur);
 
         binder.forField(largeur)
-              .withNullRepresentation("")
-              .withConverter(new StringToBigDecimalConverter("Doit être un nombre décimal"))
               .withValidator(d -> d != null && d.compareTo(BigDecimal.ZERO) > 0, "Largeur invalide")
               .bind(Capteur::getLargeur, Capteur::setLargeur);
 
@@ -180,7 +176,7 @@ public class CapteurEditor extends VerticalLayout implements KeyNotifier {
 
         Button deleteButton = new Button("Supprimer");
         HorizontalLayout row = new HorizontalLayout(unite, min, max, prec, deleteButton);
-        row.setAlignItems(Alignment.BASELINE); // Alignement des composants sur la même ligne
+        row.setAlignItems(Alignment.BASELINE); 
 
         parametreListLayout.add(row);
         parametreBinders.add(parametreBinder);
