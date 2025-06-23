@@ -4,6 +4,7 @@ import com.usmb.but3.sae_s6_api.entity.TypeSalle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
 public class TypeSalleEditor extends Dialog {
 
     private final TextField nomField = new TextField("Nom");
-    private final Button saveButton = new Button("Enregistrer");
+    private final Button saveButton = new Button("Enregistrer", VaadinIcon.CHECK.create());
     private final Button cancelButton = new Button("Annuler");
 
     private final Binder<TypeSalle> binder = new Binder<>(TypeSalle.class);
