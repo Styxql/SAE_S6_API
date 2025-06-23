@@ -1,5 +1,8 @@
 package com.usmb.but3.sae_s6_api.view;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.usmb.but3.sae_s6_api.entity.UniteMesurer;
 import com.usmb.but3.sae_s6_api.service.UniteMesurerService;
 import com.usmb.but3.sae_s6_api.view.editor.UniteMesurerEditor;
@@ -18,12 +21,15 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
+@Component
+@Scope("prototype")
 @Route("unitemesurer")
 @PageTitle("Unite Mesurer")
 public class UniteMesurerView extends VerticalLayout {
 
     private final UniteMesurerService uniteMesurerService;
+    UniteMesurerEditor editForm;
+     Button addButton;
 
     final Grid<UniteMesurer> grid;
 
@@ -35,7 +41,7 @@ public class UniteMesurerView extends VerticalLayout {
 
         H3 title = new H3("Liste de UniteMesurer");
 
-        Button addButton = new Button("Ajouter une unité", VaadinIcon.PLUS.create());
+        this.addButton = new Button("Ajouter une unité", VaadinIcon.PLUS.create());
 
         header.add(title, addButton);
 
@@ -77,7 +83,7 @@ public class UniteMesurerView extends VerticalLayout {
              * Action -> event
              */
             Button editButton = new Button(editIcon, e -> {
-                UniteMesurerEditor editForm = new UniteMesurerEditor(unitemesurerModif -> {
+                this.editForm = new UniteMesurerEditor(unitemesurerModif -> {
                     uniteMesurerService.saveUniteMesurer(unitemesurerModif);
                     Notifier.show(unitemesurerModif.getNom(), NotificationType.SUCCES_EDIT);
                     refreshUniteMesurerList();
@@ -100,16 +106,16 @@ public class UniteMesurerView extends VerticalLayout {
 
         add(header, grid);
 
-        UniteMesurerEditor editor = new UniteMesurerEditor(uniteMesurer -> {
+        this.editForm = new UniteMesurerEditor(uniteMesurer -> {
             uniteMesurerService.saveUniteMesurer(uniteMesurer);
             Notifier.show(uniteMesurer.getNom(), NotificationType.SUCCES_NEW);
             refreshUniteMesurerList();
         });
 
         addButton.addClickListener(e -> {
-            editor.editUniteMesurer(new UniteMesurer());
-            add(editor);
-            editor.open();
+            this.editForm.editUniteMesurer(new UniteMesurer());
+            add(this.editForm);
+            this.editForm.open();
         });
     }
 
