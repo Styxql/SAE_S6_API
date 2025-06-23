@@ -196,6 +196,15 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
         nameWithIcon.setSpacing(true);
         nameWithIcon.setAlignItems(Alignment.CENTER);
 
+        Span capacite = new Span(salle.getCapacite().toString());
+        HorizontalLayout capacitehorizontalLayout = new HorizontalLayout(capacite, VaadinIcon.CHILD.create());
+        capacitehorizontalLayout.getStyle()
+            .set("background-color", "rgba(89, 147, 255, 0.15)")
+            .set("border-radius", "12px")
+            .set("padding", "4px 10px")
+            .set("font-size", "0.85em");
+
+
         // Menu 3 points
         MenuBar menuBar = new MenuBar();
         menuBar.getElement()
@@ -296,9 +305,15 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
             confirmDialog.open();
         });
 
-        headerLayout.add(nameWithIcon, menuBar);
+        headerLayout.add(nameWithIcon, capacitehorizontalLayout, menuBar);
         content.add(image, headerLayout);
         card.add(content);
+
+        // Navigation
+        card.getElement().addEventListener("click", e -> {
+            getUI().ifPresent(ui -> ui.navigate("salle/" + salle.getId()));
+        });
+        card.getStyle().set("cursor", "pointer");
 
         return card;
     }
