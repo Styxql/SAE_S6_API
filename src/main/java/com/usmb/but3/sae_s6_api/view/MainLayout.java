@@ -42,7 +42,7 @@ public final class MainLayout extends AppLayout {
         header.addClassNames(Display.FLEX, Padding.MEDIUM, Gap.MEDIUM, AlignItems.CENTER);
         header.getStyle().set("cursor", "pointer");
 
-        header.addClickListener(event -> UI.getCurrent().navigate(""));
+        header.addClickListener(event -> UI.getCurrent().navigate("/batiment"));
         return header;
     }
 
