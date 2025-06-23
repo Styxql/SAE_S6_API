@@ -3,11 +3,13 @@ package com.usmb.but3.sae_s6_api.view;
 import com.usmb.but3.sae_s6_api.entity.Batiment;
 import com.usmb.but3.sae_s6_api.service.BatimentService;
 import com.usmb.but3.sae_s6_api.service.SalleService;
+import com.usmb.but3.sae_s6_api.view.notification.Notifier;
+import com.usmb.but3.sae_s6_api.view.editor.BatimentEditor;
+import com.usmb.but3.sae_s6_api.view.notification.NotificationType;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
@@ -21,9 +23,6 @@ import com.vaadin.flow.component.card.Card;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 
 import java.util.List;
 
@@ -56,59 +55,20 @@ public BatimentView(BatimentService batimentService, SalleService salleService) 
         .set("gap", "20px")
         .set("padding", "10px");
 
-    Dialog dialog = new Dialog();
-    dialog.setHeaderTitle("Nouveau bâtiment");
 
-    TextField nomField = new TextField("Nom");
-    TextField imageField = new TextField("URL de l’image");
-
-    FormLayout formLayout = new FormLayout();
-    formLayout.add(nomField, imageField);
-    dialog.add(formLayout);
-
-    Button saveButton = new Button("Enregistrer", event -> {
-        String nom = nomField.getValue().trim();
-        String url = imageField.getValue().trim();
-
-        if (nom.isEmpty()) {
-            Notification notification = new Notification();
-            notification.setDuration(3000);
-            notification.setPosition(Notification.Position.BOTTOM_END);
-
-            notification.addThemeVariants(NotificationVariant.LUMO_WARNING);
-            Span text = new Span("Le nom est obligatoire");
-            Icon icon = VaadinIcon.WARNING.create();
-            
-            HorizontalLayout notificationLayout = new HorizontalLayout(icon, text);
-            notificationLayout.setAlignItems(Alignment.CENTER);
-
-            notification.add(notificationLayout);
-            notification.open();
-            return;
-        }
-
-        Batiment newBat = new Batiment();
-        newBat.setNom(nom);
-        newBat.setUrlImg(url.isEmpty() ? null : url);
-
-        batimentService.saveBatiment(newBat);
-        Notification.show("Bâtiment ajouté avec succès");
-        dialog.close();
-
+    BatimentEditor editor = new BatimentEditor(batiment -> {
+        batimentService.saveBatiment(batiment);
+        Notifier.show(batiment.getNom(), NotificationType.SUCCES_NEW);
         refreshBatimentCards(cardLayout);
     });
 
-    Button cancelButton = new Button("Annuler", e -> dialog.close());
-    dialog.getFooter().add(cancelButton, saveButton);
-
     addButton.addClickListener(e -> {
-        nomField.clear();
-        imageField.clear();
-        dialog.open();
+        editor.editBatiment(new Batiment());
+        add(editor);
+        editor.open();
     });
-
-    add(dialog, header, cardLayout);
-
+    
+    add(header, cardLayout);
     refreshBatimentCards(cardLayout);
 }
 
@@ -139,7 +99,6 @@ private Card createBatimentCard(Batiment bat) {
     image.setHeight("200px");
     image.getStyle().set("object-fit", "cover");
 
-    // --- Header avec nom, salle count et menu
     HorizontalLayout headerLayout = new HorizontalLayout();
     headerLayout.setWidthFull();
     headerLayout.setJustifyContentMode(HorizontalLayout.JustifyContentMode.BETWEEN);
@@ -177,41 +136,14 @@ private Card createBatimentCard(Batiment bat) {
 
     // --- Modifier
     subMenu.addItem("Modifier", e -> {
-        Dialog editDialog = new Dialog();
-        editDialog.setHeaderTitle("Modifier le bâtiment");
-
-        TextField nomField = new TextField("Nom");
-        nomField.setValue(bat.getNom());
-
-        TextField imageField = new TextField("URL de l'image");
-        imageField.setValue(bat.getUrlImg() != null ? bat.getUrlImg() : "");
-
-        FormLayout formLayout = new FormLayout();
-        formLayout.add(nomField, imageField);
-        editDialog.add(formLayout);
-
-        Button saveButton = new Button("Enregistrer", event -> {
-            String nomModif = nomField.getValue().trim();
-            String url = imageField.getValue().trim();
-
-            if (nomModif.isEmpty()) {
-                Notification.show("Le nom est obligatoire", 3000, Notification.Position.MIDDLE);
-                return;
-            }
-
-            bat.setNom(nomModif);
-            bat.setUrlImg(url.isEmpty() ? null : url);
-            batimentService.saveBatiment(bat);
-            Notification.show("Bâtiment modifié avec succès");
-            editDialog.close();
+        BatimentEditor editForm = new BatimentEditor(batModif -> {
+            batimentService.saveBatiment(batModif);
+            Notifier.show(batModif.getNom(), NotificationType.SUCCES_EDIT);
             refreshBatimentCards((Div) card.getParent().get());
         });
-
-        Button cancelButton = new Button("Annuler", e2 -> editDialog.close());
-        editDialog.getFooter().add(cancelButton, saveButton);
-
-        add(editDialog);
-        editDialog.open();
+        editForm.editBatiment(bat);
+        add(editForm);
+        editForm.open();
     });
 
     // --- Supprimer
@@ -223,7 +155,7 @@ private Card createBatimentCard(Batiment bat) {
 
         Button confirmButton = new Button("Supprimer", event -> {
             batimentService.deleteBatimentById(bat.getId());
-            Notification.show("Bâtiment supprimé");
+            Notifier.show(bat.getNom(), NotificationType.SUCCES_DELETE);
             confirmDialog.close();
             refreshBatimentCards((Div) card.getParent().get());
         });
@@ -239,6 +171,7 @@ private Card createBatimentCard(Batiment bat) {
     headerLayout.add(nameWithIcon, salleCount, menuBar);
 
     content.add(image, headerLayout);
+
     card.add(content);
 
     // Navigation

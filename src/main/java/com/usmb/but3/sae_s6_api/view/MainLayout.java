@@ -42,14 +42,31 @@ public final class MainLayout extends AppLayout {
         header.addClassNames(Display.FLEX, Padding.MEDIUM, Gap.MEDIUM, AlignItems.CENTER);
         header.getStyle().set("cursor", "pointer");
 
-        header.addClickListener(event -> UI.getCurrent().navigate(""));
+        header.addClickListener(event -> UI.getCurrent().navigate("/batiment"));
         return header;
     }
 
     private SideNav createSideNav() {
-        var nav = new SideNav();
+        SideNav nav = new SideNav();
         nav.addClassNames(Margin.Horizontal.MEDIUM);
-        MenuConfiguration.getMenuEntries().forEach(entry -> nav.addItem(createSideNavItem(entry)));
+        MenuConfiguration.getMenuEntries().forEach(entry -> {
+            if (!entry.path().matches("marque|typesalle|typeEquipement|unitemesurer")) {
+                nav.addItem(createSideNavItem(entry));
+            }
+        });
+
+        // Groupe : Paramètres
+        SideNavItem parametresGroup = new SideNavItem("Paramètres");
+        parametresGroup.setPrefixComponent(new Icon("vaadin", "cog"));
+
+        parametresGroup.addItem(new SideNavItem("Marques", "marque", new Icon("vaadin", "tag")));
+        parametresGroup.addItem(new SideNavItem("Types de salle", "typesalle", new Icon("vaadin", "home")));
+        parametresGroup.addItem(new SideNavItem("Types d’équipement", "typeequipement", new Icon("vaadin", "archives")));
+        parametresGroup.addItem(new SideNavItem("Unité Mesuré", "unitemesurer", new Icon("vaadin", "sun-o")));
+
+        nav.addItem(parametresGroup);
+
+
         return nav;
     }
 

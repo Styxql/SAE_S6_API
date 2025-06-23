@@ -2,28 +2,25 @@ package com.usmb.but3.sae_s6_api.view;
 
 import com.usmb.but3.sae_s6_api.entity.UniteMesurer;
 import com.usmb.but3.sae_s6_api.service.UniteMesurerService;
+import com.usmb.but3.sae_s6_api.view.editor.UniteMesurerEditor;
+import com.usmb.but3.sae_s6_api.view.notification.NotificationType;
+import com.usmb.but3.sae_s6_api.view.notification.Notifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @Route("unitemesurer")
 @PageTitle("Unite Mesurer")
-@Menu(title = "Unité Mesuré", icon = "vaadin:grid-big-o")
 public class UniteMesurerView extends VerticalLayout {
 
     private final UniteMesurerService uniteMesurerService;
@@ -54,60 +51,6 @@ public class UniteMesurerView extends VerticalLayout {
             Icon deleteIcon = VaadinIcon.TRASH.create();
             
             /*
-             * Dialog + Form d'édition
-             */
-            Dialog dialogEditUniteMesurer = new Dialog();
-            dialogEditUniteMesurer.setHeaderTitle("Modifier l'unité mesurer");
-
-            // Fields
-            TextField nomFieldEditUniteMesurer = new TextField("Nom");
-            TextField symboleFieldEditUniteMesurer = new TextField("Symbole");
-
-            nomFieldEditUniteMesurer.setValue(uniteMesurer.getNom());
-            symboleFieldEditUniteMesurer.setValue(uniteMesurer.getSymbole());
-
-            FormLayout formLayoutEditUniteMesurer = new FormLayout();
-            formLayoutEditUniteMesurer.add(nomFieldEditUniteMesurer, symboleFieldEditUniteMesurer);
-            dialogEditUniteMesurer.add(formLayoutEditUniteMesurer);
-
-            // Bouton Save + Action de Sauvegarde
-            Button saveButton = new Button("Enregistrer", event -> {
-                String nomModif = nomFieldEditUniteMesurer.getValue().trim();
-                String symboleModif = symboleFieldEditUniteMesurer.getValue().trim();
-
-                // Erreur si champs vide
-                if (nomModif.isEmpty() || symboleModif.isEmpty()) {
-                    Notification notification = new Notification();
-                    notification.setDuration(3000);
-
-                    notification.setPosition(Notification.Position.BOTTOM_END);
-                    notification.addThemeVariants(NotificationVariant.LUMO_WARNING);
-
-                    Span text = new Span("Le nom et le symbole sont obligatoires");
-                    Icon icon = VaadinIcon.WARNING.create();
-
-                    HorizontalLayout notificationLayout = new HorizontalLayout(icon, text);
-                    notificationLayout.setAlignItems(Alignment.CENTER);
-                    notification.add(notificationLayout);
-                    notification.open();
-                    return;
-                }
-
-                // Modifie la valeur
-                uniteMesurer.setNom(nomModif);
-                uniteMesurer.setSymbole(symboleModif);
-
-                // Sauvegardé Type Salle
-                uniteMesurerService.saveUniteMesurer(uniteMesurer);
-                Notification.show("Unité mesuré modifié avec succès");
-                dialogEditUniteMesurer.close();
-                refreshUniteMesurerList();
-            });
-
-            Button cancelButtonEdit = new Button("Annuler", e -> dialogEditUniteMesurer.close());
-            dialogEditUniteMesurer.getFooter().add(cancelButtonEdit, saveButton);
-
-            /*
              * Dialog Suppression
              */
             Dialog confirmDialogDelUniteMesurer = new Dialog();
@@ -134,7 +77,14 @@ public class UniteMesurerView extends VerticalLayout {
              * Action -> event
              */
             Button editButton = new Button(editIcon, e -> {
-                dialogEditUniteMesurer.open();
+                UniteMesurerEditor editForm = new UniteMesurerEditor(unitemesurerModif -> {
+                    uniteMesurerService.saveUniteMesurer(unitemesurerModif);
+                    Notifier.show(unitemesurerModif.getNom(), NotificationType.SUCCES_EDIT);
+                    refreshUniteMesurerList();
+                });
+                editForm.editUniteMesurer(uniteMesurer);
+                add(editForm);
+                editForm.open();
             });
             editButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
@@ -150,66 +100,16 @@ public class UniteMesurerView extends VerticalLayout {
 
         add(header, grid);
 
-        /*
-         * Dialog + Form de creation
-         */
-        // Add new
-        Dialog dialogNewUniteMesurer = new Dialog();
-        dialogNewUniteMesurer.setHeaderTitle("Nouvelle unité");
-
-        // Fields
-        TextField nomFieldNewUniteMesurer = new TextField("Nom");
-        TextField symboleFieldNewUniteMesurer = new TextField("Symbole");
-
-
-        FormLayout formLayoutNewnUiteMesurer = new FormLayout();
-        formLayoutNewnUiteMesurer.add(nomFieldNewUniteMesurer, symboleFieldNewUniteMesurer);
-        dialogNewUniteMesurer.add(formLayoutNewnUiteMesurer);
-
-        // Bouton Save + Action de Sauvegarde
-        Button saveButtonUniteMesurer = new Button("Enregistrer", event -> {
-            String nomUniteMesurer = nomFieldNewUniteMesurer.getValue().trim();
-            String symboleUniteMesurer = symboleFieldNewUniteMesurer.getValue().trim();
-
-            // Erreur si champs vide
-            if (nomUniteMesurer.isEmpty() || symboleUniteMesurer.isEmpty()) {
-                Notification notification = new Notification();
-                notification.setDuration(3000);
-
-                notification.setPosition(Notification.Position.BOTTOM_END);
-                notification.addThemeVariants(NotificationVariant.LUMO_WARNING);
-
-                Span text = new Span("Le nom et le symbole sont obligatoires");
-                Icon icon = VaadinIcon.WARNING.create();
-
-                HorizontalLayout notificationLayout = new HorizontalLayout(icon, text);
-                notificationLayout.setAlignItems(Alignment.CENTER);
-                notification.add(notificationLayout);
-                notification.open();
-                return;
-            }
-
-            // Créer Type Salle
-            UniteMesurer newUniteMesurer = new UniteMesurer();
-            newUniteMesurer.setNom(nomUniteMesurer);
-            newUniteMesurer.setSymbole(symboleUniteMesurer);
-
-            // Sauvegardé Type Salle
-            uniteMesurerService.saveUniteMesurer(newUniteMesurer);
-            Notification.show("Unite ajouté avec succès");
-            dialogNewUniteMesurer.close();
-
+        UniteMesurerEditor editor = new UniteMesurerEditor(uniteMesurer -> {
+            uniteMesurerService.saveUniteMesurer(uniteMesurer);
+            Notifier.show(uniteMesurer.getNom(), NotificationType.SUCCES_NEW);
             refreshUniteMesurerList();
         });
 
-        // Bouton Cancel
-        Button cancelButtonNew = new Button("Annuler", e -> dialogNewUniteMesurer.close());
-        dialogNewUniteMesurer.getFooter().add(cancelButtonNew, saveButtonUniteMesurer);
-
-        // Ajout de l'event sur le bouton
         addButton.addClickListener(e -> {
-            nomFieldNewUniteMesurer.clear();
-            dialogNewUniteMesurer.open();
+            editor.editUniteMesurer(new UniteMesurer());
+            add(editor);
+            editor.open();
         });
     }
 
