@@ -1,0 +1,8 @@
+com.usmb.but3.sae_s6_api
+com.usmb.but3.sae_s6_api.controller
+com.usmb.but3.sae_s6_api.entity
+com.usmb.but3.sae_s6_api.repository
+com.usmb.but3.sae_s6_api.service
+com.usmb.but3.sae_s6_api.view
+com.usmb.but3.sae_s6_api.view.editor
+com.usmb.but3.sae_s6_api.view.notification
