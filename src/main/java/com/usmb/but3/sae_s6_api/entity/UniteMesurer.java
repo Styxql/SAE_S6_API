@@ -1,5 +1,7 @@
 package com.usmb.but3.sae_s6_api.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +25,9 @@ public class UniteMesurer {
 
     @Column(name = "uni_symbole", length = 10, nullable = false)
     private String symbole;
+
+    @OneToMany(mappedBy = "uniteMesurer", cascade = CascadeType.REMOVE)
+    private List<ParametreCapteur> parametreCapteurs;
 
     @Override
     public boolean equals(Object obj) {

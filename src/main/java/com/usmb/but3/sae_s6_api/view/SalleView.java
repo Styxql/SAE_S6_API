@@ -75,7 +75,7 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
             salleService.saveSalle(salle);
             Notifier.show(salle.getNom(), NotificationType.SUCCES_NEW);
             refreshSalleCards();
-        }, typeSalleService.getAllTypeSalles());
+        }, typeSalleService.getAllTypeSalles(), batiment);
 
         addButton.addClickListener(e -> {
             editor.editSalle(new Salle());
@@ -155,7 +155,7 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
                 salleService.saveSalle(salleModif);
                 Notifier.show(salleModif.getNom(), NotificationType.SUCCES_EDIT);
                 refreshSalleCards();
-            }, typeSalleService.getAllTypeSalles());
+            }, typeSalleService.getAllTypeSalles(), batiment);
             editForm.editSalle(salle);
             add(editForm);
             editForm.open();

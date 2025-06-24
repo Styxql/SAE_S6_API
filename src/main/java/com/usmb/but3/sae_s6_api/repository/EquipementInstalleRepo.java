@@ -8,6 +8,5 @@ import com.usmb.but3.sae_s6_api.entity.EquipementInstalle;
 
 public interface EquipementInstalleRepo extends JpaRepository<EquipementInstalle, Integer> {
     List<EquipementInstalle> findBySalleId(Integer salleId);
-    List<EquipementInstalle> findByEquipementId(Integer equipementId);
 
 }

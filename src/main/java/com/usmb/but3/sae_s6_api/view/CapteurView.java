@@ -4,14 +4,14 @@ import com.usmb.but3.sae_s6_api.entity.Capteur;
 import com.usmb.but3.sae_s6_api.entity.Marque;
 import com.usmb.but3.sae_s6_api.service.CapteurService;
 import com.usmb.but3.sae_s6_api.service.MarqueService;
+import com.usmb.but3.sae_s6_api.view.notification.NotificationType;
+import com.usmb.but3.sae_s6_api.view.notification.Notifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -115,7 +115,7 @@ public class CapteurView extends VerticalLayout {
         editor.setChangeHandler(() -> {
             dialog.close();
             listCapteur(filter.getValue());
-            Notification.show("Capteur enregistré", 3000, Notification.Position.BOTTOM_END);
+            Notifier.show(capteur.getNom(), NotificationType.SUCCES_ADD);
         });
 
      
@@ -127,18 +127,23 @@ public class CapteurView extends VerticalLayout {
      * Ouvre une boîte de dialogue de confirmation de suppression d'un capteur.
      */
     private void openDeleteDialog(Capteur capteur) {
-        Dialog confirmDialog = new Dialog(new Span("Confirmer la suppression du capteur \"" + capteur.getNom() + "\" ?"));
+        Dialog confirmDialog = new Dialog();
+        confirmDialog.setHeaderTitle("Confirmer la suppression");
 
-        Button confirmBtn = new Button("Confirmer", e -> {
+        confirmDialog.add("Voulez-vous vraiment supprimer le type salle \"" + capteur.getNom() + "\" ?");
+
+        Button confirmButton = new Button("Supprimer", event -> {
             capteurService.deleteCapteurById(capteur.getId());
+            Notifier.show(capteur.getNom(), NotificationType.SUCCES_DELETE);
             confirmDialog.close();
             listCapteur(filter.getValue());
-            Notification.show("Capteur supprimé", 3000, Notification.Position.TOP_END);
         });
+        confirmButton.getStyle().set("color", "red");
 
-        Button cancelBtn = new Button("Annuler", e -> confirmDialog.close());
-        confirmDialog.add(new HorizontalLayout(confirmBtn, cancelBtn));
+        Button cancelButton = new Button("Annuler", event -> confirmDialog.close());
 
+        confirmDialog.getFooter().add(cancelButton, confirmButton);
+        add(confirmDialog);
         confirmDialog.open();
     }
 

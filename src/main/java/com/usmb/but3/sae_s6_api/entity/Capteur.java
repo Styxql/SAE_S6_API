@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @NoArgsConstructor
@@ -47,9 +48,13 @@ public class Capteur {
     @JoinColumn(name = "mar_id", nullable = false)
     private Marque marque;
 
-    @OneToMany(mappedBy = "capteur")
+    @OneToMany(mappedBy = "capteur", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<ParametreCapteur> parametreCapteur;
+
+    @OneToMany(mappedBy = "capteur", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<CapteurInstalle> capteurInstalles;
 
     @Override
     public boolean equals(Object obj) {

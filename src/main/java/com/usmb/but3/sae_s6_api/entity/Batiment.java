@@ -1,5 +1,9 @@
 package com.usmb.but3.sae_s6_api.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +26,10 @@ public class Batiment {
 
     @Column(name = "bat_urlimg", length = 1024, nullable = true)
     private String urlImg;
+
+    @OneToMany(mappedBy = "batiment", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<Salle> salles;
 
     @Override
     public boolean equals(Object obj) {

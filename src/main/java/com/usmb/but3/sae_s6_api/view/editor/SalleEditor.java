@@ -1,5 +1,6 @@
 package com.usmb.but3.sae_s6_api.view.editor;
 
+import com.usmb.but3.sae_s6_api.entity.Batiment;
 import com.usmb.but3.sae_s6_api.entity.Salle;
 import com.usmb.but3.sae_s6_api.entity.TypeSalle;
 import com.vaadin.flow.component.button.Button;
@@ -31,7 +32,7 @@ public class SalleEditor extends Dialog {
     private final Binder<Salle> binder = new Binder<>(Salle.class);
     private Salle salle;
 
-    public SalleEditor(Consumer<Salle> onSave, List<TypeSalle> typeSalles) {
+    public SalleEditor(Consumer<Salle> onSave, List<TypeSalle> typeSalles, Batiment batiment) {
         typeSalleField.setItems(typeSalles);
         typeSalleField.setItemLabelGenerator(TypeSalle::getNom);
 
@@ -65,6 +66,7 @@ public class SalleEditor extends Dialog {
 
         saveButton.addClickListener(e -> {
             try {
+                salle.setBatiment(batiment);
                 binder.writeBean(salle);
                 onSave.accept(salle);
                 close();

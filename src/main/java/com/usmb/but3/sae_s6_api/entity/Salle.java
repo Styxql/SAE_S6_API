@@ -1,6 +1,10 @@
 package com.usmb.but3.sae_s6_api.entity;
 
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +35,13 @@ public class Salle {
     @ManyToOne
     @JoinColumn(name = "bat_id", nullable = false)
     private Batiment batiment;
+
+    @OneToMany(mappedBy = "salle", cascade = CascadeType.REMOVE)
+    private List<EquipementInstalle> equipementInstalles;
+
+    @OneToMany(mappedBy = "salle", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<CapteurInstalle> capteurInstalles;
 
     @ManyToOne
     @JoinColumn(name = "typ_id", nullable = false)

@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.usmb.but3.sae_s6_api.entity.Equipement;
-import com.usmb.but3.sae_s6_api.entity.EquipementInstalle;
-import com.usmb.but3.sae_s6_api.repository.EquipementInstalleRepo;
 import com.usmb.but3.sae_s6_api.repository.EquipementRepo;
 
 import lombok.RequiredArgsConstructor;
@@ -17,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EquipementService {
     private final EquipementRepo equipementRepo;
-    private final EquipementInstalleRepo equipementInstalleRepo; 
-
 
     public List<Equipement> getAllEquipements(){
         return equipementRepo.findAll();
@@ -41,9 +37,6 @@ public class EquipementService {
     }
 
      public void deleteEquipementById(Integer id) {
-        List<EquipementInstalle> installs = equipementInstalleRepo.findByEquipementId(id);
-        equipementInstalleRepo.deleteAll(installs);
-
         if (!equipementRepo.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "404 : Equipement non trouvé");
         }
