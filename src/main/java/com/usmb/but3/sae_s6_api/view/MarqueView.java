@@ -1,5 +1,8 @@
 package com.usmb.but3.sae_s6_api.view;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.usmb.but3.sae_s6_api.entity.Marque;
 import com.usmb.but3.sae_s6_api.service.MarqueService;
 import com.usmb.but3.sae_s6_api.view.editor.MarqueEditor;
@@ -18,7 +21,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
+@Component
+@Scope("prototype")
 @Route("marque")
 @PageTitle("Marque")
 public class MarqueView extends VerticalLayout {
@@ -26,6 +30,8 @@ public class MarqueView extends VerticalLayout {
     private final MarqueService marqueService;
 
     final Grid<Marque> grid;
+    Button addButton;
+    MarqueEditor editor;
 
     public MarqueView(MarqueService marqueService) {
         HorizontalLayout header = new HorizontalLayout();
@@ -35,17 +41,17 @@ public class MarqueView extends VerticalLayout {
 
         H3 title = new H3("Liste de Marque");
 
-        Button addButton = new Button("Ajouter une Marque", VaadinIcon.PLUS.create());
+        this.addButton = new Button("Ajouter une Marque", VaadinIcon.PLUS.create());
 
         header.add(title, addButton);
 
-        MarqueEditor editor = new MarqueEditor(marque -> {
+        this.editor = new MarqueEditor(marque -> {
             marqueService.saveMarque(marque);
             Notifier.show(marque.getNom(), NotificationType.SUCCES_NEW);
             refreshMarqueList();
         });
 
-        addButton.addClickListener(e -> {
+        this.addButton.addClickListener(e -> {
             editor.editMarque(new Marque());
             add(editor);
             editor.open();
