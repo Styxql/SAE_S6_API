@@ -91,7 +91,7 @@ public class SalleController {
      * Cette méthode est appelée lors d'une requête GET.
      * URL : localhost:8080/sae/v1/getByBatimentId/{batimentId}
      * But : Recupere toutes les salles dans le batiment avec l'id 
-     * @param id L'identifiant de batiment
+     * @param batimentId L'identifiant de batiment
      * @return Message de confirmation
      */
     @GetMapping("/getByBatimentId/{batimentId}")

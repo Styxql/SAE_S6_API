@@ -46,8 +46,8 @@ public class EquipementInstalleService {
      * @param equipementInstalle L’équipement à enregistrer.
      * @return L’équipement installé sauvegardé.
      */
-    public EquipementInstalle saveEquipementInstalle(EquipementInstalle EquipementInstalle){
-        return equipementInstalleRepo.save(EquipementInstalle);
+    public EquipementInstalle saveEquipementInstalle(EquipementInstalle equipementInstalle){
+        return equipementInstalleRepo.save(equipementInstalle);
     }
 
     /**
@@ -56,11 +56,11 @@ public class EquipementInstalleService {
      * @return L’équipement sauvegardé.
      * @throws ResponseStatusException si l’ID n’existe pas.
      */
-    public EquipementInstalle updateEquipementInstalle(EquipementInstalle EquipementInstalle){
-        if (!equipementInstalleRepo.existsById(EquipementInstalle.getId())) {
+    public EquipementInstalle updateEquipementInstalle(EquipementInstalle equipementInstalle){
+        if (!equipementInstalleRepo.existsById(equipementInstalle.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"404 : Id Not Found");
         }
-        return equipementInstalleRepo.save(EquipementInstalle);
+        return equipementInstalleRepo.save(equipementInstalle);
     }
 
     /**
