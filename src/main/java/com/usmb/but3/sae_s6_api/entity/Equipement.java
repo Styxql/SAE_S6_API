@@ -92,6 +92,7 @@ public class Equipement {
     @JoinColumn(name = "teq_id", nullable = false)
     private TypeEquipement typeEquipement;
 
+    /** Liste des installations de cet équipement dans différentes salles. */
     @OneToMany(mappedBy = "equipement", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<EquipementInstalle> equipementInstalles;

@@ -43,6 +43,11 @@ public class Batiment {
     @Column(name = "bat_urlimg", length = 1024, nullable = true)
     private String urlImg;
 
+     /**
+     * Liste des salles associées à ce bâtiment.
+     * Relation OneToMany. La suppression d’un bâtiment entraîne la suppression des salles associées.
+     * Utilise @JsonBackReference pour éviter les boucles .
+     */
     @OneToMany(mappedBy = "batiment", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<Salle> salles;

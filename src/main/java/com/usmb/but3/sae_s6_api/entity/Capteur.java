@@ -98,6 +98,11 @@ public class Capteur {
     @JsonManagedReference
     private List<ParametreCapteur> parametreCapteur;
 
+    /**
+     * Liste des instances du capteur installées dans des salles.
+     * Relation OneToMany avec cascade de suppression.
+     * Utilise JsonBackReference pour éviter les boucles.
+     */
     @OneToMany(mappedBy = "capteur", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<CapteurInstalle> capteurInstalles;
