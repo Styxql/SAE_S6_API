@@ -10,6 +10,11 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+/**
+ * Entité capteur.
+ * Un capteur est associé à une marque, possède des dimensions physiques,
+ * une référence, une description et peut être lié à plusieurs paramètres.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -17,40 +22,87 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "t_e_capteur_cap")
 public class Capteur {
 
+    /**
+     * Identifiant unique du capteur.
+     * Généré automatiquement par la base de données.
+     */
     @Id
     @Column(name = "cap_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * Nom du capteur.
+     * Obligatoire, limité à 100 caractères.
+     */
     @Column(name = "cap_nom", length = 100, nullable = false)
     private String nom;
 
+    /**
+     * Description du capteur.
+     * Optionnel, limité à 500 caractères.
+     */
     @Column(name = "cap_description", length = 500)
     private String description;
 
+    /**
+     * Référence du capteur (ex. code produit).
+     * Optionnel, limité à 200 caractères.
+     */
     @Column(name = "cap_reference", length = 200)
     private String reference;
 
+    /**
+     * Hauteur physique du capteur (en cm par exemple).
+     * Obligatoire avec précision 6 et échelle 2 (ex : 9999.99).
+     */
     @Column(name = "cap_hauteur", precision = 6, scale = 2, nullable = false)
     private BigDecimal hauteur;
 
+    /**
+     * Longueur physique du capteur.
+     * Obligatoire avec la même précision que la hauteur.
+     */
     @Column(name = "cap_longueur", precision = 6, scale = 2, nullable = false)
     private BigDecimal longueur;
 
+    /**
+     * Largeur physique du capteur.
+     * Obligatoire, format identique aux autres dimensions.
+     */
     @Column(name = "cap_largeur", precision = 6, scale = 2, nullable = false)
     private BigDecimal largeur;
 
+    /**
+     * URL d'une image représentant le capteur.
+     * Optionnel, jusqu'à 1024 caractères.
+     */
     @Column(name = "cap_urlimg", length = 1024, nullable = true)
     private String urlImg;
 
+    /**
+     * Marque associée à ce capteur.
+     * Relation obligatoire ManyToOne (plusieurs capteurs peuvent appartenir à une même marque).
+     */
     @ManyToOne
     @JoinColumn(name = "mar_id", nullable = false)
     private Marque marque;
 
+    /**
+     * Liste des paramètres associés à ce capteur.
+     * Relation OneToMany. Gérée via l’attribut `capteur` dans `ParametreCapteur`.
+     * @JsonManagedReference évite les boucles de sérialisation JSON.
+     */
     @OneToMany(mappedBy = "capteur")
     @JsonManagedReference
     private List<ParametreCapteur> parametreCapteur;
 
+    /**
+     * Compare deux objets Capteur pour déterminer s'ils sont égaux.
+     * Deux capteurs sont égaux s’ils ont les mêmes valeurs pour tous les attributs.
+     * @param obj L'objet à comparer.
+     * @return true si les objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

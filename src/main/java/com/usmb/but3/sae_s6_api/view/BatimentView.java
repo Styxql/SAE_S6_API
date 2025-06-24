@@ -134,7 +134,7 @@ private Card createBatimentCard(Batiment bat) {
 
     SubMenu subMenu = menuIcon.getSubMenu();
 
-    // --- Modifier
+    // Modifier
     subMenu.addItem("Modifier", e -> {
         BatimentEditor editForm = new BatimentEditor(batModif -> {
             batimentService.saveBatiment(batModif);
@@ -146,7 +146,7 @@ private Card createBatimentCard(Batiment bat) {
         editForm.open();
     });
 
-    // --- Supprimer
+    // Supprimer
     subMenu.addItem("Supprimer", e -> {
         Dialog confirmDialog = new Dialog();
         confirmDialog.setHeaderTitle("Confirmer la suppression");

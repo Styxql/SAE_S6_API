@@ -27,9 +27,10 @@ public class UniteMesurerController {
     private final UniteMesurerService uniteMesurerService;
 
     /**
-     * Requête GET
+     * Cette méthode est appelée lors d'une requête GET.
      * URL : localhost:8080/sae/v1/uniteMesurer
-     * Récupère toutes les unités de mesure.
+     * But : Récupère toutes les unités de mesure dans la table unite_mesurer.
+     * @return Liste des unités de mesure.
      */
     @GetMapping("")
     public ResponseEntity<List<UniteMesurer>> getAllUniteMesurer() {
@@ -37,9 +38,11 @@ public class UniteMesurerController {
     }
 
     /**
-     * Requête GET
+     * Cette méthode est appelée lors d'une requête GET.
      * URL : localhost:8080/sae/v1/uniteMesurer/{id}
-     * Récupère une unité de mesure par son identifiant.
+     * But : Récupère une unité de mesure à partir de son identifiant.
+     * @param id L'identifiant de l'unité de mesure.
+     * @return L'unité de mesure correspondant à l'id.
      */
     @GetMapping("/{id}")
     public ResponseEntity<UniteMesurer> getUniteMesurerById(@PathVariable("id") Integer id) {
@@ -47,9 +50,11 @@ public class UniteMesurerController {
     }
 
     /**
-     * Requête POST
+     * Cette méthode est appelée lors d'une requête POST.
      * URL : localhost:8080/sae/v1/uniteMesurer
-     * Enregistre une nouvelle unité de mesure.
+     * But : Enregistre une nouvelle unité de mesure dans la base de données.
+     * @param uniteMesurer L'objet unité de mesure à enregistrer.
+     * @return L'unité de mesure enregistrée avec son identifiant.
      */
     @PostMapping("")
     public ResponseEntity<UniteMesurer> saveUniteMesurer(@RequestBody UniteMesurer uniteMesurer) {
@@ -57,9 +62,11 @@ public class UniteMesurerController {
     }
 
     /**
-     * Requête PUT
+     * Cette méthode est appelée lors d'une requête PUT.
      * URL : localhost:8080/sae/v1/uniteMesurer
-     * Met à jour une unité de mesure existante.
+     * But : Met à jour une unité de mesure existante dans la base de données.
+     * @param uniteMesurer L'objet unité de mesure à mettre à jour.
+     * @return L'unité de mesure mise à jour.
      */
     @PutMapping("")
     public ResponseEntity<UniteMesurer> updateUniteMesurer(@RequestBody UniteMesurer uniteMesurer) {
@@ -67,9 +74,11 @@ public class UniteMesurerController {
     }
 
     /**
-     * Requête DELETE
+     * Cette méthode est appelée lors d'une requête DELETE.
      * URL : localhost:8080/sae/v1/uniteMesurer/{id}
-     * Supprime une unité de mesure par son identifiant.
+     * But : Supprime une unité de mesure à partir de son identifiant.
+     * @param id L'identifiant de l'unité de mesure à supprimer.
+     * @return Message de confirmation.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUniteMesurerById(@PathVariable("id") Integer id) {

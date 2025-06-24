@@ -67,7 +67,7 @@ public class SalleView extends VerticalLayout implements HasUrlParameter<Integer
 
         cardLayout.getStyle()
                 .set("display", "grid")
-                .set("grid-template-columns", "repeat(3, 1fr)")
+                .set("grid-template-columns", "repeat(4, 1fr)")
                 .set("gap", "20px")
                 .set("padding", "10px");
 

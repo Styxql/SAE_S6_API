@@ -12,29 +12,55 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entité EquipementInstalle.
+ * Représente un équipement installé dans une salle, avec un certain nombre d'exemplaires.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
 @Table(name = "t_e_equipementinstalle_ein")
 public class EquipementInstalle {
-    
+
+    /**
+     * Identifiant unique de l'équipement installé.
+     * Généré automatiquement par la base de données.
+     */
     @Id
     @Column(name = "ein_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * Nombre d'exemplaires de l'équipement installés dans la salle.
+     * Ce champ est obligatoire.
+     */
     @Column(name = "ein_nombre", nullable = false)
     private Integer nombre;
 
+    /**
+     * Equipement installé.
+     * Relation obligatoire ManyToOne vers l'entité Equipement.
+     */
     @ManyToOne
     @JoinColumn(name = "equ_id", nullable = false)
     private Equipement equipement;
 
+    /**
+     * Salle dans laquelle l'équipement est installé.
+     * Relation obligatoire ManyToOne vers l'entité Salle.
+     */
     @ManyToOne
     @JoinColumn(name = "sal_id", nullable = false)
     private Salle salle;
 
+    /**
+     * Compare deux objets EquipementInstalle pour déterminer s’ils sont égaux.
+     * Deux installations sont considérées comme égales si tous leurs attributs sont identiques.
+     * @param obj L'objet à comparer.
+     * @return true si les objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -67,6 +93,11 @@ public class EquipementInstalle {
         return true;
     }
 
+    /**
+     * Calcule le hashCode de l'objet EquipementInstalle.
+     * Basé sur l'identifiant, l'équipement, la salle et le nombre d'unités installées.
+     * @return Code de hachage de l'objet.
+     */
     @Override
     public int hashCode() {
         final int prime = 31;

@@ -11,21 +11,40 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+/**
+ * Entité TypeEquipement.
+ * Représente le type d’un équipement (ex : projecteur, ordinateur, tableau interactif...).
+ * Cette entité permet de catégoriser les équipements dans le système.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
 @Table(name = "t_e_typeequipement_teq")
 public class TypeEquipement {
-    
+
+    /**
+     * Identifiant unique du type d’équipement.
+     * Généré automatiquement par la base de données.
+     */
     @Id
     @Column(name = "teq_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * Nom du type d’équipement.
+     * Champ obligatoire, limité à 100 caractères.
+     */
     @Column(name = "teq_nom", length = 100, nullable = false)
     private String nom;
 
+    /**
+     * Compare deux objets TypeEquipement pour déterminer s’ils sont égaux.
+     * L’égalité est basée sur l’identifiant et le nom.
+     * @param obj L’objet à comparer.
+     * @return true si les objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -48,6 +67,10 @@ public class TypeEquipement {
         return true;
     }
 
+    /**
+     * Calcule le hashCode de l’objet TypeEquipement.
+     * @return Code de hachage basé sur l’identifiant et le nom.
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
