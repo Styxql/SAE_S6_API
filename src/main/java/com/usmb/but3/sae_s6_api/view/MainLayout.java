@@ -59,7 +59,7 @@ public final class MainLayout extends AppLayout {
 
         parametresGroup.addItem(new SideNavItem("Marques", "marque", new Icon("vaadin", "tag")));
         parametresGroup.addItem(new SideNavItem("Types de salle", "typesalle", new Icon("vaadin", "home")));
-        parametresGroup.addItem(new SideNavItem("Types d’équipement", "typeequipement", new Icon("vaadin", "archives")));
+        parametresGroup.addItem(new SideNavItem("Types d'équipement", "typeequipement", new Icon("vaadin", "archives")));
         parametresGroup.addItem(new SideNavItem("Unité Mesuré", "unitemesurer", new Icon("vaadin", "sun-o")));
 
         nav.addItem(parametresGroup);
