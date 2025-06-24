@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.usmb.but3.sae_s6_api.entity.TypeEquipement;
-import com.usmb.but3.sae_s6_api.entity.TypeSalle;
 import com.usmb.but3.sae_s6_api.view.editor.TypeEquipementEditor;
-import com.usmb.but3.sae_s6_api.view.editor.TypeSalleEditor;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.provider.ListDataProvider;
@@ -87,9 +85,7 @@ public class TypeEquipementViewTest {
         UI.setCurrent(null); // Nettoyage
     }
 
-    private TypeEquipement getFirstItem(Grid<TypeEquipement> grid) {
-        return ((ListDataProvider<TypeEquipement>) grid.getDataProvider()).getItems().iterator().next();
-    }
+  
 
     private TypeEquipement getLastItem(Grid<TypeEquipement> grid) {
         Collection<TypeEquipement> auteurs = ((ListDataProvider<TypeEquipement>) grid.getDataProvider()).getItems();

@@ -16,7 +16,6 @@ import com.usmb.but3.sae_s6_api.view.editor.TypeSalleEditor;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.provider.ListDataProvider;
-import com.vaadin.flow.server.VaadinSession;
 
 @SpringBootTest
 public class TypeSalleViewTest {
@@ -90,9 +89,6 @@ public void editorAfficheQuandAddNewClicked() {
 
 
 
-     private TypeSalle getFirstItem(Grid<TypeSalle> grid) {
-        return((ListDataProvider<TypeSalle>) grid.getDataProvider()).getItems().iterator().next();
-    }
 
     private TypeSalle getLastItem(Grid<TypeSalle> grid) {
         Collection<TypeSalle> auteurs = ((ListDataProvider<TypeSalle>) grid.getDataProvider()).getItems();

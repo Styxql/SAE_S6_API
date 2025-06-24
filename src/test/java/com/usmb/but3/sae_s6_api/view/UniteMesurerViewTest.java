@@ -14,9 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.usmb.but3.sae_s6_api.entity.TypeSalle;
 import com.usmb.but3.sae_s6_api.entity.UniteMesurer;
-import com.usmb.but3.sae_s6_api.view.editor.TypeSalleEditor;
 import com.usmb.but3.sae_s6_api.view.editor.UniteMesurerEditor;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
@@ -95,9 +93,7 @@ public void editorAfficheQuandAddNewClicked() {
 
 
 
-     private TypeSalle getFirstItem(Grid<TypeSalle> grid) {
-        return((ListDataProvider<TypeSalle>) grid.getDataProvider()).getItems().iterator().next();
-    }
+  
 
     private UniteMesurer getLastItem(Grid<UniteMesurer> grid) {
         Collection<UniteMesurer> auteurs = ((ListDataProvider<UniteMesurer>) grid.getDataProvider()).getItems();

@@ -2,25 +2,15 @@ package com.usmb.but3.sae_s6_api.view;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.logging.Logger;
 
-import com.usmb.but3.sae_s6_api.entity.Batiment;
-import com.usmb.but3.sae_s6_api.entity.TypeSalle;
-import com.usmb.but3.sae_s6_api.service.BatimentService;
-import com.usmb.but3.sae_s6_api.service.SalleService;
 import com.usmb.but3.sae_s6_api.view.editor.BatimentEditor;
-import com.usmb.but3.sae_s6_api.view.editor.TypeSalleEditor;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.data.provider.ListDataProvider;
 
 @SpringBootTest
 public class BatimentViewTest {
@@ -87,13 +77,13 @@ public class BatimentViewTest {
     // UI.setCurrent(null);
     // }
 
-    private TypeSalle getFirstItem(Grid<TypeSalle> grid) {
-        return ((ListDataProvider<TypeSalle>) grid.getDataProvider()).getItems().iterator().next();
-    }
+    // private TypeSalle getFirstItem(Grid<TypeSalle> grid) {
+    //     return ((ListDataProvider<TypeSalle>) grid.getDataProvider()).getItems().iterator().next();
+    // }
 
-    private TypeSalle getLastItem(Grid<TypeSalle> grid) {
-        Collection<TypeSalle> auteurs = ((ListDataProvider<TypeSalle>) grid.getDataProvider()).getItems();
-        List<TypeSalle> auteurList = new ArrayList<>(auteurs);
-        return auteurList.get(auteurList.size() - 1);
-    }
+    // private TypeSalle getLastItem(Grid<TypeSalle> grid) {
+    //     Collection<TypeSalle> auteurs = ((ListDataProvider<TypeSalle>) grid.getDataProvider()).getItems();
+    //     List<TypeSalle> auteurList = new ArrayList<>(auteurs);
+    //     return auteurList.get(auteurList.size() - 1);
+    // }
 }

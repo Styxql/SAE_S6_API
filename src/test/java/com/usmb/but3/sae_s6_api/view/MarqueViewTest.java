@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.usmb.but3.sae_s6_api.entity.Marque;
-import com.usmb.but3.sae_s6_api.entity.TypeSalle;
 import com.usmb.but3.sae_s6_api.view.editor.MarqueEditor;
-import com.usmb.but3.sae_s6_api.view.editor.TypeSalleEditor;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.provider.ListDataProvider;
@@ -92,9 +90,7 @@ public void editorAfficheQuandAddNewClicked() {
 
 
 
-     private Marque getFirstItem(Grid<Marque> grid) {
-        return((ListDataProvider<Marque>) grid.getDataProvider()).getItems().iterator().next();
-    }
+    
 
     private Marque getLastItem(Grid<Marque> grid) {
         Collection<Marque> auteurs = ((ListDataProvider<Marque>) grid.getDataProvider()).getItems();
