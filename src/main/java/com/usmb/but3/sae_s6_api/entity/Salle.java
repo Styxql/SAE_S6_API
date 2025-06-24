@@ -61,10 +61,12 @@ public class Salle {
     @JoinColumn(name = "bat_id", nullable = false)
     private Batiment batiment;
 
+    /** Liste des équipements installés dans cette salle. */
     @OneToMany(mappedBy = "salle", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<EquipementInstalle> equipementInstalles;
 
+    /** Liste des capteurs installés dans cette salle. */
     @OneToMany(mappedBy = "salle", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<CapteurInstalle> capteurInstalles;

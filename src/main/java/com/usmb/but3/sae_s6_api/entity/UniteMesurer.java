@@ -45,6 +45,7 @@ public class UniteMesurer {
     @Column(name = "uni_symbole", length = 10, nullable = false)
     private String symbole;
 
+    /** Liste des paramètres liés à cette unité. */
     @OneToMany(mappedBy = "uniteMesurer", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<ParametreCapteur> parametreCapteurs;
