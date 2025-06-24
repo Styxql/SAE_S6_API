@@ -9,6 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Représente un bâtiment dans le système.
+ * Un bâtiment possède un nom et éventuellement une image associée.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -16,14 +20,26 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_e_batiment_bat")
 public class Batiment {
 
+    /**
+     * Identifiant unique du bâtiment.
+     * Généré automatiquement par la base de données.
+     */
     @Id
     @Column(name = "bat_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * Nom du bâtiment.
+     * Obligatoire (non nul) et limité à 100 caractères.
+     */
     @Column(name = "bat_nom", length = 100, nullable = false)
     private String nom;
 
+    /**
+     * URL de l'image représentant le bâtiment.
+     * Optionnel et peut contenir jusqu'à 1024 caractères.
+     */
     @Column(name = "bat_urlimg", length = 1024, nullable = true)
     private String urlImg;
 
@@ -31,6 +47,12 @@ public class Batiment {
     @JsonBackReference
     private List<Salle> salles;
 
+    /**
+     * Compare deux objets Batiment pour déterminer s'ils sont égaux.
+     * Deux bâtiments sont égaux s'ils ont le même id, nom et urlImg.
+     * @param obj L'objet à comparer avec le bâtiment actuel.
+     * @return true si les deux objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -58,6 +80,10 @@ public class Batiment {
         return true;
     }
 
+    /**
+     * Calcule le hashCode du bâtiment à partir de son id, nom et urlImg.
+     * @return Un entier représentant le hash du bâtiment.
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -67,5 +93,4 @@ public class Batiment {
         result = prime * result + ((urlImg == null) ? 0 : urlImg.hashCode());
         return result;
     }
-
 }

@@ -1,5 +1,8 @@
 package com.usmb.but3.sae_s6_api.view;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.usmb.but3.sae_s6_api.entity.TypeEquipement;
 import com.usmb.but3.sae_s6_api.service.TypeEquipementService;
 import com.usmb.but3.sae_s6_api.view.editor.TypeEquipementEditor;
@@ -18,12 +21,15 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
+@Component
+@Scope("prototype")
 @Route("typeequipement")
 @PageTitle("Typeequipement")
 public class TypeEquipementView extends VerticalLayout {
 
     private final TypeEquipementService typeEquipementService;
+    TypeEquipementEditor editForm;
+    final Button addButton;
 
     final Grid<TypeEquipement> grid;
 
@@ -35,7 +41,7 @@ public class TypeEquipementView extends VerticalLayout {
 
         H3 title = new H3("Liste de Type Equipement");
 
-        Button addButton = new Button("Ajouter un Type Equipement", VaadinIcon.PLUS.create());
+        this.addButton = new Button("Ajouter un Type Equipement", VaadinIcon.PLUS.create());
 
         header.add(title, addButton);
 
@@ -77,7 +83,7 @@ public class TypeEquipementView extends VerticalLayout {
              * Action -> event
              */
             Button editButton = new Button(editIcon, e -> {
-                TypeEquipementEditor editForm = new TypeEquipementEditor(typeequipementModif -> {
+                this.editForm = new TypeEquipementEditor(typeequipementModif -> {
                     typeEquipementService.saveTypeEquipement(typeequipementModif);
                     Notifier.show(typeequipementModif.getNom(), NotificationType.SUCCES_EDIT);
                     refreshTypeEquipementList();
@@ -100,16 +106,16 @@ public class TypeEquipementView extends VerticalLayout {
 
         add(header, grid);
 
-        TypeEquipementEditor editor = new TypeEquipementEditor(typeequipement -> {
+        this.editForm = new TypeEquipementEditor(typeequipement -> {
             typeEquipementService.saveTypeEquipement(typeequipement);
             Notifier.show(typeequipement.getNom(), NotificationType.SUCCES_NEW);
             refreshTypeEquipementList();
         });
 
         addButton.addClickListener(e -> {
-            editor.editTypeEquipement(new TypeEquipement());
-            add(editor);
-            editor.open();
+            this.editForm.editTypeEquipement(new TypeEquipement());
+            add(editForm);
+            editForm.open();
         });
     }
 

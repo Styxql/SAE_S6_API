@@ -4,6 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entité TypeSalle.
+ * Représente le type d’une salle (ex : salle de cours, laboratoire, amphithéâtre...).
+ * Permet de catégoriser les salles dans le système.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -11,14 +16,28 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_e_typesalle_typ")
 public class TypeSalle {
 
+    /**
+     * Identifiant unique du type de salle.
+     * Généré automatiquement par la base de données.
+     */
     @Id
     @Column(name = "typ_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * Nom du type de salle.
+     * Champ obligatoire, limité à 100 caractères.
+     */
     @Column(name = "typ_nom", length = 100, nullable = false)
     private String nom;
 
+    /**
+     * Compare deux objets TypeSalle pour déterminer s’ils sont égaux.
+     * L’égalité est basée sur l’identifiant et le nom.
+     * @param obj L’objet à comparer.
+     * @return true si les objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -40,7 +59,11 @@ public class TypeSalle {
             return false;
         return true;
     }
-
+    
+    /**
+     * Calcule le hashCode de l’objet TypeSalle.
+     * @return Code de hachage basé sur l’identifiant et le nom.
+     */
     @Override
     public int hashCode() {
         final int prime = 31;

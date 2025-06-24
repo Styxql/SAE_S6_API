@@ -10,15 +10,19 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.util.function.Consumer;
 
+import org.springframework.context.annotation.Scope;
+@Scope("prototype")
+@UIScope
 public class BatimentEditor extends Dialog {
 
-    private final TextField nomField = new TextField("Nom");
-    private final TextField urlImgField = new TextField("URL de l'image");
-    private final Button saveButton = new Button("Enregistrer", VaadinIcon.CHECK.create());
-    private final Button cancelButton = new Button("Annuler");
+    public final TextField nomField = new TextField("Nom");
+    public final TextField urlImgField = new TextField("URL de l'image");
+    public final Button saveButton = new Button("Enregistrer", VaadinIcon.CHECK.create());
+    public final Button cancelButton = new Button("Annuler");
 
     private final Binder<Batiment> binder = new Binder<>(Batiment.class);
     private Batiment batiment;

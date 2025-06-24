@@ -2,12 +2,19 @@ package com.usmb.but3.sae_s6_api.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+/**
+ * Entité UniteMesurer.
+ * Représente une unité de mesure utilisée pour exprimer les valeurs mesurées par un capteur.
+ * Par exemple : Celsius (°C), Pascal (Pa), Lux (lx), etc.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -15,20 +22,39 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_e_unitemesurer_uni")
 public class UniteMesurer {
 
+    /**
+     * Identifiant unique de l’unité de mesure.
+     * Généré automatiquement par la base de données.
+     */
     @Id
     @Column(name = "uni_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * Nom complet de l’unité de mesure (ex : Celsius, Pascal).
+     * Obligatoire, limité à 100 caractères.
+     */
     @Column(name = "uni_nom", length = 100, nullable = false)
     private String nom;
 
+    /**
+     * Symbole de l’unité de mesure (ex : °C, Pa, lx).
+     * Obligatoire, limité à 10 caractères.
+     */
     @Column(name = "uni_symbole", length = 10, nullable = false)
     private String symbole;
 
     @OneToMany(mappedBy = "uniteMesurer", cascade = CascadeType.REMOVE)
+    @JsonBackReference
     private List<ParametreCapteur> parametreCapteurs;
 
+    /**
+     * Compare deux objets UniteMesurer pour déterminer s’ils sont égaux.
+     * L’égalité est basée sur l’identifiant, le nom et le symbole.
+     * @param obj L’objet à comparer.
+     * @return true si les objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -56,6 +82,11 @@ public class UniteMesurer {
         return true;
     }
 
+    /**
+     * Calcule le hashCode de l’objet UniteMesurer.
+     * Basé sur l’identifiant, le nom et le symbole.
+     * @return Code de hachage de l’unité.
+     */
     @Override
     public int hashCode() {
         final int prime = 31;

@@ -7,6 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entité ParametreCapteur.
+ * Représente les caractéristiques de mesure d’un capteur pour une unité donnée.
+ * Cette entité correspond à une table d'association (relation many-to-many enrichie)
+ * entre les entités Capteur et UniteMesurer.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -15,32 +21,66 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_a_parametrecapteur_acu")
 public class ParametreCapteur {
 
+    /**
+     * Identifiant de l’unité de mesure (clé primaire composite).
+     */
     @Id
     @Column(name = "uni_id")
     private Integer uniteMesurerId;
 
+    /**
+     * Identifiant du capteur (clé primaire composite).
+     */
     @Id
     @Column(name = "cap_id")
     private Integer capteurId;
 
+    /**
+     * Plage minimale que le capteur peut mesurer pour cette unité.
+     * Optionnel.
+     */
     @Column(name = "acu_plagemin")
     private Integer plageMin;
 
+    /**
+     * Plage maximale que le capteur peut mesurer pour cette unité.
+     * Optionnel.
+     */
     @Column(name = "acu_plagemax")
     private Integer plageMax;
 
+    /**
+     * Précision de la mesure pour cette unité.
+     * Optionnel. Valeur entière représentant la précision (ex: nombre de décimales).
+     */
     @Column(name = "acu_precision")
     private Integer precision;
 
+    /**
+     * Capteur concerné.
+     * Relation ManyToOne, join sur capteurId.
+     * Champ non modifiable directement via cette entité (readonly).
+     */
     @ManyToOne
     @JoinColumn(name = "cap_id", insertable = false, updatable = false)
     @JsonBackReference
     private Capteur capteur;
 
+    /**
+     * Unité de mesure concernée.
+     * Relation ManyToOne, join sur uniteMesurerId.
+     * Champ non modifiable directement via cette entité (readonly).
+     */
     @ManyToOne
     @JoinColumn(name = "uni_id", insertable = false, updatable = false)
     private UniteMesurer uniteMesurer;
 
+    /**
+     * Compare deux objets ParametreCapteur pour déterminer s’ils sont égaux.
+     * L’égalité est basée sur les clés composites, les plages, la précision et les relations.
+     * @param obj L'objet à comparer.
+     * @return true si les objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -88,6 +128,11 @@ public class ParametreCapteur {
         return true;
     }
 
+    /**
+     * Calcule le hashCode de l'objet ParametreCapteur.
+     * Basé sur les clés composites et les champs associés.
+     * @return Code de hachage.
+     */
     @Override
     public int hashCode() {
         final int prime = 31;

@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+/**
+ * Entité Marque.
+ * Représente une marque à laquelle peuvent être associés des capteurs ou équipements.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -13,14 +17,28 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_e_marque_mar")
 public class Marque {
 
+    /**
+     * Identifiant unique de la marque.
+     * Généré automatiquement par la base de données.
+     */
     @Id
     @Column(name = "mar_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * Nom de la marque.
+     * Obligatoire, limité à 100 caractères.
+     */
     @Column(name = "mar_nom", length = 100, nullable = false)
     private String nom;
 
+    /**
+     * Compare deux objets Marque pour déterminer s’ils sont égaux.
+     * Deux marques sont égales si elles ont le même identifiant et le même nom.
+     * @param obj L’objet à comparer.
+     * @return true si les objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -43,6 +61,11 @@ public class Marque {
         return true;
     }
 
+    /**
+     * Calcule le hashCode de l’objet Marque.
+     * Basé sur l’identifiant et le nom.
+     * @return Code de hachage de l’objet.
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
