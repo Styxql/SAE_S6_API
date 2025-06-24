@@ -10,13 +10,17 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.util.function.Consumer;
 
+import org.springframework.context.annotation.Scope;
+@Scope("prototype")
+@UIScope
 public class MarqueEditor extends Dialog {
 
-    private final TextField nomField = new TextField("Nom");
-    private final Button saveButton = new Button("Enregistrer", VaadinIcon.CHECK.create());
+    public TextField nomField = new TextField("Nom");
+    public Button saveButton = new Button("Enregistrer", VaadinIcon.CHECK.create());
     private final Button cancelButton = new Button("Annuler");
 
     private final Binder<Marque> binder = new Binder<>(Marque.class);
@@ -27,8 +31,8 @@ public class MarqueEditor extends Dialog {
 
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        FormLayout form = new FormLayout(nomField);
-        add(form);
+        FormLayout formLayout = new FormLayout(nomField);
+        add(formLayout);
 
         binder.forField(nomField)
                 .asRequired("Le nom est obligatoire")

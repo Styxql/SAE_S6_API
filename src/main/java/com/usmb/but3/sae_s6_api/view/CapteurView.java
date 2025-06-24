@@ -4,8 +4,6 @@ import com.usmb.but3.sae_s6_api.entity.Capteur;
 import com.usmb.but3.sae_s6_api.entity.Marque;
 import com.usmb.but3.sae_s6_api.service.CapteurService;
 import com.usmb.but3.sae_s6_api.service.MarqueService;
-import com.usmb.but3.sae_s6_api.service.ParametreCapteurService;
-import com.usmb.but3.sae_s6_api.service.UniteMesurerService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -24,9 +22,14 @@ import com.vaadin.flow.router.Route;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Vue principale affichant les capteurs existants dans un tableau avec filtres et actions.
  */
+@Component
+@Scope("prototype")
 @Route("capteur")
 @PageTitle("Capteurs")
 @Menu(title = "Capteurs", order = 0, icon = "vaadin:line-bar-chart")
@@ -34,21 +37,19 @@ public class CapteurView extends VerticalLayout {
 
     private final CapteurService capteurService;
     private final MarqueService marqueService;
-    private final UniteMesurerService uniteMesurerService;
-    private final ParametreCapteurService parametreCapteurService;
+
+    final CapteurEditor editor;
 
 
-    private final Grid<Capteur> grid = new Grid<>(Capteur.class);
-    private final TextField filter = new TextField("Filtrer par nom");
-    private final MultiSelectComboBox<Marque> marqueFilter = new MultiSelectComboBox<>("Marque");
-    private final Button addNewBtn = new Button("Ajouter un capteur", VaadinIcon.PLUS.create());
+    final Grid<Capteur> grid = new Grid<>(Capteur.class);
+    final TextField filter = new TextField("Filtrer par nom");
+    final MultiSelectComboBox<Marque> marqueFilter = new MultiSelectComboBox<>("Marque");
+    final Button addNewBtn = new Button("Ajouter un capteur", VaadinIcon.PLUS.create());
 
-    public CapteurView(CapteurService capteurService, MarqueService marqueService, UniteMesurerService uniteMesurerService,ParametreCapteurService parametreCapteurService) {
+    public CapteurView(CapteurEditor editor,CapteurService capteurService, MarqueService marqueService) {
         this.capteurService = capteurService;
         this.marqueService = marqueService;
-        this.uniteMesurerService = uniteMesurerService;
-        this.parametreCapteurService=parametreCapteurService;
-
+        this.editor=editor;
         configureFilters();
         configureGrid();
 
@@ -108,7 +109,6 @@ public class CapteurView extends VerticalLayout {
      * Ouvre une boîte de dialogue pour créer ou modifier un capteur.
      */
     private void openEditDialog(Capteur capteur) {
-        CapteurEditor editor = new CapteurEditor(capteurService, marqueService, uniteMesurerService,parametreCapteurService);
         Dialog dialog = new Dialog(editor);
 
         editor.edit(capteur);
@@ -118,8 +118,7 @@ public class CapteurView extends VerticalLayout {
             Notification.show("Capteur enregistré", 3000, Notification.Position.BOTTOM_END);
         });
 
-        Button cancelBtn = new Button("Annuler", e -> dialog.close());
-        editor.add(new HorizontalLayout(cancelBtn));
+     
 
         dialog.open();
     }

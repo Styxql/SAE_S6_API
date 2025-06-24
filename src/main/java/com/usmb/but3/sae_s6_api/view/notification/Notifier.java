@@ -17,6 +17,18 @@ public class Notifier {
         Icon icon; 
 
         switch (notificationType) {
+            case SUCCES_ADD:
+                messageNotification = String.format("\"%s\" a été ajouté avec succès", nom);
+                icon = VaadinIcon.CHECK.create();
+                notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                break;
+
+            case SUCCES_REMOVE:
+                messageNotification = String.format("\"%s\" a été retiré avec succès", nom);
+                icon = VaadinIcon.CHECK.create();
+                notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                break;
+
             case SUCCES_DELETE:
                 messageNotification = String.format("\"%s\" a été supprimé avec succès", nom);
                 icon = VaadinIcon.CHECK.create();
@@ -52,6 +64,7 @@ public class Notifier {
                 icon = VaadinIcon.WARNING.create();
                 notification.addThemeVariants(NotificationVariant.LUMO_WARNING);
                 break;
+            
             default:
                 icon = VaadinIcon.WARNING.create();
                 messageNotification = "";

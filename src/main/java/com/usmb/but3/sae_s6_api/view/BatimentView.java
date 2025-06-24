@@ -26,12 +26,18 @@ import com.vaadin.flow.component.dialog.Dialog;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+@Component
+@Scope("prototype")
 @Route("batiment")
 @PageTitle("Batiment")
 @Menu(title = "Batiment", order = 0, icon = "vaadin:building") 
 public class BatimentView extends VerticalLayout {
     private final BatimentService batimentService;
     private final SalleService salleService;
+    public final Button addButton;
+    final BatimentEditor editor;
 
 public BatimentView(BatimentService batimentService, SalleService salleService) {
     this.batimentService = batimentService;
@@ -44,7 +50,7 @@ public BatimentView(BatimentService batimentService, SalleService salleService) 
 
     H3 title = new H3("Liste des bâtiments");
 
-    Button addButton = new Button("Ajouter un bâtiment", VaadinIcon.PLUS.create());
+    this.addButton = new Button("Ajouter un bâtiment", VaadinIcon.PLUS.create());
 
     header.add(title, addButton);
    
@@ -56,11 +62,12 @@ public BatimentView(BatimentService batimentService, SalleService salleService) 
         .set("padding", "10px");
 
 
-    BatimentEditor editor = new BatimentEditor(batiment -> {
+    this.editor = new BatimentEditor(batiment -> {
         batimentService.saveBatiment(batiment);
         Notifier.show(batiment.getNom(), NotificationType.SUCCES_NEW);
         refreshBatimentCards(cardLayout);
     });
+        add(editor);
 
     addButton.addClickListener(e -> {
         editor.editBatiment(new Batiment());

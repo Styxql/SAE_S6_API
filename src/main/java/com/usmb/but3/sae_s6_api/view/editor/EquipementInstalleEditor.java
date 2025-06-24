@@ -4,9 +4,11 @@ import com.usmb.but3.sae_s6_api.entity.Equipement;
 import com.usmb.but3.sae_s6_api.entity.EquipementInstalle;
 import com.usmb.but3.sae_s6_api.entity.Salle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
@@ -17,61 +19,55 @@ import java.util.function.Consumer;
 
 public class EquipementInstalleEditor extends Dialog {
 
-    private final IntegerField nombreField = new IntegerField("Nombre");
-    private final ComboBox<Equipement> equipementCombo = new ComboBox<>("Équipement");
-    private final ComboBox<Salle> salleCombo = new ComboBox<>("Salle");
-    private final Button saveButton = new Button("Enregistrer");
+    private final ComboBox<Equipement> equipementField = new ComboBox<>("Equipement");
+    private final IntegerField nombreField = new IntegerField("Nombre d'Equipement");
+    
+    private final Button saveButton = new Button("Enregistrer", VaadinIcon.CHECK.create());
     private final Button cancelButton = new Button("Annuler");
 
     private final Binder<EquipementInstalle> binder = new Binder<>(EquipementInstalle.class);
     private EquipementInstalle equipementInstalle;
 
-    public EquipementInstalleEditor(List<Equipement> equipements, List<Salle> salles, Consumer<EquipementInstalle> onSave) {
-        setHeaderTitle("Équipement installé");
+    public EquipementInstalleEditor(Consumer<EquipementInstalle> onSave, List<Equipement> equipements, Salle salle) {
+        equipementField.setItems(equipements);
+        equipementField.setItemLabelGenerator(Equipement::getNom);
 
-        // Configuration des ComboBox
-        equipementCombo.setItems(equipements);
-        equipementCombo.setItemLabelGenerator(Equipement::toString); // à ajuster selon toString()
-        
-        salleCombo.setItems(salles);
-        salleCombo.setItemLabelGenerator(Salle::toString); // à ajuster selon toString()
+        setHeaderTitle("Equipement Installe");
+
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         FormLayout formLayout = new FormLayout();
-        formLayout.add(nombreField, equipementCombo, salleCombo);
+        formLayout.add(equipementField, nombreField);
         add(formLayout);
 
-        HorizontalLayout buttons = new HorizontalLayout(cancelButton, saveButton);
-        getFooter().add(buttons);
-
-        // Binding
-        binder.forField(nombreField)
-                .asRequired("Le nombre est obligatoire")
-                .bind(EquipementInstalle::getNombre, EquipementInstalle::setNombre);
-
-        binder.forField(equipementCombo)
-                .asRequired("L’équipement est requis")
+        binder.forField(equipementField)
+                .asRequired("Le equipement est obligatoire")
                 .bind(EquipementInstalle::getEquipement, EquipementInstalle::setEquipement);
 
-        binder.forField(salleCombo)
-                .asRequired("La salle est requise")
-                .bind(EquipementInstalle::getSalle, EquipementInstalle::setSalle);
+        binder.forField(nombreField)
+                .asRequired("Le nombre d'Equipement est obligatoire")
+                .bind(EquipementInstalle::getNombre, EquipementInstalle::setNombre);
 
-        saveButton.addClickListener(e -> {
+        saveButton.addClickListener(event -> {
             try {
+                equipementInstalle.setSalle(salle);
                 binder.writeBean(equipementInstalle);
                 onSave.accept(equipementInstalle);
                 close();
-            } catch (ValidationException ex) {
-                // Vaadin gère automatiquement les erreurs de validation
+            } catch (ValidationException e) {
+                // Vaadin va affiché automatiquement les erreurs
             }
         });
 
-        cancelButton.addClickListener(e -> close());
+        cancelButton.addClickListener(event -> close());
+
+        HorizontalLayout footer = new HorizontalLayout(cancelButton, saveButton);
+        getFooter().add(footer);
     }
 
     public void editEquipementInstalle(EquipementInstalle equipementInstalle) {
         this.equipementInstalle = equipementInstalle;
-        setHeaderTitle(equipementInstalle.getId() == null ? "Nouvel équipement installé" : "Modifier équipement installé");
         binder.readBean(equipementInstalle);
+        setHeaderTitle(equipementInstalle.getId() == null ? "Nouvelle Marque" : "Modifier Marque");
     }
 }
