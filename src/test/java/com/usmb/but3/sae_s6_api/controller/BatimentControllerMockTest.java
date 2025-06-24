@@ -48,7 +48,7 @@ public class BatimentControllerMockTest {
 
     @Test
     void testSaveBatiment() throws Exception {
-        Batiment batiment = new Batiment(null, "Bâtiment B", "https://example.com/image.jpg");
+        Batiment batiment = new Batiment(null, "Bâtiment B", "https://example.com/image.jpg", null);
         String json = objectMapper.writeValueAsString(batiment);
 
         MvcResult result = mockMvc.perform(post(BASE_URL)
@@ -65,7 +65,7 @@ public class BatimentControllerMockTest {
 
     @Test
     void testUpdateBatiment() throws Exception {
-        Batiment batiment = new Batiment(null, "Temporaire", null);
+        Batiment batiment = new Batiment(null, "Temporaire", null, null);
         String json = objectMapper.writeValueAsString(batiment);
 
         MvcResult postResult = mockMvc.perform(post(BASE_URL)
@@ -95,7 +95,7 @@ public class BatimentControllerMockTest {
 
     @Test
     void testDeleteBatimentById() throws Exception {
-        Batiment batiment = new Batiment(null, "À supprimer", null);
+        Batiment batiment = new Batiment(null, "À supprimer", null, null);
         String json = objectMapper.writeValueAsString(batiment);
 
         MvcResult postResult = mockMvc.perform(post(BASE_URL)

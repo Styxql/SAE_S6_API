@@ -51,8 +51,8 @@ public class EquipementInstalleControllerMockTest {
     @Test
     void testSaveEquipementInstalle() throws Exception {
         EquipementInstalle equipementInstalle = new EquipementInstalle();
-        equipementInstalle.setEquipement(new Equipement(1, null, null, null, null, null, null, null));
-        equipementInstalle.setSalle(new Salle(1, null, null, null, null, null));
+        equipementInstalle.setEquipement(new Equipement(1, null, null, null, null, null, null, null, null));
+        equipementInstalle.setSalle(new Salle(1, null, null, null, null, null, null, null));
         equipementInstalle.setNombre(2);
 
         String json = objectMapper.writeValueAsString(equipementInstalle);
@@ -70,8 +70,8 @@ public class EquipementInstalleControllerMockTest {
     @Test
     void testUpdateEquipementInstalle() throws Exception {
         EquipementInstalle equipementInstalle = new EquipementInstalle();
-        equipementInstalle.setEquipement(new Equipement(1, null, null, null, null, null, null, null));
-        equipementInstalle.setSalle(new Salle(1, null, null, null, null, null));
+        equipementInstalle.setEquipement(new Equipement(1, null, null, null, null, null, null, null, null));
+        equipementInstalle.setSalle(new Salle(1, null, null, null, null, null, null, null));
         equipementInstalle.setNombre(2);
 
         String json = objectMapper.writeValueAsString(equipementInstalle);
@@ -102,8 +102,8 @@ public class EquipementInstalleControllerMockTest {
     @Test
     void testDeleteEquipementInstalleById() throws Exception {
         EquipementInstalle equipementInstalle = new EquipementInstalle();
-        equipementInstalle.setEquipement(new Equipement(1, null, null, null, null, null, null, null));
-        equipementInstalle.setSalle(new Salle(1, null, null, null, null, null));
+        equipementInstalle.setEquipement(new Equipement(1, null, null, null, null, null, null, null, null));
+        equipementInstalle.setSalle(new Salle(1, null, null, null, null, null, null, null));
         equipementInstalle.setNombre(2);
 
         String json = objectMapper.writeValueAsString(equipementInstalle);

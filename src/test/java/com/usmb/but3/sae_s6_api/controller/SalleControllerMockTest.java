@@ -55,7 +55,7 @@ public class SalleControllerMockTest {
         salle.setNom("Salle Test");
         salle.setUrlImg("https://example.com/image.jpg");
         salle.setCapacite(40);
-        salle.setBatiment(new Batiment(1, "BAT-A", null));  // or use a simple constructor if available
+        salle.setBatiment(new Batiment(1, "BAT-A", null, null));  // or use a simple constructor if available
         salle.setTypeSalle(new TypeSalle(1, "Amphi"));
 
         String json = objectMapper.writeValueAsString(salle);
@@ -78,7 +78,7 @@ public class SalleControllerMockTest {
         salle.setNom("Temporaire");
         salle.setUrlImg(null);
         salle.setCapacite(20);
-        salle.setBatiment(new Batiment(1, null, null));
+        salle.setBatiment(new Batiment(1, null, null, null));
         salle.setTypeSalle(new TypeSalle(1, null));
 
         String json = objectMapper.writeValueAsString(salle);
@@ -114,7 +114,7 @@ public class SalleControllerMockTest {
         salle.setNom("À supprimer");
         salle.setCapacite(10);
         salle.setUrlImg(null);
-        salle.setBatiment(new Batiment(1, null, null));
+        salle.setBatiment(new Batiment(1, null, null, null));
         salle.setTypeSalle(new TypeSalle(1, null));
 
         String json = objectMapper.writeValueAsString(salle);
