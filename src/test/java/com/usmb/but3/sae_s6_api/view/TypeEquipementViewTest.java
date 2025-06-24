@@ -37,7 +37,7 @@ public class TypeEquipementViewTest {
     @Test
     public void editorAfficheQuandAddButtonClique() {
         UI testUI = new UI();
-        UI.setCurrent(testUI); // suffisant pour de nombreux cas avec `Dialog`
+        UI.setCurrent(testUI); 
 
         // Ajoute la vue à l'UI
         testUI.add(typeEquipementView);
@@ -60,7 +60,7 @@ public class TypeEquipementViewTest {
         UI testUI = new UI();
         UI.setCurrent(testUI);
 
-        // Ajoute la vue à l'UI (obligatoire pour ouvrir les Dialogs)
+        // Ajoute la vue à l'UI 
         testUI.add(typeEquipementView);
 
         TypeEquipementEditor editor = typeEquipementView.editForm;
@@ -75,14 +75,14 @@ public class TypeEquipementViewTest {
         assertEquals("", editor.nomField.getValue(), "Le champ nom doit être vide.");
 
         // Remplit le champ avec un nom fictif
-        editor.nomField.setValue("Salle Test");
+        editor.nomField.setValue("TypeEquipement Test");
         editor.saveButton.click(); // clique sur enregistrer
 
         // Récupère le dernier élément de la grille
         TypeEquipement dernier = getLastItem(typeEquipementView.grid);
 
         assertNotNull(dernier);
-        assertEquals("Salle Test", dernier.getNom(), "Le dernier TypeSalle doit avoir le nom saisi.");
+        assertEquals("TypeEquipement Test", dernier.getNom(), "Le dernier TypeEquipement doit avoir le nom saisi.");
 
         UI.setCurrent(null); // Nettoyage
     }

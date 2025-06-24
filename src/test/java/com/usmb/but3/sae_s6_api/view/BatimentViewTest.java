@@ -7,12 +7,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.usmb.but3.sae_s6_api.entity.Batiment;
 import com.usmb.but3.sae_s6_api.entity.TypeSalle;
-import com.usmb.but3.sae_s6_api.service.BatimentService;
-import com.usmb.but3.sae_s6_api.service.SalleService;
 import com.usmb.but3.sae_s6_api.view.editor.BatimentEditor;
-import com.usmb.but3.sae_s6_api.view.editor.TypeSalleEditor;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -63,7 +63,6 @@ public void editorAfficheQuandAddNewClicked() {
     UI testUI = new UI();
     UI.setCurrent(testUI);
 
-    // Ajoute la vue à l'UI (obligatoire pour ouvrir les Dialogs)
     testUI.add(marqueView);
 
     MarqueEditor editor = marqueView.editor;
@@ -78,14 +77,14 @@ public void editorAfficheQuandAddNewClicked() {
     assertEquals("", editor.nomField.getValue(), "Le champ nom doit être vide.");
 
     // Remplit le champ avec un nom fictif
-    editor.nomField.setValue("Salle Test");
+    editor.nomField.setValue("Marque test");
     editor.saveButton.click(); // clique sur enregistrer
 
     // Récupère le dernier élément de la grille
     Marque dernier = getLastItem(marqueView.grid);
 
     assertNotNull(dernier);
-    assertEquals("Salle Test", dernier.getNom(), "Le dernier TypeSalle doit avoir le nom saisi.");
+    assertEquals("Marque test", dernier.getNom(), "La dernière marque doit avoir le nom saisi.");
 
     UI.setCurrent(null); // Nettoyage
 }

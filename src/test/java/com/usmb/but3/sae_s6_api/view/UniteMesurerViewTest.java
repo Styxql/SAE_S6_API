@@ -38,7 +38,7 @@ public class UniteMesurerViewTest {
 @Test
 public void editorAfficheQuandAddButtonClique() {
     UI testUI = new UI();
-    UI.setCurrent(testUI); // suffisant pour de nombreux cas avec `Dialog`
+    UI.setCurrent(testUI); 
 
     // Ajoute la vue à l'UI
     testUI.add(uniteMesurerView);
@@ -81,14 +81,14 @@ public void editorAfficheQuandAddNewClicked() {
     assertEquals("", editor.nomField.getValue(), "Le champ nom doit être vide.");
 
     // Remplit le champ avec un nom fictif
-    editor.nomField.setValue("Salle Test");
+    editor.nomField.setValue("Unite Test");
     editor.saveButton.click(); // clique sur enregistrer
 
     // Récupère le dernier élément de la grille
     UniteMesurer dernier = getLastItem(uniteMesurerView.grid);
 
     assertNotNull(dernier);
-    assertEquals("Salle Test", dernier.getNom(), "Le dernier TypeSalle doit avoir le nom saisi.");
+    assertEquals("Unite Test", dernier.getNom(), "La dernière Unite doit avoir le nom saisi.");
 
     UI.setCurrent(null); // Nettoyage
 }
