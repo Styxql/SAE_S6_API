@@ -48,7 +48,7 @@ public class SalleControllerTest {
         salle.setNom("Salle Test");
         salle.setCapacite(50);
         salle.setUrlImg(null);
-        salle.setBatiment(new Batiment(1, null, null));  
+        salle.setBatiment(new Batiment(1, null, null, null));  
         salle.setTypeSalle(new TypeSalle(1, null));     
 
         Salle created = restTemplate.postForObject(baseUrl(), salle, Salle.class);
@@ -64,7 +64,7 @@ public class SalleControllerTest {
         Salle salle = new Salle();
         salle.setNom("Salle Initiale");
         salle.setCapacite(20);
-        salle.setBatiment(new Batiment(1, null, null));
+        salle.setBatiment(new Batiment(1, null, null, null));
         salle.setTypeSalle(new TypeSalle(1, null));
 
         Salle created = restTemplate.postForObject(baseUrl(), salle, Salle.class);
@@ -85,7 +85,7 @@ public class SalleControllerTest {
         Salle salle = new Salle();
         salle.setNom("Salle À Supprimer");
         salle.setCapacite(30);
-        salle.setBatiment(new Batiment(1, null, null));
+        salle.setBatiment(new Batiment(1, null, null, null));
         salle.setTypeSalle(new TypeSalle(1, null));
 
         Salle created = restTemplate.postForObject(baseUrl(), salle, Salle.class);

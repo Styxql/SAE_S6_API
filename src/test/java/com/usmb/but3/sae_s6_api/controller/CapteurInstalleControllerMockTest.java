@@ -51,8 +51,8 @@ public class CapteurInstalleControllerMockTest {
     @Test
     void testSaveCapteurInstalle() throws Exception {
         CapteurInstalle capteurInstalle = new CapteurInstalle();
-        capteurInstalle.setCapteur(new Capteur(1, null, null, null, null, null, null, null, null, null));
-        capteurInstalle.setSalle(new Salle(1, null, null, null, null, null));
+        capteurInstalle.setCapteur(new Capteur(1, null, null, null, null, null, null, null, null, null, null));
+        capteurInstalle.setSalle(new Salle(1, null, null, null, null, null, null, null));
         capteurInstalle.setNombre(3);
         String json = objectMapper.writeValueAsString(capteurInstalle);
 
@@ -69,8 +69,8 @@ public class CapteurInstalleControllerMockTest {
     @Test
     void testUpdateCapteurInstalle() throws Exception {
         CapteurInstalle capteurInstalle = new CapteurInstalle();
-        capteurInstalle.setCapteur(new Capteur(1, null, null, null, null, null, null, null, null, null));
-        capteurInstalle.setSalle(new Salle(1, null, null, null, null, null));
+        capteurInstalle.setCapteur(new Capteur(1, null, null, null, null, null, null, null, null, null, null));
+        capteurInstalle.setSalle(new Salle(1, null, null, null, null, null, null, null));
         capteurInstalle.setNombre(1);
 
         String json = objectMapper.writeValueAsString(capteurInstalle);
@@ -101,8 +101,8 @@ public class CapteurInstalleControllerMockTest {
     @Test
     void testDeleteCapteurInstalleById() throws Exception {
         CapteurInstalle capteurInstalle = new CapteurInstalle();
-        capteurInstalle.setCapteur(new Capteur(1, null, null, null, null, null, null, null, null, null));
-        capteurInstalle.setSalle(new Salle(1, null, null, null, null, null));
+        capteurInstalle.setCapteur(new Capteur(1, null, null, null, null, null, null, null, null, null, null));
+        capteurInstalle.setSalle(new Salle(1, null, null, null, null, null, null, null));
         capteurInstalle.setNombre(3);
 
         String json = objectMapper.writeValueAsString(capteurInstalle);

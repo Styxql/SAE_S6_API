@@ -68,7 +68,7 @@ public class UniteMesurerControllerMockTest {
 
     @Test
     void testUpdateUniteMesurer() throws Exception {
-        UniteMesurer unite = new UniteMesurer(null, "Temporaire", "tmp");
+        UniteMesurer unite = new UniteMesurer(null, "Temporaire", "tmp", null);
         String json = objectMapper.writeValueAsString(unite);
 
         MvcResult postResult = mockMvc.perform(post(BASE_URL)
@@ -96,7 +96,7 @@ public class UniteMesurerControllerMockTest {
 
     @Test
     void testDeleteUniteMesurerById() throws Exception {
-        UniteMesurer unite = new UniteMesurer(null, "À supprimer", "del");
+        UniteMesurer unite = new UniteMesurer(null, "À supprimer", "del", null);
         String json = objectMapper.writeValueAsString(unite);
 
         MvcResult postResult = mockMvc.perform(post(BASE_URL)
